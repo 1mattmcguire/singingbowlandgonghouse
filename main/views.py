@@ -109,7 +109,7 @@ Singing Bowl & Gong House Team''',
                 import traceback
                 traceback.print_exc()
             else:
-                print(f"✅ User confirmation email sent successfully to: {booking.email}")
+                print(f"✅ User confirmation email sent successfully to: {inquiry.email}")
             
             # Send notification email to admin
             try:
@@ -483,7 +483,7 @@ Singing Bowl & Gong House Team''',
                 import traceback
                 traceback.print_exc()
             else:
-                print(f"✅ User confirmation email sent successfully to: {booking.email}")
+                print(f"✅ User confirmation email sent successfully to: {inquiry.email}")
             
             try:
                 admin_email = getattr(settings, 'ADMIN_EMAIL', settings.DEFAULT_FROM_EMAIL)

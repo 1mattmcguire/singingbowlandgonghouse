@@ -4,8 +4,9 @@
  * Updated: 2025-12-20 - Using public booking endpoint
  */
 
-// API Base URL - Update this to match your Django server
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
+// API Base URL
+// Use same-origin by default so it works in both dev and production deployments.
+const API_BASE_URL = `${window.location.origin}/api`;
 
 /**
  * Get authentication token from localStorage
