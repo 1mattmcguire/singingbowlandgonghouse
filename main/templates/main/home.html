@@ -1498,15 +1498,24 @@ window.addEventListener("scroll", () => {
         <h2 class="video-title">A Glimpse Inside Our Sound Sanctuaries</h2>
 
         <p class="video-subtitle">
-            Step into a session with us and experience how singing bowls, gongs, 
+            Step into a session with us and experience how singing bowls, gongs,
             and handpans weave together to guide deep calm, clarity, and emotional reset.
         </p>
 
+        {# NOTE:
+           The original template referenced "main/images/Video Project.mp4", but the file is not
+           shipped with the repo (often ignored in git), which causes a 500 in production when
+           using ManifestStaticFilesStorage. Replace this placeholder with a real hosted video URL
+           (YouTube/Vimeo) or add the mp4 to static files.
+        #}
         <div class="video-wrapper">
-            <video controls class="video-player">
-                <source src="{% static 'main/images/Video Project.mp4' %}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <div class="video-placeholder" style="position: relative; border-radius: 18px; overflow: hidden; background: #000;">
+                <img src="{% static 'main/images/bgimg.jpg' %}" alt="Sound session preview" style="width: 100%; height: auto; display: block; opacity: 0.9;">
+                <a href="{% url 'main:contact' %}"
+                   style="position:absolute; inset:0; display:grid; place-items:center; color:#fff; text-decoration:none; font-weight:700; letter-spacing:0.5px; background:rgba(0,0,0,0.25);">
+                    Contact us for session videos
+                </a>
+            </div>
         </div>
 
     </div>
