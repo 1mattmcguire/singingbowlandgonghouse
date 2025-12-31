@@ -47,9 +47,15 @@ if not SECRET_KEY:
 
 # Hosts (comma-separated): ALLOWED_HOSTS=example.com,www.example.com
 ALLOWED_HOSTS = _env_csv("ALLOWED_HOSTS")
+
+# Render sets RENDER_EXTERNAL_HOSTNAME; auto-allow it to avoid DisallowedHost on deploy.
+render_hostname = os.getenv("RENDER_EXTERNAL_HOSTNAME", "").strip()
+if render_hostname:
+    ALLOWED_HOSTS = list(dict.fromkeys([*ALLOWED_HOSTS, render_hostname]))
+
 if not ALLOWED_HOSTS:
     ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
-    if not DEBUG:
+    if not DEBUG and not render_hostname:
         raise ImproperlyConfigured("ALLOWED_HOSTS environment variable is required when DEBUG=False.")
 
 
