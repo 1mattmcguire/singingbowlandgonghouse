@@ -2,6 +2,10 @@ services:
   - type: web
     name: singingbowlandgonghouse
     env: python
+    region: singapore
     plan: free
     buildCommand: "./build.sh"
-    startCommand: "gunicorn SingingBallAndGongHouse.wsgi"
+    startCommand: "gunicorn SingingBallAndGongHouse.wsgi:application"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: "SingingBallAndGongHouse.settings"
