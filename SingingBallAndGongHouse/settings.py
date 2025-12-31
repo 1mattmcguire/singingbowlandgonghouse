@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure--7!+4a9zf3v%as!r88$a612f!vk-*1p11!^0#5ljvzio)$5r#t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['singingbowlandgonghouse.onrender.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['singingbowlandgonghouse.onrender.com', '127.0.0.1', 'localhost', '<your-railway-domain>']
 
 
 
@@ -43,8 +43,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', 
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -119,6 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
+PORT = os.getenv("PORT", "8000")
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [

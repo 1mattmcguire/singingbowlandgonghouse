@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: singingbowlandgonghouse
-    env: python
-    plan: free
-    buildCommand: "./build.sh"
-    startCommand: "gunicorn SingingBallAndGongHouse.wsgi"
