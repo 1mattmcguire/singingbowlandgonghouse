@@ -110,24 +110,21 @@ The application will be available at: `http://127.0.0.1:8000/`
 
 ## Email Configuration
 
-### Development (Current Setup)
+### Development
 
-The project is currently configured to use the console email backend, which prints emails to the console instead of sending them. This is perfect for development.
+By default, if `EMAIL_HOST_PASSWORD` is **not** set, the app uses Django’s **console email backend** (emails print to the server console). This is ideal for local development.
 
-### Production Setup
+### Production Setup (Recommended)
 
-To configure email for production, update `SingingBallAndGongHouse/settings.py`:
+**Do not hardcode secrets in `settings.py`.** Configure these environment variables instead (see `.env.example`):
 
-```python
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'singingbowlandgonghouse@gmail.com'
-EMAIL_HOST_PASSWORD = 'your-app-password'  # Gmail App Password
-DEFAULT_FROM_EMAIL = 'singingbowlandgonghouse@gmail.com'
-ADMIN_EMAIL = 'singingbowlandgonghouse@gmail.com'
-```
+- `SECRET_KEY`
+- `DEBUG` (set to `0` in production)
+- `ALLOWED_HOSTS`
+- `EMAIL_HOST_USER`
+- `EMAIL_HOST_PASSWORD` (Gmail App Password)
+- `DEFAULT_FROM_EMAIL`
+- `ADMIN_EMAIL`
 
 **Note**: For Gmail, you'll need to:
 1. Enable 2-factor authentication

@@ -5,19 +5,32 @@ Import this in your main settings.py or use environment variables.
 
 import os
 from pathlib import Path
-from decouple import config
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+def _env_bool(name: str, default: str = "0") -> bool:
+    return os.getenv(name, default).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_csv(name: str, default: str = "") -> list[str]:
+    raw = os.getenv(name, default)
+    return [part.strip() for part in raw.split(",") if part.strip()]
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='django-insecure--7!+4a9zf3v%as!r88$a612f!vk-*1p11!^0#5ljvzio)$5r#t')
+SECRET_KEY = os.getenv("SECRET_KEY", "").strip()
+if not SECRET_KEY:
+    raise ImproperlyConfigured("SECRET_KEY environment variable is required for production settings.")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = _env_bool("DEBUG", "0")
 
-# Update this with your actual domain
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+# Update this with your actual domain(s)
+ALLOWED_HOSTS = _env_csv("ALLOWED_HOSTS")
+if not ALLOWED_HOSTS:
+    raise ImproperlyConfigured("ALLOWED_HOSTS environment variable is required for production settings.")
 
 # Application definition
 INSTALLED_APPS = [
@@ -127,14 +140,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='singingbowlandgonghouse@gmail.com')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='singingbowlandgonghouse@gmail.com')
-ADMIN_EMAIL = config('ADMIN_EMAIL', default='singingbowlandgonghouse@gmail.com')
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "singingbowlandgonghouse@gmail.com").strip()
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "").strip()
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER).strip()
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", EMAIL_HOST_USER).strip()
 EMAIL_TIMEOUT = 10
 
 # WhatsApp Configuration
-ADMIN_WHATSAPP_NUMBER = config('ADMIN_WHATSAPP_NUMBER', default='+9779843213802')
+ADMIN_WHATSAPP_NUMBER = os.getenv("ADMIN_WHATSAPP_NUMBER", "+9779843213802").strip()
 
 # Security Settings for Production
 if not DEBUG:
