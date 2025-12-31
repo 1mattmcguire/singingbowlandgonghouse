@@ -1,0 +1,1812 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Singing Bowl Gong House</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="{% static 'main/images/logo.jpg' %}">
+  <link rel="shortcut icon" type="image/jpeg" href="{% static 'main/images/logo.jpg' %}">
+  <link rel="apple-touch-icon" href="{% static 'main/images/logo.jpg' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'main/css/home.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/header.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="{% static 'main/js/api.js' %}"></script>
+  <script src="{% static 'main/js/booking-modal.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+</head>
+
+                                 <!-- header -->
+ <header class="header" id="header">
+     <div class="logo">
+       <img src="{% static 'main/images/logo.jpg' %}" alt="Singing Bowl & Gong House Logo">
+       <span class="logo-text">Singing Bowl & Gong House</span>
+     </div>
+
+     <nav class="nav">
+         <ul class="nav-list" id="nav-list">
+             <li><a href="{% url 'main:home' %}" class="active">HOME</a></li>
+             <li><a href="{% url 'main:about' %}">ABOUT</a></li>
+             <li><a href="{% url 'main:services' %}">SERVICES</a></li>
+             <li><a href="{% url 'main:courses' %}">COURSES</a></li>
+            <li><a href="{% url 'main:smiles' %}">SMILES</a></li>
+             <li><a href="{% url 'main:contact' %}">CONTACT</a></li>
+         </ul>
+     </nav>
+
+    <!-- Book Button (Right side) -->
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <a href="#" class="book-btn desktop-book" onclick="openBookingModal(); return false;">Book Now</a>
+    </div>
+
+    <!-- Hamburger -->
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</header>
+
+<!-- Mobile floating Book Now -->
+<a href="#" class="mobile-book-btn" onclick="openBookingModal(); return false;">Book Now</a>
+<script>
+/* Mobile menu toggle */
+document.getElementById("hamburger").addEventListener("click", function () {
+    const navList = document.getElementById("nav-list");
+    const isOpen = navList.classList.contains("show");
+    navList.classList.toggle("show");
+    this.classList.toggle("active");
+    document.body.classList.toggle("menu-open", !isOpen);
+});
+
+/* Close menu when clicking on a nav link */
+document.querySelectorAll('.nav-list li a').forEach(link => {
+    link.addEventListener('click', function() {
+        document.getElementById("nav-list").classList.remove("show");
+        document.getElementById("hamburger").classList.remove("active");
+        document.body.classList.remove("menu-open");
+    });
+});
+
+/* Close menu when clicking outside (on backdrop) */
+document.getElementById("nav-list").addEventListener("click", function(e) {
+    if (e.target === this) {
+        this.classList.remove("show");
+        document.getElementById("hamburger").classList.remove("active");
+        document.body.classList.remove("menu-open");
+    }
+});
+
+/* Transparent → solid navbar on scroll */
+window.addEventListener("scroll", function () {
+    const header = document.getElementById("header");
+    if (window.scrollY > 50) {
+        header.classList.add("scrolled");
+    } else {
+        header.classList.remove("scrolled");
+    }
+});
+</script>
+</head>
+
+
+<body>
+
+                                <!-- HERO (2-Column Layout: Image with Text Overlay + Floating Images) -->
+                                <section class="hero" id="home">
+                                  <div class="hero-image-wrapper">
+                                    <div class="hero-image"></div>
+                                  <div class="hero-content">
+                                    <h1 class="hero-anim">Singing Bowl &amp; Gong House</h1>
+                                    <p class="lead hero-anim">
+                                      We guide you into calm through immersive <strong>Sound Healing</strong>
+                                      and help you certify through our <strong>Advanced Teacher Training</strong>.
+                                    </p>
+                                    <a class="book-btn hero-anim" href="#" onclick="openBookingModal(); return false;">Book Now</a>
+                                  </div>
+                                  </div>
+                                  <div class="hero-animation-wrapper">
+                                  <div class="main">
+                                    <div class="mainBoxes"></div>
+                                    <div class="mainClose">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none">
+                                        <circle cx="30" cy="30" r="30" fill="#000" opacity="0.4" />
+                                        <path d="M15,16L45,46 M45,16L15,46" stroke="#000" stroke-width="3.5" opacity="0.5" />
+                                        <path d="M15,15L45,45 M45,15L15,45" stroke="#fff" stroke-width="2" />
+                                      </svg>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </section>
+                                <div class="lightbox" id="lightbox">
+                                  <div class="lightbox-backdrop"></div>
+                                  <img id="lightbox-img" alt="Hero preview">
+                                  <button id="lightbox-close" aria-label="Close preview">&times;</button>
+                                </div>
+
+  <!-- Modern Landing Section -->
+  <section class="modern-landing-section">
+    <div class="landing-container">
+      <!-- Top Section: Heading and Stats Side by Side -->
+      <div class="landing-header-stats">
+        <h2 class="landing-title">Relax, recalibrate, and find inner peace again</h2>
+        <!-- Frequency Section -->
+        <div class="landing-stats-section">
+          <div class="stat-item">
+            <div class="stat-number">1,080+</div>
+            <div class="stat-label">Sound baths</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">936hz</div>
+            <div class="stat-label">Healing frequency</div>
+          </div>
+          <a href="#" class="landing-book-btn" onclick="openBookingModal(); return false;">Book A Session</a>
+        </div>
+      </div>
+
+      <!-- Bottom Section: Text and Image Side by Side -->
+      <div class="landing-text-image-wrapper">
+        <!-- Text Section (Left) -->
+        <div class="landing-description-section">
+          <p class="landing-description">Take a moment to breathe, reconnect, and return to yourself. In a world that often feels loud and demanding, our sound healing sessions offer a sanctuary of stillness. Through soothing vibrations and gentle frequencies, your mind begins to soften, your nervous system relaxes, and tension slowly melts away. This is a space where you are allowed to pause, release what no longer serves you, and rediscover a sense of inner balance and emotional clarity. Allow yourself to feel grounded again — peaceful, centered, and aligned from within.</p>
+        </div>
+
+        <!-- Image Section (Right) -->
+        <div class="landing-images-section">
+          <div class="landing-image-right">
+            <img src="{% static 'main/images/bgimg.jpg' %}" alt="Sound Healing Session" class="landing-img">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services and Featured Section -->
+  <section class="services-featured-section">
+    <div class="services-featured-container">
+      <!-- Top Services Row -->
+      <div class="services-row">
+        <div class="service-block">
+          <h3 class="service-title">Group Healing</h3>
+          <p class="service-description">Experience sound therapy together in a shared space. Perfect for friends, families, or small groups seeking relaxation, balance, and emotional harmony</p>
+        </div>
+        <div class="service-block">
+          <h3 class="service-title">Personal Healing</h3>
+          <p class="service-description">Experience personalized sound therapy aligned with your own energy field. Perfect for anyone who needs individual healing, inner peace, and greater self-awareness.</p>
+        </div>
+        <div class="service-block">
+          <h3 class="service-title">Advanced Teacher Training</h3>
+          <p class="service-description">Get advanced instruction in Himalayan singing bowls, gongs, handpans, and therapeutic sound instruments to improve your abilities. Perfect for practitioners getting ready to lead and guide sessions.</p>
+        </div>
+      </div>
+
+      <!-- Featured Two-Column Section -->
+      <div class="featured-section">
+        <div class="featured-image-wrapper">
+          <img src="{% static 'main/images/sound healing session.jpeg' %}" alt="Sound Healing Session" class="featured-image">
+        </div>
+        <div class="featured-content-panel">
+          <h2 class="featured-heading">Everything in life is vibration</h2>
+          <p class="featured-text">Every cell, emotion, and thought in life is a vibration. Stress, discomfort, and restlessness result from an imbalance in our inner frequencies. We restore harmony between the body and mind through the therapeutic resonance of gongs, singing bowls, and sound instruments. Energy realigns, tension releases, and a profound sense of inner peace emerges as the vibrations pass through you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="benefits-section">
+    <div class="benefits-container">
+      <div class="benefits-content">
+        <!-- Left Column: Text Content -->
+        <div class="benefits-text-block">
+          <h2 class="benefits-heading">Benefits of sound healing & music therapy</h2>
+          <p class="benefits-description">Sound healing and music therapy use gentle vibrations, rhythms, and frequencies to balance the mind and body. The tones produced by instruments like singing bowls, gongs, and tuning forks help calm the nervous system, reduce stress, and release emotional tension. Regular sound sessions support deeper relaxation, improve sleep, enhance focus, and promote inner peace. Many people also experience reduced anxiety, improved breathing, better mood, and a stronger mind-body connection. Whether for meditation, healing, or personal well-being, sound and music therapy offer a natural and powerful way to restore harmony within.</p>
+          <ul class="benefits-list">
+            <li class="benefit-item">Reduced stress</li>
+            <li class="benefit-item">Pain management</li>
+            <li class="benefit-item">Increased clarity</li>
+            <li class="benefit-item">Improved sleep</li>
+            <li class="benefit-item">Deep relaxation</li>
+            <li class="benefit-item">Increased energy</li>
+          </ul>
+        </div>
+
+        <!-- Right Column: Images -->
+        <div class="benefits-images-block">
+          <div class="benefit-image-wrapper">
+            <img src="{% static 'main/images/scroll5.jpeg' %}" alt="Private Sessions" class="benefit-image">
+            <div class="benefit-image-overlay">
+              <span class="benefit-overlay-text" onclick="openBookingModal(); return false;">Private Sessions</span>
+            </div>
+          </div>
+          <div class="benefit-image-wrapper">
+            <img src="{% static 'main/images/Group Session.jpeg' %}" alt="Group Session" class="benefit-image">
+            <div class="benefit-image-overlay">
+              <span class="benefit-overlay-text" onclick="openBookingModal(); return false;">Group Session</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Animated Text Section -->
+  <section class="animated-text-section">
+    <div class="animated-text-container">
+      <div class="animated-text-content">
+        <h2 class="animated-title">Transform Your Life Through the Power of Sound</h2>
+        <p class="animated-subtitle">Experience deep healing, inner peace, and spiritual growth in our sacred space</p>
+        <div class="animated-features">
+          <div class="feature-item">
+            <i class="fas fa-heart"></i>
+            <span>Deep Healing</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-leaf"></i>
+            <span>Inner Peace</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-star"></i>
+            <span>Spiritual Growth</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-users"></i>
+            <span>Community</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+     <script>
+       // Use local images from /images - Django static URLs
+       const heroImages = [
+         "{% static 'main/images/mainimage.jpg' %}",
+         "{% static 'main/images/bgimg.jpg' %}",
+         "{% static 'main/images/scroll2.jpg' %}",
+         "{% static 'main/images/scroll3.jpg' %}",
+         "{% static 'main/images/scroll4.jpg' %}",
+         "{% static 'main/images/training.jpg' %}",
+         "{% static 'main/images/Soundhealing.jpg' %}",
+         "{% static 'main/images/therapy.jpg' %}",
+         "{% static 'main/images/IMG-20251111-WA0011.jpg' %}"
+       ];
+
+      const mainBoxes = document.querySelector(".mainBoxes");
+      const mainClose = document.querySelector(".mainClose");
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.getElementById("lightbox-img");
+      const lightboxClose = document.getElementById("lightbox-close");
+
+      let currentImg = null;
+      let currentImgProps = { x: 0, y: 0 };
+      let isZooming = false;
+      let column = -1;
+      let mouse = { x: 0, y: 0 };
+      let delayedPlay;
+
+      // Check if mobile
+      const isMobile = window.innerWidth <= 768;
+      const isSmallMobile = window.innerWidth <= 480;
+      
+      // Build boxes similar to reference
+      heroImages.forEach((src, i) => {
+        if (i % 3 === 0) column++;
+        const b = document.createElement("div");
+        mainBoxes.appendChild(b);
+        
+        // Responsive positioning and sizing
+        let colX, startY, endY, duration, boxWidth, boxHeight, boxScale;
+        
+        if (isSmallMobile) {
+          // Small mobile: single column, smaller boxes
+          colX = 0;
+          startY = -400;
+          endY = 400;
+          duration = 30;
+          boxWidth = 240;
+          boxHeight = 350;
+          boxScale = 1;
+        } else if (isMobile) {
+          // Mobile: single column, medium boxes
+          colX = 0;
+          startY = -450;
+          endY = 450;
+          duration = 35;
+          boxWidth = 280;
+          boxHeight = 400;
+          boxScale = 1;
+        } else {
+          // Desktop: multi-column layout
+          colX = [60, 280, 500][column];
+          startY = [-575, 800, 800][column];
+          endY = [800, -575, -575][column];
+          duration = [40, 35, 26][column];
+          boxWidth = 400;
+          boxHeight = 640;
+          boxScale = 0.5;
+        }
+
+        gsap.set(b, {
+          id: `b${i}`,
+          className: `photoBox pb-col${column}`,
+          backgroundImage: `url(${src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          overflow: "hidden",
+          x: colX,
+          width: boxWidth,
+          height: boxHeight,
+          borderRadius: isMobile ? 24 : 20,
+          scale: boxScale,
+          zIndex: isMobile ? (3 - (i % 3)) : 1,
+          opacity: isMobile ? 0 : 1
+        });
+
+        // Only create floating animation for desktop
+        if (!isMobile) {
+          b.tl = gsap.timeline({ paused: true, repeat: -1 })
+            .fromTo(b, { y: startY, rotation: -0.05 }, { duration, y: endY, rotation: 0.05, ease: "none" })
+            .progress((i % 3) / 3);
+        } else {
+          // Mobile: static stack with entrance animation
+          b.tl = null;
+        }
+      });
+
+      function pauseBoxes(box) {
+        if (window.innerWidth <= 768) return; // Skip on mobile
+        const classStr = box.classList.contains("pb-col1") ? "pb-col1" : box.classList.contains("pb-col2") ? "pb-col2" : "pb-col0";
+        Array.from(mainBoxes.children).forEach((child) => {
+          if (child.classList.contains(classStr) && child.tl) gsap.to(child.tl, { timeScale: 0, ease: "sine" });
+        });
+      }
+
+      function playBoxes() {
+        if (window.innerWidth <= 768) return; // Skip on mobile
+        Array.from(mainBoxes.children).forEach((child) => {
+          if (child.tl) {
+            const tl = child.tl;
+            tl.play();
+            gsap.to(tl, { duration: 0.4, timeScale: 1, ease: "sine.in", overwrite: true });
+          }
+        });
+      }
+
+      function lightboxOpen(src) {
+        lightboxImg.src = src;
+        lightbox.classList.add("show");
+      }
+      function lightboxCloseFn() {
+        lightbox.classList.remove("show");
+      }
+
+      window.onload = function () {
+        const isMobile = window.innerWidth <= 768;
+        const isTablet = window.innerWidth > 768 && window.innerWidth <= 1024;
+        
+        // Text entrance animations
+        if (isMobile) {
+          // Mobile: Staggered fade-in animations
+          gsap.from(".hero-content h1", {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            delay: 0.1,
+            ease: "power2.out"
+          });
+          gsap.from(".hero-content .lead", {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            delay: 0.4,
+            ease: "power2.out"
+          });
+          gsap.from(".hero-content .book-btn", {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            delay: 0.6,
+            ease: "power2.out"
+          });
+          
+          // Mobile: Show all images in horizontal scrollable carousel
+          const photoBoxes = document.querySelectorAll(".photoBox");
+          photoBoxes.forEach((box, index) => {
+            // Show all images on mobile in a scrollable carousel
+            gsap.set(box, { 
+              opacity: 1, 
+              display: "block",
+              x: 0,
+              y: 0,
+              scale: 1
+            });
+            
+            // Animate entrance
+            gsap.from(box, {
+              opacity: 0,
+              x: 50,
+              duration: 0.6,
+              delay: 0.8 + (index * 0.1),
+              ease: "power2.out"
+            });
+          });
+        } else {
+          // Desktop: Original animations
+          gsap.from(".hero-anim", { y: 30, opacity: 0, duration: 0.6, stagger: 0.12, ease: "power2.out" });
+        }
+
+        // Responsive sizing for mainBoxes
+        let mainBoxesWidth = 1200;
+        let mainBoxesLeft = "72%";
+        let rotationX = 14;
+        let rotationY = -15;
+        let rotationZ = 10;
+        
+        if (isMobile) {
+          mainBoxesWidth = Math.min(window.innerWidth - 40, 600);
+          mainBoxesLeft = "50%";
+          rotationX = 0;
+          rotationY = 0;
+          rotationZ = 0;
+        } else if (isTablet) {
+          mainBoxesWidth = 800;
+          mainBoxesLeft = "60%";
+          rotationX = 8;
+          rotationY = -8;
+          rotationZ = 5;
+        }
+
+        const _tl = gsap.timeline({ onStart: !isMobile ? playBoxes : null })
+          .set(".main", { perspective: isMobile ? 0 : 800 })
+          .set(".photoBox", { 
+            opacity: isMobile ? 0 : 1, 
+            cursor: "pointer" 
+          })
+          .set(".mainBoxes", { 
+            left: mainBoxesLeft, 
+            xPercent: -50, 
+            width: mainBoxesWidth, 
+            rotationX: rotationX, 
+            rotationY: rotationY, 
+            rotationZ: rotationZ 
+          })
+          .set(".mainClose", { 
+            autoAlpha: 0, 
+            width: 60, 
+            height: 60, 
+            left: -30, 
+            top: -31, 
+            pointerEvents: "none",
+            display: isMobile ? "none" : "block"
+          })
+          .fromTo(".main", { autoAlpha: 0 }, { duration: 0.6, ease: "power2.inOut", autoAlpha: 1 }, 0.2);
+
+        mainBoxes.addEventListener("mousemove", (e) => {
+          mouse.x = e.x;
+          mouse.y = e.layerY;
+          if (currentImg) gsap.to(".mainClose", { duration: 0.1, x: mouse.x, y: mouse.y, overwrite: "auto" });
+        });
+
+        // Only add hover effects on desktop
+        if (!isMobile) {
+          mainBoxes.addEventListener("mouseenter", (e) => {
+            const target = e.target.closest(".photoBox");
+            if (!target || currentImg) return;
+            if (delayedPlay) delayedPlay.kill();
+            pauseBoxes(target);
+            gsap.to(".photoBox", { duration: 0.2, overwrite: "auto", opacity: (i, t) => (t === target ? 1 : 0.33) });
+            gsap.fromTo(target, { zIndex: 100 }, { duration: 0.2, scale: 0.62, overwrite: "auto", ease: "power3" });
+          }, true);
+
+          mainBoxes.addEventListener("mouseleave", (e) => {
+            const target = e.target.closest(".photoBox");
+            if (!target || currentImg) return;
+            if (gsap.getProperty(target, "scale") > 0.62) delayedPlay = gsap.delayedCall(0.3, playBoxes);
+            else playBoxes();
+            gsap.timeline()
+              .set(target, { zIndex: 1 })
+              .to(target, { duration: 0.3, scale: 0.5, overwrite: "auto", ease: "expo" }, 0)
+              .to(".photoBox", { duration: 0.5, opacity: 1, ease: "power2.inOut" }, 0);
+          }, true);
+        }
+
+        // Handle both click and touch events for mobile
+        const handleImageInteraction = (e) => {
+          const target = e.target.closest(".photoBox");
+          if (!target || isZooming) return;
+          isZooming = true;
+          gsap.delayedCall(0.8, () => { isZooming = false; });
+
+          if (currentImg) {
+            // Get responsive values
+            const isMobile = window.innerWidth <= 768;
+            const isTablet = window.innerWidth > 768 && window.innerWidth <= 1024;
+            let resetWidth = 1200;
+            let resetLeft = "72%";
+            let resetRotationX = 14;
+            let resetRotationY = -15;
+            let resetRotationZ = 10;
+            
+            if (isMobile) {
+              resetWidth = Math.min(window.innerWidth - 40, 600);
+              resetLeft = "50%";
+              resetRotationX = 0;
+              resetRotationY = 0;
+              resetRotationZ = 0;
+            } else if (isTablet) {
+              resetWidth = 800;
+              resetLeft = "60%";
+              resetRotationX = 8;
+              resetRotationY = -8;
+              resetRotationZ = 5;
+            }
+            
+            gsap.timeline({ defaults: { ease: "expo.inOut" } })
+              .to(".mainClose", { duration: 0.1, autoAlpha: 0, overwrite: true }, 0)
+              .to(".mainBoxes", { duration: 0.5, scale: 1, left: resetLeft, width: resetWidth, rotationX: resetRotationX, rotationY: resetRotationY, rotationZ: resetRotationZ, overwrite: true }, 0)
+              .to(".photoBox", { duration: 0.6, opacity: 1, ease: "power4.inOut" }, 0)
+              .to(currentImg, { duration: 0.6, width: isMobile ? Math.min(window.innerWidth - 40, 280) : 400, height: isMobile ? 400 : 640, borderRadius: 20, x: currentImgProps.x, y: currentImgProps.y, scale: 0.5, rotation: 0, zIndex: 1 }, 0);
+            currentImg = null;
+          } else {
+            pauseBoxes(target);
+            currentImg = target;
+            currentImgProps.x = gsap.getProperty(currentImg, "x");
+            currentImgProps.y = gsap.getProperty(currentImg, "y");
+
+            gsap.timeline({ defaults: { duration: 0.6, ease: "expo.inOut" } })
+              .set(currentImg, { zIndex: 100 })
+              .fromTo(".mainClose", { x: mouse.x, y: mouse.y, background: "rgba(0,0,0,0)" }, { autoAlpha: 1, duration: 0.3, ease: "power3.inOut" }, 0)
+              .to(".photoBox", { opacity: 0 }, 0)
+              .to(currentImg, { width: "100%", height: "100%", borderRadius: 0, x: 0, top: 0, y: 0, scale: 1, opacity: 1 }, 0)
+              .to(".mainBoxes", { duration: 0.5, left: "50%", width: "100%", rotationX: 0, rotationY: 0, rotationZ: 0 }, 0.15)
+              .to(".mainBoxes", { duration: 5, scale: 1.06, rotation: 0.05, ease: "none" }, 0.65);
+
+            lightboxOpen(getComputedStyle(currentImg).backgroundImage.slice(5, -2));
+          }
+        };
+
+        // Add event listeners for both click and touch
+        mainBoxes.addEventListener("click", handleImageInteraction);
+        if (isMobile) {
+          mainBoxes.addEventListener("touchend", (e) => {
+            e.preventDefault();
+            handleImageInteraction(e);
+          });
+        }
+      };
+
+      lightboxClose?.addEventListener("click", lightboxCloseFn);
+      lightbox?.addEventListener("click", (e) => {
+        if (e.target.classList.contains("lightbox-backdrop")) lightboxCloseFn();
+      });
+
+      // Animated text section animations
+      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Animate title
+        gsap.to(".animated-title", {
+          scrollTrigger: {
+            trigger: ".animated-text-section",
+            start: "top 80%"
+          },
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out"
+        });
+
+        // Animate subtitle
+        gsap.to(".animated-subtitle", {
+          scrollTrigger: {
+            trigger: ".animated-text-section",
+            start: "top 75%"
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          delay: 0.2,
+          ease: "power2.out"
+        });
+
+        // Animate feature items
+        gsap.to(".feature-item", {
+          scrollTrigger: {
+            trigger: ".animated-features",
+            start: "top 85%"
+          },
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          stagger: 0.15,
+          ease: "back.out(1.2)"
+        });
+
+        // Founder Section Animations
+        // Animate founder image
+        gsap.fromTo(".founder-image-home", 
+          {
+            opacity: 0,
+            x: -100
+          },
+          {
+            scrollTrigger: {
+              trigger: ".founder-section-home",
+              start: "top 75%"
+            },
+            opacity: 1,
+            x: 0,
+            duration: 1.2,
+            ease: "power3.out",
+            immediateRender: false
+          }
+        );
+
+        // Animate founder image wrapper with rotation effect
+        gsap.fromTo(".founder-image-wrapper", 
+          {
+            rotationY: -15,
+            scale: 0.95
+          },
+          {
+            scrollTrigger: {
+              trigger: ".founder-section-home",
+              start: "top 75%"
+            },
+            rotationY: 0,
+            scale: 1,
+            duration: 1.5,
+            ease: "power3.out",
+            delay: 0.3
+          }
+        );
+
+        // Animate founder text container
+        gsap.fromTo(".founder-text-home",
+          {
+            opacity: 0,
+            x: 100
+          },
+          {
+            scrollTrigger: {
+              trigger: ".founder-section-home",
+              start: "top 75%"
+            },
+            opacity: 1,
+            x: 0,
+            duration: 1.2,
+            ease: "power3.out",
+            delay: 0.2,
+            immediateRender: false
+          }
+        );
+
+        // Animate founder label
+        gsap.from(".founder-label", {
+          scrollTrigger: {
+            trigger: ".founder-section-home",
+            start: "top 75%"
+          },
+          opacity: 0,
+          x: -30,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 0.4
+        });
+
+        // Animate founder title with split text effect
+        gsap.from(".founder-title-home", {
+          scrollTrigger: {
+            trigger: ".founder-section-home",
+            start: "top 75%"
+          },
+          opacity: 0,
+          y: 40,
+          duration: 1,
+          ease: "power3.out",
+          delay: 0.5
+        });
+
+        // Animate founder descriptions with stagger
+        gsap.fromTo(".founder-description-home",
+          {
+            opacity: 0,
+            y: 30
+          },
+          {
+            scrollTrigger: {
+              trigger: ".founder-section-home",
+              start: "top 70%"
+            },
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power2.out",
+            delay: 0.7,
+            immediateRender: false
+          }
+        );
+
+        // Animate founder signature
+        gsap.fromTo(".founder-signature-home",
+          {
+            opacity: 0,
+            y: 40
+          },
+          {
+            scrollTrigger: {
+              trigger: ".founder-signature-home",
+              start: "top 85%"
+            },
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+            delay: 1.2,
+            immediateRender: false
+          }
+        );
+
+        // Animate signature line
+        gsap.from(".signature-line", {
+          scrollTrigger: {
+            trigger: ".founder-signature-home",
+            start: "top 85%"
+          },
+          width: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 1.3
+        });
+
+        // Animate founder name
+        gsap.from(".founder-name-home", {
+          scrollTrigger: {
+            trigger: ".founder-signature-home",
+            start: "top 85%"
+          },
+          opacity: 0,
+          x: -20,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 1.4
+        });
+
+        // Animate founder title text
+        gsap.from(".founder-title-home-text", {
+          scrollTrigger: {
+            trigger: ".founder-signature-home",
+            start: "top 85%"
+          },
+          opacity: 0,
+          x: -20,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 1.5
+        });
+
+        // Animate quote badge on hover (continuous subtle animation)
+        gsap.fromTo(".founder-quote-badge",
+          {
+            scale: 0,
+            rotation: 0
+          },
+          {
+            scrollTrigger: {
+              trigger: ".founder-section-home",
+              start: "top 75%"
+            },
+            scale: 1,
+            rotation: 360,
+            duration: 1,
+            ease: "back.out(1.7)",
+            delay: 1.8,
+            immediateRender: false
+          }
+        );
+
+        // Continuous floating animation for quote badge
+        gsap.to(".founder-quote-badge", {
+          y: -10,
+          duration: 2,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: 2.5
+        });
+      }
+    </script>
+
+  <!-- Founder's Journey Section -->
+  <section class="founder-section-home" id="founder">
+    <div class="container-home">
+      <div class="founder-content-home">
+         <div class="founder-image-home">
+           <div class="founder-image-wrapper">
+             <img src="{% static 'main/images/mainimage.jpg' %}" alt="Founder - Ishor Shrestha" class="founder-img-home">
+            <div class="founder-image-overlay"></div>
+            <div class="founder-quote-badge">
+              <i class="fas fa-quote-left"></i>
+            </div>
+          </div>
+        </div>
+        <div class="founder-text-home">
+          <span class="founder-label">Founder's Journey</span>
+          <h2 class="founder-title-home">A Path to Healing</h2>
+          <p class="founder-description-home">
+            My journey with sound healing began over <strong>13 years ago</strong>, born from a deep personal need for healing and transformation. 
+            After experiencing the profound effects of sound therapy during a difficult period in my life, I became passionate about 
+            sharing this ancient wisdom with others.
+          </p>
+          <p class="founder-description-home">
+            What started as a personal quest for inner peace has evolved into a lifelong mission to help others discover the transformative 
+            power of sound. Through years of dedicated study, practice, and mentorship with master healers from the Himalayas, I have 
+            developed a deep understanding of vibrational healing and its ability to restore balance to mind, body, and spirit.
+          </p>
+          <p class="founder-description-home">
+            Today, I am honored to guide hundreds of individuals on their own healing journeys and to train the next generation of 
+            sound healers. My commitment is to preserve the authentic teachings while making them accessible to everyone seeking 
+            peace, healing, and spiritual growth.
+          </p>
+          <div class="founder-signature-home">
+            <div class="signature-line"></div>
+            <p class="founder-name-home">Ishor Shrestha</p>
+            <p class="founder-title-home-text">Founder & Master Sound Healer</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Sacred Instruments Section -->
+  <section class="instruments-section" id="instruments">
+    <div class="instruments-container">
+      <h2 class="instruments-main-title">Our Sacred Instruments</h2>
+      <p class="instruments-subtitle">
+        Discover our collection of traditional and modern sound healing instruments.
+      </p>
+
+      <!-- Singing Bowls Section -->
+      <div class="instrument-category">
+        <div class="category-header">
+          <h3 class="category-title">Singing Bowls</h3>
+          <p class="category-description">Ancient Tibetan instruments for healing & meditation.</p>
+        </div>
+
+        <!-- Old Singing Bowls -->
+        <div class="subcategory">
+          <h4 class="subcategory-title">Old Singing Bowls</h4>
+          <div class="instruments-grid" id="old-bowls-grid"></div>
+        </div>
+
+        <!-- New Handmade Singing Bowls -->
+        <div class="subcategory">
+          <h4 class="subcategory-title">New Handmade Singing Bowl</h4>
+          <div class="instruments-grid" id="new-handmade-grid"></div>
+        </div>
+
+        <!-- New Etching and Carving Bowls -->
+        <div class="subcategory">
+          <h4 class="subcategory-title">New etching and carving bowl</h4>
+          <div class="instruments-grid" id="new-handetched-grid"></div>
+        </div>
+
+        <!-- Chakra Sets -->
+        <div class="subcategory">
+          <h4 class="subcategory-title">Chakra Sets</h4>
+          <div class="instruments-grid" id="chakra-sets-grid"></div>
+        </div>
+
+        <!-- Big Mother Bowls -->
+        <div class="subcategory">
+          <h4 class="subcategory-title">Big Mother Bowls</h4>
+          <div class="instruments-grid" id="big-mother-grid"></div>
+        </div>
+      </div>
+
+      <!-- Gongs Section -->
+      <div class="instrument-category">
+        <div class="category-header">
+          <h3 class="category-title">Gongs</h3>
+        </div>
+        <div class="instruments-grid" id="gongs-grid"></div>
+      </div>
+
+      <!-- Handpans Section -->
+      <div class="instrument-category">
+        <div class="category-header">
+          <h3 class="category-title">Handpans</h3>
+        </div>
+        <div class="instruments-grid" id="handpans-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instrument Detail Modal -->
+  <div class="instrument-modal" id="instrument-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-wrapper">
+      <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+      <div class="modal-content-wrapper" id="modal-content"></div>
+    </div>
+  </div>
+
+  <script>
+    /* ============ Instrument Data ============= */
+    const instrumentsData = {
+      oldBowls: [
+        {
+          name: "Old Buddha/Cham Bowl",
+          image: "{% static 'main/images/old buddhacham.jpg' %}",
+          description: "This Buddha Cham bowl is over 100 years old and holds significant traditional and spiritual value. It is thick in structure, which allows it to produce a higher and more resonant frequency compared to other singing bowls. The bowl is traditionally handcrafted using seven different metals—copper, tin, lead, mercury, iron, gold, and silver—each believed to represent celestial elements and contribute to its powerful sound, durability, and healing vibrations.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        },
+        {
+          name: "Old Manipuree Bowl",
+          image: "{% static 'main/images/manipureebowl.jpeg' %}",
+          description: "This Manipuri bowl is over 100 years old and is traditionally handcrafted using seven sacred metals: copper, tin, lead, mercury, iron, gold, and silver. It features a wide, open shape that allows the vibrations to spread freely, resulting in a beautiful, soft, and deeply harmonious sound. The balanced combination of metals and its open design contribute to its rich resonance, making it highly valued for meditation, sound healing, and spiritual practices.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        },
+        {
+          name: "Old Stand Bowl",
+          image: "{% static 'main/images/old stand bowl.jpeg' %}",
+          description: "This old stand bowl is over 100 years old and is traditionally made using seven metals: copper, tin, lead, mercury, iron, gold, and silver. It comes with a built-in stand, making it easy and comfortable to play without needing to hold the bowl. These bowls offer unique, long-lasting vibrations and support focused sound therapy due to their stable, stand-up design, which allows precise direction and control of the vibrations.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        },
+        {
+          name: "Old Thado Bowl",
+          image: "{% static 'main/images/old thado bowl.jpg' %}",
+          description: "This old thado bowl is over 100 years old and is traditionally crafted using seven metals: copper, tin, lead, mercury, iron, gold, and silver. It features a straight shape at the bottom and sides, with an apple-shaped base that enhances its resonance. The sound produced is very melodious, and the bowl is well known for its enduring, long-lasting vibrations. Due to its lightweight design, most travelers prefer this bowl, as it is easy to carry and convenient for travel.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        },
+        {
+          name: "Old Kopre Bowl",
+          image: "{% static 'main/images/old kopre bowl.jpg' %}",
+          description: "This old Kopre bowl is over 100 years old and is traditionally crafted using seven metals: copper, tin, lead, mercury, iron, gold, and silver. It features a straight shape at the bottom and sides, with an apple-shaped base that enhances its resonance. The sound produced is very melodious, and the bowl is well known for its enduring, long-lasting vibrations. Due to its lightweight design, most travelers prefer this bowl, as it is easy to carry and convenient for travel.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        },
+        {
+          name: "Old Jam Bowl",
+          image: "{% static 'main/images/old jam bowl.jpg' %}",
+          description: "This old Jam bowl is over 100 years old and is traditionally made using seven metals: copper, tin, lead, mercury, iron, gold, and silver. In the past, it was commonly used to store and eat food, reflecting its practical and cultural significance. The bowl produces rich sound resonance with polite, smooth vibrations and a long-lasting tone. Its strong yet gentle vibrations make it especially effective for sound healing and meditative practices.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        },
+        {
+          name: "Old Ulta Bowl",
+          image: "{% static 'main/images/old ulta bowl.jpg' %}",
+          description: "This old ulta bowl is over 100 years old and is traditionally made using seven metals: copper, tin, lead, mercury, iron, gold, and silver. In the past, it was commonly used to store and eat food, reflecting its practical and cultural significance. The bowl produces rich sound resonance with polite, smooth vibrations and a long-lasting tone. Its strong yet gentle vibrations make it especially effective for sound healing and meditative practices.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        }
+      ],
+      newHandmadeBowls: [
+        {
+          name: "New Handmade Singing Bowl",
+          image: "{% static 'main/images/new jam tiger.jpeg' %}",
+          description: "This new handmade singing bowl is crafted using five different metals, with approximately 70% copper and 30% a balanced blend of tin, iron, mercury, and lead. It comes in a shiny finish, and the color can also be customized to matte, tiger black, or other finishes. Nowadays, sound healers mostly use new singing bowls because they are available in different frequencies, making them suitable for a wide range of sound healing and therapeutic practices.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        }
+      ],
+      newHandEtchedBowls: [
+        {
+          name: "New etching and carving bowl",
+          image: "{% static 'main/images/New etching and carving bowl.jpeg' %}",
+          description: "Beautifully hand-etched and carved, this singing bowl features intricate artisan designs that combine stunning visual art with balanced, resonant sound. Each piece is uniquely detailed, offering an exceptional blend of craftsmanship and powerful acoustic properties.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        }
+      ],
+      chakraSets: [
+        {
+          name: "Chakra Sets",
+          image: "{% static 'main/images/Chakra sets.jpeg' %}",
+          description: "The sets of chakra are produced with the use of new handmade singing bowls and come in various colors. These collections are on the third octave which is the range between about 130Hz and 246Hz, between the notes C and B. Having the approximate weight of 9-10 kg, they are commonly utilised by sound healers and practitioners when balancing chakra, meditating, and sound therapy.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        }
+      ],
+      bigMotherBowls: [
+        {
+          name: "Big Mother Bowls",
+          image: "{% static 'main/images/bigmotherbowls.jpeg' %}",
+          description: "Big Mother Bowls are large singing bowls made from five metals. They produce powerful, deep vibrations that you can feel standing above the bowl, with the sound resonating from your feet up to the crown chakra. The immersive experience allows you to truly feel the sound within your body, making it ideal for full-body sound healing, meditation, and energy balancing.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        }
+      ],
+      gongs: [
+        {
+          name: "Old Nipple Gong",
+          image: "{% static 'main/images/old niple gong 18.8kg.jpeg' %}",
+          description: "The ancient Nipple Gong is what was initially used in monasteries as a meditation tool, used to assist the users in developing awareness and concentration abilities. It is currently popular in sound healing treatment, where its rich resonant tones are applied to relax, bring mindfulness and energetic equilibrium.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        },
+        {
+          name: "New Nipple Gong",
+          image: "{% static 'main/images/new nipple gong.jpeg' %}",
+          description: "The new Nipple Gong is not easily available and is crafted by studying and understanding the design of the old Nipple Gong. Like the traditional version, it can be customized according to preference, combining the heritage of ancient craftsmanship with modern usability for sound healing and meditation practices.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        },
+        {
+          name: "TamTam Gong",
+          image: "{% static 'main/images/tamtam gong.jpeg' %}",
+          description: "The Tamtam Gong is made of seven metals, and it produces low frequency sounds, which have a relaxing effect on the mind. The vibrations produced by them resonate with the human body and, as such, the gong has been very effective in relaxation, meditation, and sound healing exercises. The Nepali Thanka painters produce the Thanka art on every Tamtam Gong. Each mandala, pattern or color has its own significance, and the details are very elaborate that adds beauty and spiritual importance of the gong. This art not only enriches the gong but also enhances its power and vibration and each gong is special and has a deep meaning in terms of meditation and sound therapy.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        }
+      ],
+      handpans: [
+        {
+          name: "Handpan - Harmonic Series",
+          image: "{% static 'main/images/handpan.jpeg' %}",
+          description: "This handpan produces ethereal, soothing harmonic sounds that transport you to a state of deep relaxation. Each note resonates with perfect clarity, creating a meditative soundscape. The harmonic series tuning creates beautiful overtones that enhance the healing experience.",
+          material: "-",
+          weight: "-",
+          size: "-"
+        }
+      ]
+    };
+
+    /* ============ Create Card ============= */
+    function createInstrumentCard(item, type) {
+      return `
+        <div class="instrument-card">
+          <div class="card-image-wrapper">
+            <img src="${item.image}" class="card-image" alt="${item.name}">
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">${item.name}</h3>
+            <button class="card-btn" data-instrument='${JSON.stringify(item)}'>
+              View Details <i class="fa fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>`;
+    }
+
+    /* ============ Render Items ============= */
+    function render() {
+      const map = {
+        oldBowls: "old-bowls-grid",
+        newHandmadeBowls: "new-handmade-grid",
+        newHandEtchedBowls: "new-handetched-grid",
+        chakraSets: "chakra-sets-grid",
+        bigMotherBowls: "big-mother-grid",
+        gongs: "gongs-grid",
+        handpans: "handpans-grid"
+      };
+
+      Object.keys(map).forEach(key => {
+        const wrap = document.getElementById(map[key]);
+        if (wrap) {
+          wrap.innerHTML = "";
+          instrumentsData[key].forEach(item => {
+            wrap.innerHTML += createInstrumentCard(item, key);
+          });
+        }
+      });
+    }
+
+    /* ============ Modal Logic ============= */
+    const modal = document.getElementById("instrument-modal");
+    const modalContent = document.getElementById("modal-content");
+    const closeBtn = document.getElementById("modal-close-btn");
+    const overlay = document.querySelector(".modal-overlay");
+
+    function openModal(item) {
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+
+      // Check if this is "New Handmade Singing Bowl", "Old Nipple Gong", "New Nipple Gong", "TamTam Gong", "New etching and carving bowl", "Chakra Sets", or "Big Mother Bowls" to show gallery
+      const isNewHandmade = item.name === "New Handmade Singing Bowl";
+      const isOldNippleGong = item.name === "Old Nipple Gong";
+      const isNewNippleGong = item.name === "New Nipple Gong";
+      const isTamTamGong = item.name === "TamTam Gong";
+      const isNewHandEtched = item.name === "New etching and carving bowl";
+      const isChakraSets = item.name === "Chakra Sets";
+      const isBigMotherBowls = item.name === "Big Mother Bowls";
+      
+      // Gallery images array for New Handmade Singing Bowl
+      const newHandmadeGallery = [
+        { src: "{% static 'main/images/new jam tiger.jpeg' %}", alt: "New Jam Tiger" },
+        { src: "{% static 'main/images/new plain jam.jpeg' %}", alt: "New Plain Jam" },
+        { src: "{% static 'main/images/new jam black.jpeg' %}", alt: "New Jam Black" },
+        { src: "{% static 'main/images/new jam matt.jpeg' %}", alt: "New Jam Matt" }
+      ];
+      
+      // Gallery images array for Old Nipple Gong
+      const oldNippleGongGallery = [
+        { src: "{% static 'main/images/old niple gong 18.8kg.jpeg' %}", alt: "Old Nipple Gong 18.8kg" },
+        { src: "{% static 'main/images/old niple gong 20.210kg.jpeg' %}", alt: "Old Nipple Gong 20.210kg" },
+        { src: "{% static 'main/images/old niple gong 20.350kg.jpeg' %}", alt: "Old Nipple Gong 20.350kg" },
+        { src: "{% static 'main/images/old niple gong 25.410kg.jpeg' %}", alt: "Old Nipple Gong 25.410kg" },
+        { src: "{% static 'main/images/old niple gong.jpeg' %}", alt: "Old Nipple Gong" },
+        { src: "{% static 'main/images/old niple gongg.jpeg' %}", alt: "Old Nipple Gong" },
+        { src: "{% static 'main/images/old niplee gong.jpeg' %}", alt: "Old Nipple Gong" },
+        { src: "{% static 'main/images/old nipple gong .jpeg' %}", alt: "Old Nipple Gong" },
+        { src: "{% static 'main/images/oldd niple gong.jpeg' %}", alt: "Old Nipple Gong" }
+      ];
+      
+      // Gallery images array for New Nipple Gong
+      // Images with kg in filename are named with their weight, others use default name
+      const newNippleGongGallery = [
+        { src: "{% static 'main/images/new nipple gong.jpeg' %}", alt: "New Nipple Gong" },
+        { src: "{% static 'main/images/new nipple gong img 5.jpeg' %}", alt: "New Nipple Gong" },
+        { src: "{% static 'main/images/new nipple gongi mg1.jpeg' %}", alt: "New Nipple Gong" },
+        { src: "{% static 'main/images/new nipple gongi mg2.jpeg' %}", alt: "New Nipple Gong" },
+        { src: "{% static 'main/images/new nipple gongi mg3.jpeg' %}", alt: "New Nipple Gong" },
+        { src: "{% static 'main/images/new nipple gongi mg4.jpeg' %}", alt: "New Nipple Gong" }
+      ];
+      
+      // Gallery images array for TamTam Gong
+      // Images with kg in filename are named with their weight, others use default name
+      const tamTamGongGallery = [
+        { src: "{% static 'main/images/tamtam gong.jpeg' %}", alt: "TamTam Gong" },
+        { src: "{% static 'main/images/tamtam gong1.jpeg' %}", alt: "TamTam Gong 1" },
+        { src: "{% static 'main/images/tamtam gong2.jpeg' %}", alt: "TamTam Gong 2" },
+        { src: "{% static 'main/images/tamtam gong3.jpeg' %}", alt: "TamTam Gong 3" },
+        { src: "{% static 'main/images/tamtam gong4.jpeg' %}", alt: "TamTam Gong 4" },
+        { src: "{% static 'main/images/tamtam gong5.jpeg' %}", alt: "TamTam Gong 5" },
+        { src: "{% static 'main/images/tamtam gong6.jpeg' %}", alt: "TamTam Gong 6" },
+        { src: "{% static 'main/images/tamtam gong7.jpeg' %}", alt: "TamTam Gong 7" },
+        { src: "{% static 'main/images/tamtam gong 8.jpeg' %}", alt: "TamTam Gong 8" },
+        { src: "{% static 'main/images/tamtam gong 9.jpeg' %}", alt: "TamTam Gong 9" },
+        { src: "{% static 'main/images/tamtam gong 10.jpeg' %}", alt: "TamTam Gong 10" },
+        { src: "{% static 'main/images/tamtam gong 11.jpeg' %}", alt: "TamTam Gong 11" },
+        { src: "{% static 'main/images/tamtam gong 12.jpeg' %}", alt: "TamTam Gong 12" },
+        { src: "{% static 'main/images/tamtam gong 13.jpeg' %}", alt: "TamTam Gong 13" },
+        { src: "{% static 'main/images/tamtam gong 14.jpeg' %}", alt: "TamTam Gong 14" },
+        { src: "{% static 'main/images/tamtam gong 15.jpeg' %}", alt: "TamTam Gong 15" },
+        { src: "{% static 'main/images/tamtam gong 16.jpeg' %}", alt: "TamTam Gong 16" },
+        { src: "{% static 'main/images/tamtam gong 17.jpeg' %}", alt: "TamTam Gong 17" },
+        { src: "{% static 'main/images/tamtam gong 18.jpeg' %}", alt: "TamTam Gong 18" },
+        { src: "{% static 'main/images/tamtam gong 19.jpeg' %}", alt: "TamTam Gong 19" },
+        { src: "{% static 'main/images/tamtam gong 20.jpeg' %}", alt: "TamTam Gong 20" },
+        { src: "{% static 'main/images/tamtam gong 21.jpeg' %}", alt: "TamTam Gong 21" },
+        { src: "{% static 'main/images/tamtam gong 22.jpeg' %}", alt: "TamTam Gong 22" }
+      ];
+      
+      // Gallery images array for New etching and carving bowl
+      const newHandEtchedGallery = [
+        { src: "{% static 'main/images/New etching and carving bowl.jpeg' %}", alt: "New Etching and Carving Bowl" },
+        { src: "{% static 'main/images/New etching and carving bowl1.jpeg' %}", alt: "New Etching and Carving Bowl 1" },
+        { src: "{% static 'main/images/New etching and carving bowl2.jpeg' %}", alt: "New Etching and Carving Bowl 2" },
+        { src: "{% static 'main/images/New etching and carving bowl3.jpeg' %}", alt: "New Etching and Carving Bowl 3" },
+        { src: "{% static 'main/images/New etching and carving bowl4.jpeg' %}", alt: "New Etching and Carving Bowl 4" },
+        { src: "{% static 'main/images/New etching and carving bowl5.jpeg' %}", alt: "New Etching and Carving Bowl 5" },
+        { src: "{% static 'main/images/New etching and carving bowl6.jpeg' %}", alt: "New Etching and Carving Bowl 6" },
+        { src: "{% static 'main/images/New etching and carving bowl7.jpeg' %}", alt: "New Etching and Carving Bowl 7" },
+        { src: "{% static 'main/images/New etching and carving bowl8.jpeg' %}", alt: "New Etching and Carving Bowl 8" },
+        { src: "{% static 'main/images/New etching and carving bowl9.jpeg' %}", alt: "New Etching and Carving Bowl 9" },
+        { src: "{% static 'main/images/New etching and carving bowl10.jpeg' %}", alt: "New Etching and Carving Bowl 10" },
+        { src: "{% static 'main/images/New etching and carving bowl11.jpeg' %}", alt: "New Etching and Carving Bowl 11" },
+        { src: "{% static 'main/images/New etching and carving bowl12.jpeg' %}", alt: "New Etching and Carving Bowl 12" },
+        { src: "{% static 'main/images/New etching and carving bowl13.jpeg' %}", alt: "New Etching and Carving Bowl 13" },
+        { src: "{% static 'main/images/New etching and carving bowl14.jpeg' %}", alt: "New Etching and Carving Bowl 14" },
+        { src: "{% static 'main/images/New etching and carving bowl15.jpeg' %}", alt: "New Etching and Carving Bowl 15" },
+        { src: "{% static 'main/images/New etching and carving bowl16.jpeg' %}", alt: "New Etching and Carving Bowl 16" }
+      ];
+      
+      // Gallery images array for Chakra Sets
+      const chakraSetsGallery = [
+        { src: "{% static 'main/images/Chakra sets.jpeg' %}", alt: "Chakra Sets" },
+        { src: "{% static 'main/images/Chakra sets1.jpeg' %}", alt: "Chakra Sets 1" },
+        { src: "{% static 'main/images/Chakra sets2.jpeg' %}", alt: "Chakra Sets 2" },
+        { src: "{% static 'main/images/Chakra sets3.jpeg' %}", alt: "Chakra Sets 3" },
+        { src: "{% static 'main/images/Chakra sets4.jpeg' %}", alt: "Chakra Sets 4" },
+        { src: "{% static 'main/images/Chakra sets5.jpeg' %}", alt: "Chakra Sets 5" },
+        { src: "{% static 'main/images/Chakra sets6.jpeg' %}", alt: "Chakra Sets 6" },
+        { src: "{% static 'main/images/Chakra sets7.jpeg' %}", alt: "Chakra Sets 7" },
+        { src: "{% static 'main/images/Chakra sets8.jpeg' %}", alt: "Chakra Sets 8" },
+        { src: "{% static 'main/images/Chakra sets9.jpeg' %}", alt: "Chakra Sets 9" },
+        { src: "{% static 'main/images/Chakra sets10.jpeg' %}", alt: "Chakra Sets 10" },
+        { src: "{% static 'main/images/Chakra sets11.jpeg' %}", alt: "Chakra Sets 11" },
+        { src: "{% static 'main/images/Chakra sets12.jpeg' %}", alt: "Chakra Sets 12" },
+        { src: "{% static 'main/images/Chakra sets13.jpeg' %}", alt: "Chakra Sets 13" }
+      ];
+      
+      // Gallery images array for Big Mother Bowls
+      const bigMotherBowlsGallery = [
+        { src: "{% static 'main/images/bigmotherbowls.jpeg' %}", alt: "Big Mother Bowls" },
+        { src: "{% static 'main/images/bigmotherbowls1.jpeg' %}", alt: "Big Mother Bowls 1" },
+        { src: "{% static 'main/images/bigmotherbowls2.jpeg' %}", alt: "Big Mother Bowls 2" },
+        { src: "{% static 'main/images/bigmotherbowls3.jpeg' %}", alt: "Big Mother Bowls 3" },
+        { src: "{% static 'main/images/bigmotherbowls4.jpeg' %}", alt: "Big Mother Bowls 4" }
+      ];
+      
+      // Select appropriate gallery
+      const galleryImages = isNewHandmade ? newHandmadeGallery : 
+                           (isOldNippleGong ? oldNippleGongGallery : 
+                           (isNewNippleGong ? newNippleGongGallery : 
+                           (isTamTamGong ? tamTamGongGallery : 
+                           (isNewHandEtched ? newHandEtchedGallery : 
+                           (isChakraSets ? chakraSetsGallery : 
+                           (isBigMotherBowls ? bigMotherBowlsGallery : []))))));
+      
+      const galleryHTML = (isNewHandmade || isOldNippleGong || isNewNippleGong || isTamTamGong || isNewHandEtched || isChakraSets || isBigMotherBowls) ? `
+            <div class="modal-gallery-section">
+              <h4 class="details-section-title">Gallery</h4>
+              <div class="modal-gallery-grid">
+                ${galleryImages.map((img, index) => `
+                <div class="gallery-item" data-image-src="${img.src}" data-image-alt="${img.alt}">
+                  <img src="${img.src}" alt="${img.alt}" class="gallery-image" onerror="this.onerror=null; this.src='{% static 'main/images/mainimage.jpg' %}';">
+                </div>
+                `).join('')}
+              </div>
+            </div>` : '';
+
+      modalContent.innerHTML = `
+        <div class="modal-content">
+          <div class="modal-image-section">
+            <div class="modal-image-wrapper">
+              <img src="${item.image}" class="modal-image" id="main-modal-image" alt="${item.name}" onerror="this.onerror=null; this.src='{% static 'main/images/mainimage.jpg' %}';">
+            </div>
+          </div>
+          <div class="modal-text-section">
+            <div class="modal-header-section">
+            <h2 class="modal-title">${item.name}</h2>
+              ${(isNewHandmade || isOldNippleGong || isNewNippleGong || isTamTamGong || isNewHandEtched || isChakraSets || isBigMotherBowls) ? 
+                `<div class="modal-image-title" id="modal-image-title">${isNewHandmade ? 'New Jam Tiger' : isOldNippleGong ? 'Old Nipple Gong 18.8kg' : isNewNippleGong ? 'New Nipple Gong' : isTamTamGong ? 'TamTam Gong' : isNewHandEtched ? 'New Etching and Carving Bowl' : isChakraSets ? 'Chakra Sets' : 'Big Mother Bowls'}</div>` : ''}
+            </div>
+
+            <div class="modal-details-section">
+              <h4 class="details-section-title">Details</h4>
+              <div class="details-info">
+                <div class="details-row">
+                  <div class="detail-item">
+                    <p><b>Material:</b> ${item.material || "-"}</p>
+                  </div>
+                  <div class="detail-item">
+                    <p><b>Size:</b> ${item.size || "-"}</p>
+                  </div>
+                </div>
+                <div class="details-row">
+                  <div class="detail-item">
+                    <p><b>Weight:</b> ${item.weight || "-"}</p>
+                  </div>
+                  <div class="detail-item">
+                    <p><b>Note:</b> ${item.note || "-"}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-description-section">
+              <h4 class="details-section-title">Description</h4>
+              <p class="modal-description">${item.description || "No description available."}</p>
+            </div>
+
+            ${galleryHTML}
+
+            <div class="modal-actions">
+              <a class="modal-btn whatsapp-btn" target="_blank"
+                href="https://wa.me/9779843213802?text=${encodeURIComponent('Hello, tell me about ' + item.name)}">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+              </a>
+
+              <a class="modal-btn email-btn"
+                href="mailto:singingbowlandgonghouse@gmail.com?subject=Regarding ${item.name}">
+                <i class="fa-solid fa-envelope"></i> Email
+              </a>
+            </div>
+          </div>
+        </div>`;
+
+      // Add click event listeners to gallery images after modal is created
+      if (isNewHandmade || isOldNippleGong || isNewNippleGong || isTamTamGong || isNewHandEtched || isChakraSets || isBigMotherBowls) {
+        setTimeout(() => {
+          const galleryItems = modalContent.querySelectorAll('.gallery-item');
+          const mainImage = document.getElementById('main-modal-image');
+          
+          const imageTitle = document.getElementById('modal-image-title');
+          
+          // Set first gallery image as active by default
+          if (galleryItems.length > 0) {
+            galleryItems[0].classList.add('active');
+            // Set main image to first gallery image
+            const firstImageSrc = galleryItems[0].getAttribute('data-image-src');
+            const firstImageAlt = galleryItems[0].getAttribute('data-image-alt');
+            if (mainImage && firstImageSrc) {
+              mainImage.src = firstImageSrc;
+              mainImage.alt = firstImageAlt;
+            }
+            // Update title to first image name
+            if (imageTitle) {
+              imageTitle.textContent = firstImageAlt;
+            }
+          }
+          
+          galleryItems.forEach(item => {
+            item.addEventListener('click', function() {
+              const imageSrc = this.getAttribute('data-image-src');
+              const imageAlt = this.getAttribute('data-image-alt');
+              
+              if (mainImage && imageSrc) {
+                // Add fade effect
+                mainImage.style.opacity = '0';
+                mainImage.style.transition = 'opacity 0.3s ease';
+                
+                setTimeout(() => {
+                  mainImage.src = imageSrc;
+                  mainImage.alt = imageAlt;
+                  mainImage.style.opacity = '1';
+                }, 150);
+                
+                // Update title
+                if (imageTitle) {
+                  imageTitle.textContent = imageAlt;
+                }
+                
+                // Remove active class from all gallery items
+                galleryItems.forEach(galleryItem => {
+                  galleryItem.classList.remove('active');
+                });
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+              }
+            });
+          });
+        }, 100);
+      }
+    }
+
+    function closeModal() {
+      modal.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+
+    /* Events */
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".card-btn");
+      if (btn) {
+        try {
+          openModal(JSON.parse(btn.dataset.instrument));
+        } catch (error) {
+          console.error("Error parsing instrument data:", error);
+        }
+      }
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", closeModal);
+    }
+    
+    if (overlay) {
+      overlay.addEventListener("click", closeModal);
+    }
+    
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("active")) {
+        closeModal();
+      }
+    });
+
+    /* Run when page loads */
+    if (document.readyState === 'loading') {
+      document.addEventListener("DOMContentLoaded", render);
+    } else {
+      render();
+    }
+  </script>
+
+
+
+  <!-- statssss -->
+<section class="stats-section">
+    <div class="stats-container">
+
+        <div class="stats-left">
+            <h2>Singing bowl<br>and gong house</h2>
+            <div class="underline"></div>
+        </div>
+
+        <div class="stats-right">
+
+            <div class="stat-box">
+                <h1 class="count" data-target="600">0</h1>
+                <p class="stat-title">People Healed</p>
+                <p class="stat-desc">Through deep vibrational therapy sessions</p>
+            </div>
+
+            <div class="stat-box">
+                <h1 class="count" data-target="900">0</h1>
+                <p class="stat-title">People Served</p>
+                <p class="stat-desc">In our community workshops and classes</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+  const counters = document.querySelectorAll(".count");
+let started = false;
+
+function startCounting() {
+    counters.forEach(counter => {
+        const target = +counter.getAttribute("data-target");
+        let count = 0;
+        const speed = target / 80; // adjust speed
+
+        function updateCount() {
+            count += speed;
+
+            if (count < target) {
+                counter.innerText = Math.floor(count);
+                requestAnimationFrame(updateCount);
+            } else {
+                counter.innerText = target;
+            }
+        }
+        updateCount();
+    });
+}
+
+window.addEventListener("scroll", () => {
+    const section = document.querySelector(".stats-section");
+    const sectionTop = section.getBoundingClientRect().top;
+
+    if (sectionTop < window.innerHeight - 100 && !started) {
+        started = true;
+        startCounting();
+    }
+});
+
+</script>
+
+
+
+
+<!--videos sections  -->
+
+<section class="video-section">
+    <div class="video-content">
+
+        <div class="video-badge">FEEL THE RESONANCE</div>
+
+        <h2 class="video-title">A Glimpse Inside Our Sound Sanctuaries</h2>
+
+        <p class="video-subtitle">
+            Step into a session with us and experience how singing bowls, gongs, 
+            and handpans weave together to guide deep calm, clarity, and emotional reset.
+        </p>
+
+        <div class="video-wrapper">
+            <video controls class="video-player">
+                <source src="{% static 'main/images/Video Project.mp4' %}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- questionsss -->
+
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+  <p>Common questions about sound healing and our center.</p>
+
+  <div class="faq-item">
+    <div class="faq-question">
+      <span>What should I wear to a sound bath?</span>
+      <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+      We recommend loose, comfortable clothing that promotes relaxation.
+      Layers are a good idea since you may cool down during the session.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">
+      <span>Do I need any prior experience with meditation?</span>
+      <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+      No prior experience is needed. Our classes are open to all levels.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">
+      <span>How long is a typical session?</span>
+      <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+      Sessions typically last between 45 and 60 minutes.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">
+      <span>Is sound healing safe for everyone?</span>
+      <span class="icon">+</span>
+    </div>
+    <div class="faq-answer">
+      Sound healing is safe for most people, but those with implants
+      or sound sensitivity should consult their doctor.
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('.faq-item').forEach(item => {
+  item.addEventListener('click', () => {
+    item.classList.toggle('active');
+  });
+});
+
+</script>
+
+
+
+
+  <!-- Testimonials Section -->
+  <section id="testimonial">
+    <h2 class="section-title">Testimonials</h2>
+    <div class="testimonials">
+      <div class="testimonial">
+        <p>"An amazing experience! I feel lighter and more relaxed after each session."</p>
+        <h4>- Sarah J.</h4>
+      </div>
+      <div class="testimonial">
+        <p>"The sound bath helped me sleep better and feel more in tune with myself."</p>
+        <h4>- Michael K.</h4>
+      </div>
+      <div class="testimonial">
+        <p>"Highly recommend their crystal singing bowl therapy sessions!"</p>
+        <h4>- Emma L.</h4>
+      </div>
+      <div class="testimonial">
+        <p>"Beautifully calming and deeply restorative. A must-try for anyone needing peace."</p>
+        <h4>- David R.</h4>
+      </div>
+    </div>
+  </section>
+
+ 
+  
+  <!-- Footer Section -->
+  <footer class="footer" id="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <!-- Logo & Description -->
+        <div class="footer-logo-section footer-column" style="--delay: 0">
+          <div class="footer-logo">
+            <img src="{% static 'main/images/logo.jpg' %}" alt="Singing Bowl & Gong House Logo">
+            <div class="footer-logo-text">Singing Bowl & Gong House</div>
+          </div>
+          <p class="footer-description">
+            Transform your life through the healing power of sound. Experience deep relaxation, 
+            emotional release, and spiritual growth in our serene sanctuary.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-column" style="--delay: 1">
+          <h3 class="footer-column-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li style="--delay: 0"><a href="{% url 'main:home' %}">Home</a></li>
+            <li style="--delay: 1"><a href="{% url 'main:about' %}">About Us</a></li>
+            <li style="--delay: 2"><a href="{% url 'main:services' %}">Services</a></li>
+            <li style="--delay: 3"><a href="{% url 'main:courses' %}">Courses</a></li>
+            <li style="--delay: 4"><a href="{% url 'main:smiles' %}">Smiles We Created</a></li>
+            <li style="--delay: 5"><a href="{% url 'main:contact' %}">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Services -->
+        <div class="footer-column" style="--delay: 2">
+          <h3 class="footer-column-title">Our Services</h3>
+          <ul class="footer-links">
+            <li style="--delay: 0"><a href="#" onclick="openBookingModal(); return false;">Sound Healing</a></li>
+            <li style="--delay: 1"><a href="#" onclick="openBookingModal(); return false;">Personal Therapy</a></li>
+            <li style="--delay: 2"><a href="#" onclick="openBookingModal(); return false;">Teacher Training</a></li>
+            <li style="--delay: 3"><a href="#" onclick="openBookingModal(); return false;">Group Sessions</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="footer-column" style="--delay: 3">
+          <h3 class="footer-column-title">Get In Touch</h3>
+          <div class="footer-contact-item" style="--delay: 0">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>P8G6+C27, Mhepi Janamarga, Kathmandu 44600, Nepal</span>
+          </div>
+          <div class="footer-contact-item" style="--delay: 1">
+            <i class="fas fa-phone"></i>
+            <span>+977 1234567890</span>
+          </div>
+          <div class="footer-contact-item" style="--delay: 2">
+            <i class="fas fa-envelope"></i>
+            <span>singingbowlandgonghouse@gmail.com</span>
+          </div>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/sanjivaniyogaschool" target="_blank" class="footer-social-link" style="--delay: 0" aria-label="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com/singingbowlandgonghouse/" target="_blank" class="footer-social-link" style="--delay: 1" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="footer-social-link" style="--delay: 2" aria-label="YouTube">
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a href="#" class="footer-social-link" style="--delay: 3" aria-label="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </div>
+          <div class="footer-qr-codes" style="--delay: 4">
+            <div class="footer-qr-code-item">
+              <img src="{% static 'main/images/whatsapp.png' %}" alt="WhatsApp QR Code">
+              <span>WhatsApp</span>
+            </div>
+            <div class="footer-qr-code-item">
+              <img src="{% static 'main/images/wechat.png' %}" alt="WeChat QR Code">
+              <span>WeChat</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-bottom">
+        <p>
+          Copyright &copy; <span id="current-year">2024</span> Singing Bowl & Gong House. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Footer animations on scroll
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const footer = document.getElementById('footer');
+      if (footer) {
+        // Animate footer columns
+        gsap.to('.footer-logo-section', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 90%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out'
+        });
+
+        gsap.to('.footer-column', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 90%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power2.out'
+        });
+
+        // Animate footer links
+        gsap.to('.footer-links li', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          stagger: 0.05,
+          ease: 'power2.out'
+        });
+
+        // Animate contact items
+        gsap.to('.footer-contact-item', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'power2.out'
+        });
+
+        // Animate social links
+        gsap.to('.footer-social-link', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: 'back.out(1.2)'
+        });
+
+        // Animate QR codes
+        gsap.to('.footer-qr-codes', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          delay: 0.4,
+          ease: 'power2.out'
+        });
+
+        // Animate divider
+        gsap.to('.footer-divider', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 80%'
+          },
+          opacity: 1,
+          scaleX: 1,
+          duration: 1,
+          ease: 'power2.out'
+        });
+
+        // Animate footer bottom
+        gsap.to('.footer-bottom', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 80%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          delay: 0.3,
+          ease: 'power2.out'
+        });
+      }
+    }
+
+    // Set current year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
+  
+   <link rel="stylesheet" href="{% static 'main/css/booking.css' %}">
+   <script src="{% static 'main/js/api.js' %}"></script>
+   <script src="{% static 'main/js/booking-modal.js' %}"></script>
+</body>
+</html>

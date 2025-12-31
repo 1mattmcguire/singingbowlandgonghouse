@@ -1,0 +1,558 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Courses - Singing Bowl & Gong House</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="{% static 'main/images/logo.jpg' %}">
+  <link rel="shortcut icon" type="image/jpeg" href="{% static 'main/images/logo.jpg' %}">
+  <link rel="apple-touch-icon" href="{% static 'main/images/logo.jpg' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'main/css/header.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/Courses.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/booking.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="logo">
+      <img src="{% static 'main/images/logo.jpg' %}" alt="Singing Bowl & Gong House Logo">
+      <span class="logo-text">Singing Bowl & Gong House</span>
+    </div>
+
+    <nav class="nav">
+      <ul class="nav-list" id="nav-list">
+        <li><a href="{% url 'main:home' %}">HOME</a></li>
+        <li><a href="{% url 'main:about' %}">ABOUT</a></li>
+        <li><a href="{% url 'main:services' %}">SERVICES</a></li>
+        <li><a href="{% url 'main:courses' %}" class="active">COURSES</a></li>
+        <li><a href="{% url 'main:smiles' %}">SMILES</a></li>
+        <li><a href="{% url 'main:contact' %}">CONTACT</a></li>
+      </ul>
+    </nav>
+
+    <!-- Auth & Book Buttons (Right side) -->
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <a href="#" class="book-btn desktop-book" onclick="openBookingModal(); return false;">Book Now</a>
+    </div>
+
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+
+  <!-- Courses Section -->
+  <section class="courses-section">
+    <div class="courses-container">
+      <!-- Section Header -->
+      <div class="courses-header">
+        <h1 class="courses-title">Training Courses</h1>
+        <p class="courses-subtitle">Deepen your practice and become a certified sound healer with our professional training programs.</p>
+      </div>
+
+      <!-- Course Cards Grid -->
+      <div class="courses-grid">
+        <!-- Singing Bowl Course Card -->
+        <div class="course-card">
+          <div class="course-image-wrapper">
+            <img src="{% static 'main/images/singing bowl course.jpg' %}" alt="Singing Bowl Course" class="course-image">
+            <div class="course-image-overlay"></div>
+          </div>
+          <div class="course-content">
+            <h2 class="course-name">Singing Bowl Course</h2>
+            <div class="course-duration">
+              <span class="duration-item">
+                <i class="far fa-calendar-alt"></i>
+                <span>3 Days</span>
+              </span>
+              <span class="duration-separator">|</span>
+              <span class="duration-item">
+                <i class="far fa-clock"></i>
+                <span>5 Hours/Day</span>
+              </span>
+            </div>
+            <p class="course-description">Learn the ancient Himalayan techniques of singing bowl healing with hands-on practice, theory, and guided sound work.</p>
+            
+            <!-- Expandable Details Section -->
+            <div class="course-details" id="details-singing-bowl">
+              <div class="details-overview">
+                <p>Master the fundamentals of Tibetan singing bowl healing through a structured and immersive 3-day course.</p>
+              </div>
+              <div class="details-learn">
+                <h3>What You Will Learn</h3>
+                <ul class="learn-list">
+                  <li><i class="fas fa-check"></i> History & origin of Himalayan bowls</li>
+                  <li><i class="fas fa-check"></i> Techniques to produce perfect harmonics</li>
+                  <li><i class="fas fa-check"></i> Chakra balancing using bowls</li>
+                  <li><i class="fas fa-check"></i> One-on-one healing techniques</li>
+                  <li><i class="fas fa-check"></i> Aura cleansing & space purification</li>
+                  <li><i class="fas fa-check"></i> Group sound bath setup</li>
+                  <li><i class="fas fa-check"></i> Live practice with real clients</li>
+                </ul>
+              </div>
+              <div class="details-includes">
+                <div class="include-tag">Certificate</div>
+                <div class="include-tag">Materials provided</div>
+                <div class="include-tag">Small group training</div>
+              </div>
+            </div>
+
+            <div class="course-actions">
+              <button class="view-details-btn" onclick="toggleDetails('singing-bowl', this)">
+                <span class="btn-text">View Details</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <button class="book-btn-primary" onclick="openBookingModal(); return false;">Book Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gong Course Card -->
+        <div class="course-card">
+          <div class="course-image-wrapper">
+            <img src="{% static 'main/images/scroll3.jpg' %}" alt="Gong Course" class="course-image">
+            <div class="course-image-overlay"></div>
+          </div>
+          <div class="course-content">
+            <h2 class="course-name">Gong Course</h2>
+            <div class="course-duration">
+              <span class="duration-item">
+                <i class="far fa-calendar-alt"></i>
+                <span>2 Days</span>
+              </span>
+              <span class="duration-separator">|</span>
+              <span class="duration-item">
+                <i class="far fa-clock"></i>
+                <span>5 Hours/Day</span>
+              </span>
+            </div>
+            <p class="course-description">Discover the powerful transformative vibrations of the gong and learn professional techniques for healing & meditation.</p>
+            
+            <!-- Expandable Details Section -->
+            <div class="course-details" id="details-gong">
+              <div class="details-overview">
+                <p>This 2-day intensive training helps you master the sacred art of gong playing.</p>
+              </div>
+              <div class="details-learn">
+                <h3>What You Will Learn</h3>
+                <ul class="learn-list">
+                  <li><i class="fas fa-check"></i> Gong history & vibrational theory</li>
+                  <li><i class="fas fa-check"></i> Playing techniques for deep resonance</li>
+                  <li><i class="fas fa-check"></i> Creating rhythm, cycles, & waves</li>
+                  <li><i class="fas fa-check"></i> Healing session structure</li>
+                  <li><i class="fas fa-check"></i> How to handle energetic releases</li>
+                  <li><i class="fas fa-check"></i> Group gong bath facilitation</li>
+                </ul>
+              </div>
+              <div class="details-includes">
+                <div class="include-tag">Certificate</div>
+                <div class="include-tag">Small group</div>
+                <div class="include-tag">Practice instruments provided</div>
+              </div>
+            </div>
+
+            <div class="course-actions">
+              <button class="view-details-btn" onclick="toggleDetails('gong', this)">
+                <span class="btn-text">View Details</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <button class="book-btn-primary" onclick="openBookingModal(); return false;">Book Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Handpan Course Card -->
+        <div class="course-card">
+          <div class="course-image-wrapper">
+            <img src="{% static 'main/images/handpan course.jpg' %}" alt="Handpan Course" class="course-image">
+            <div class="course-image-overlay"></div>
+          </div>
+          <div class="course-content">
+            <h2 class="course-name">Handpan Course</h2>
+            <div class="course-duration">
+              <span class="duration-item">
+                <i class="far fa-calendar-alt"></i>
+                <span>3 Days</span>
+              </span>
+              <span class="duration-separator">|</span>
+              <span class="duration-item">
+                <i class="far fa-clock"></i>
+                <span>2 Hours/Day</span>
+              </span>
+            </div>
+            <p class="course-description">A beginner-friendly handpan course focused on rhythm, flow, meditation music, and intuitive playing.</p>
+            
+            <!-- Expandable Details Section -->
+            <div class="course-details" id="details-handpan">
+              <div class="details-overview">
+                <p>A calming and inspiring handpan learning experience designed for beginners and healing practitioners.</p>
+              </div>
+              <div class="details-learn">
+                <h3>What You Will Learn</h3>
+                <ul class="learn-list">
+                  <li><i class="fas fa-check"></i> Basic notes, scales, and patterns</li>
+                  <li><i class="fas fa-check"></i> Rhythm, flow, and tempo</li>
+                  <li><i class="fas fa-check"></i> Healing melodies & meditation music</li>
+                  <li><i class="fas fa-check"></i> Improvisation techniques</li>
+                  <li><i class="fas fa-check"></i> How to use handpan in sound sessions</li>
+                </ul>
+              </div>
+              <div class="details-includes">
+                <div class="include-tag">Small groups</div>
+                <div class="include-tag">Follow-up materials</div>
+                <div class="include-tag">Practice handpan available</div>
+              </div>
+            </div>
+
+            <div class="course-actions">
+              <button class="view-details-btn" onclick="toggleDetails('handpan', this)">
+                <span class="btn-text">View Details</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <button class="book-btn-primary" onclick="openBookingModal(); return false;">Book Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ <!-- Footer Section -->
+  <footer class="footer" id="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <!-- Logo & Description -->
+        <div class="footer-logo-section footer-column" style="--delay: 0">
+          <div class="footer-logo">
+            <img src="{% static 'main/images/logo.jpg' %}" alt="Singing Bowl & Gong House Logo">
+            <div class="footer-logo-text">Singing Bowl & Gong House</div>
+          </div>
+          <p class="footer-description">
+            Transform your life through the healing power of sound. Experience deep relaxation, 
+            emotional release, and spiritual growth in our serene sanctuary.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-column" style="--delay: 1">
+          <h3 class="footer-column-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li style="--delay: 0"><a href="{% url 'main:home' %}">Home</a></li>
+            <li style="--delay: 1"><a href="{% url 'main:about' %}">About Us</a></li>
+            <li style="--delay: 2"><a href="{% url 'main:services' %}">Services</a></li>
+            <li style="--delay: 3"><a href="{% url 'main:courses' %}">Courses</a></li>
+            <li style="--delay: 4"><a href="{% url 'main:smiles' %}">Smiles We Created</a></li>
+            <li style="--delay: 5"><a href="{% url 'main:contact' %}">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Services -->
+        <div class="footer-column" style="--delay: 2">
+          <h3 class="footer-column-title">Our Services</h3>
+          <ul class="footer-links">
+            <li style="--delay: 0"><a href="#" onclick="openBookingModal(); return false;">Sound Healing</a></li>
+            <li style="--delay: 1"><a href="#" onclick="openBookingModal(); return false;">Personal Therapy</a></li>
+            <li style="--delay: 2"><a href="#" onclick="openBookingModal(); return false;">Teacher Training</a></li>
+            <li style="--delay: 3"><a href="#" onclick="openBookingModal(); return false;">Group Sessions</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="footer-column" style="--delay: 3">
+          <h3 class="footer-column-title">Get In Touch</h3>
+          <div class="footer-contact-item" style="--delay: 0">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>P8G6+C27, Mhepi Janamarga, Kathmandu 44600, Nepal</span>
+          </div>
+          <div class="footer-contact-item" style="--delay: 1">
+            <i class="fas fa-phone"></i>
+            <span>+977 1234567890</span>
+          </div>
+          <div class="footer-contact-item" style="--delay: 2">
+            <i class="fas fa-envelope"></i>
+            <span>info@singingbowlhouse.com</span>
+          </div>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/sanjivaniyogaschool" target="_blank" class="footer-social-link" style="--delay: 0" aria-label="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com/singingbowlandgonghouse/" target="_blank" class="footer-social-link" style="--delay: 1" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="footer-social-link" style="--delay: 2" aria-label="YouTube">
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a href="#" class="footer-social-link" style="--delay: 3" aria-label="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </div>
+          <div class="footer-qr-codes" style="--delay: 4">
+            <div class="footer-qr-code-item">
+              <img src="{% static 'main/images/whatsapp.png' %}" alt="WhatsApp QR Code">
+              <span>WhatsApp</span>
+            </div>
+            <div class="footer-qr-code-item">
+              <img src="{% static 'main/images/wechat.png' %}" alt="WeChat QR Code">
+              <span>WeChat</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-bottom">
+        <p>
+          Copyright &copy; <span id="current-year">2024</span> Singing Bowl & Gong House. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script>
+    // Register GSAP plugins
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Animate course cards on scroll
+      gsap.fromTo(".course-card", 
+        {
+          opacity: 0,
+          y: 50
+        },
+        {
+          scrollTrigger: {
+            trigger: ".courses-grid",
+            start: "top 80%",
+            toggleActions: "play none none none"
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.2,
+          ease: "power3.out",
+          immediateRender: false
+        }
+      );
+
+      // Animate course images
+      gsap.fromTo(".course-image-wrapper",
+        {
+          scale: 0.9,
+          opacity: 0
+        },
+        {
+          scrollTrigger: {
+            trigger: ".courses-grid",
+            start: "top 80%",
+            toggleActions: "play none none none"
+          },
+          scale: 1,
+          opacity: 1,
+          duration: 0.6,
+          stagger: 0.2,
+          ease: "power2.out",
+          immediateRender: false
+        }
+      );
+    }
+
+    // Mobile menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const navList = document.querySelector('.nav-list');
+    if (hamburger && navList) {
+      hamburger.addEventListener('click', function () {
+        const isOpen = navList.classList.contains('show');
+        navList.classList.toggle('show');
+        this.classList.toggle('active');
+        document.body.classList.toggle('menu-open', !isOpen);
+      });
+      
+      // Close menu when clicking on a nav link
+      document.querySelectorAll('.nav-list li a').forEach(link => {
+        link.addEventListener('click', function() {
+          navList.classList.remove('show');
+          hamburger.classList.remove('active');
+          document.body.classList.remove('menu-open');
+        });
+      });
+      
+      // Close menu when clicking outside (on backdrop)
+      navList.addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.remove('show');
+          hamburger.classList.remove('active');
+          document.body.classList.remove('menu-open');
+        }
+      });
+    }
+
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Toggle course details
+    function toggleDetails(courseId, button) {
+      const details = document.getElementById('details-' + courseId);
+      const btnText = button.querySelector('.btn-text');
+      const btnIcon = button.querySelector('i');
+      
+      if (details.classList.contains('expanded')) {
+        details.classList.remove('expanded');
+        btnText.textContent = 'View Details';
+        btnIcon.classList.remove('fa-chevron-up');
+        btnIcon.classList.add('fa-chevron-down');
+        button.classList.remove('active');
+      } else {
+        details.classList.add('expanded');
+        btnText.textContent = 'Hide Details';
+        btnIcon.classList.remove('fa-chevron-down');
+        btnIcon.classList.add('fa-chevron-up');
+        button.classList.add('active');
+      }
+    }
+
+    // Open Booking Modal function (if exists)
+    function openBookingModal() {
+      // This function should be defined in your booking modal script
+      if (typeof window.openBookingModal === 'function') {
+        window.openBookingModal();
+      } else {
+        console.log('Booking modal function not found');
+      }
+    }
+
+    // Set current year
+    const yearElement = document.getElementById('current-year');
+    if (yearElement) {
+      yearElement.textContent = new Date().getFullYear();
+    }
+
+    // Footer animations on scroll
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const footer = document.getElementById('footer');
+      if (footer) {
+        // Animate footer columns
+        gsap.to('.footer-logo-section', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 90%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out'
+        });
+
+        gsap.to('.footer-column', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 90%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power2.out'
+        });
+
+        // Animate footer links
+        gsap.to('.footer-links li', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          stagger: 0.05,
+          ease: 'power2.out'
+        });
+
+        // Animate contact items
+        gsap.to('.footer-contact-item', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'power2.out'
+        });
+
+        // Animate social links
+        gsap.to('.footer-social-link', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: 'back.out(1.2)'
+        });
+
+        // Animate QR codes
+        gsap.to('.footer-qr-codes', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          delay: 0.4,
+          ease: 'power2.out'
+        });
+
+        // Animate divider
+        gsap.to('.footer-divider', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 80%'
+          },
+          opacity: 1,
+          scaleX: 1,
+          duration: 1,
+          ease: 'power2.out'
+        });
+
+        // Animate footer bottom
+        gsap.to('.footer-bottom', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 80%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          delay: 0.3,
+          ease: 'power2.out'
+        });
+      }
+    }
+  </script>
+  <script src="{% static 'main/js/api.js' %}"></script>
+  <script src="{% static 'main/js/booking-modal.js' %}"></script>
+</body>
+</html>

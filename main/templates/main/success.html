@@ -1,0 +1,356 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Success - Singing Bowl & Gong House</title>
+  <link rel="icon" type="image/jpeg" href="{% static 'main/images/logo.jpg' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'main/css/header.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/footer.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <style>
+    .success-container {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .success-card {
+      background: white;
+      border-radius: 20px;
+      padding: 60px 40px;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: slideIn 0.6s ease-out;
+    }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .success-icon {
+      width: 100px;
+      height: 100px;
+      background: #10b548;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 30px;
+      animation: scaleIn 0.5s ease-out 0.3s both;
+    }
+    @keyframes scaleIn {
+      from {
+        transform: scale(0);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
+    .success-icon i {
+      font-size: 50px;
+      color: white;
+    }
+    .success-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 20px;
+      font-family: 'Playfair Display', serif;
+    }
+    .success-message {
+      font-size: 18px;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+    .success-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 15px 30px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    .btn-secondary {
+      background: #f0f0f0;
+      color: #333;
+    }
+    .btn-secondary:hover {
+      background: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="logo">
+      <img src="{% static 'main/images/logo.jpg' %}" alt="Singing Bowl & Gong House Logo">
+      <span class="logo-text">Singing Bowl & Gong House</span>
+    </div>
+    <nav class="nav">
+      <ul class="nav-list" id="nav-list">
+        <li><a href="{% url 'main:home' %}">HOME</a></li>
+        <li><a href="{% url 'main:about' %}">ABOUT</a></li>
+        <li><a href="{% url 'main:services' %}">SERVICES</a></li>
+        <li><a href="{% url 'main:courses' %}">COURSES</a></li>
+        <li><a href="{% url 'main:smiles' %}">SMILES</a></li>
+        <li><a href="{% url 'main:contact' %}">CONTACT</a></li>
+      </ul>
+    </nav>
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <a href="#" class="book-btn desktop-book" onclick="openBookingModal(); return false;">Book Now</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+  <!-- Success Content -->
+  <div class="success-container">
+    <div class="success-card">
+      <div class="success-icon">
+        <i class="fas fa-check"></i>
+      </div>
+      <h1 class="success-title">Thank You!</h1>
+      <p class="success-message">
+        {% if messages %}
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+        {% else %}
+          Your submission has been received successfully! We have sent you a confirmation email and will contact you within 24 hours.
+        {% endif %}
+      </p>
+      <div class="success-actions">
+        <a href="{% url 'main:home' %}" class="btn btn-primary">Return to Home</a>
+        <a href="{% url 'main:contact' %}" class="btn btn-secondary">Contact Us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer" id="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-logo-section footer-column">
+          <div class="footer-logo">
+            <img src="{% static 'main/images/logo.jpg' %}" alt="Singing Bowl & Gong House Logo">
+            <div class="footer-logo-text">Singing Bowl & Gong House</div>
+          </div>
+          <p class="footer-description">
+            Transform your life through the healing power of sound. Experience deep relaxation, 
+            emotional release, and spiritual growth in our serene sanctuary.
+          </p>
+        </div>
+        <div class="footer-column">
+          <h3 class="footer-column-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="{% url 'main:home' %}">Home</a></li>
+            <li><a href="{% url 'main:about' %}">About Us</a></li>
+            <li><a href="{% url 'main:services' %}">Services</a></li>
+            <li><a href="{% url 'main:contact' %}">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3 class="footer-column-title">Get In Touch</h3>
+          <div class="footer-contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>P8G6+C27, Mhepi Janamarga, Kathmandu 44600, Nepal</span>
+          </div>
+          <div class="footer-contact-item">
+            <i class="fas fa-phone"></i>
+            <span>+977 1234567890</span>
+          </div>
+          <div class="footer-contact-item">
+            <i class="fas fa-envelope"></i>
+            <span>singingbowlandgonghouse@gmail.com</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-bottom">
+        <p>Copyright &copy; <span id="current-year">2024</span> Singing Bowl & Gong House. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Footer animations on scroll
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const footer = document.getElementById('footer');
+      if (footer) {
+        // Animate footer columns
+        gsap.to('.footer-logo-section', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 90%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out'
+        });
+
+        gsap.to('.footer-column', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 90%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power2.out'
+        });
+
+        // Animate footer links
+        gsap.to('.footer-links li', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          stagger: 0.05,
+          ease: 'power2.out'
+        });
+
+        // Animate contact items
+        gsap.to('.footer-contact-item', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'power2.out'
+        });
+
+        // Animate social links
+        gsap.to('.footer-social-link', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: 'back.out(1.2)'
+        });
+
+        // Animate QR codes
+        gsap.to('.footer-qr-codes', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          delay: 0.4,
+          ease: 'power2.out'
+        });
+
+        // Animate divider
+        gsap.to('.footer-divider', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 80%'
+          },
+          opacity: 1,
+          scaleX: 1,
+          duration: 1,
+          ease: 'power2.out'
+        });
+
+        // Animate footer bottom
+        gsap.to('.footer-bottom', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 80%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          delay: 0.3,
+          ease: 'power2.out'
+        });
+      }
+    }
+
+    // Set current year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+    document.getElementById("hamburger").addEventListener("click", function () {
+      const navList = document.getElementById("nav-list");
+      const isOpen = navList.classList.contains("show");
+      navList.classList.toggle("show");
+      this.classList.toggle("active");
+      document.body.classList.toggle("menu-open", !isOpen);
+    });
+    
+    /* Close menu when clicking on a nav link */
+    document.querySelectorAll('.nav-list li a').forEach(link => {
+      link.addEventListener('click', function() {
+        document.getElementById("nav-list").classList.remove("show");
+        document.getElementById("hamburger").classList.remove("active");
+        document.body.classList.remove("menu-open");
+      });
+    });
+    
+    /* Close menu when clicking outside (on backdrop) */
+    document.getElementById("nav-list").addEventListener("click", function(e) {
+      if (e.target === this) {
+        this.classList.remove("show");
+        document.getElementById("hamburger").classList.remove("active");
+        document.body.classList.remove("menu-open");
+      }
+    });
+    window.addEventListener("scroll", function () {
+      const header = document.getElementById("header");
+      if (window.scrollY > 50) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+    });
+  </script>
+  <script src="{% static 'main/js/booking-modal.js' %}"></script>
+</body>
+</html>
+

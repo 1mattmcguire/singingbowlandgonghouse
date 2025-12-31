@@ -1,0 +1,919 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Sound Healing & Gong House</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="{% static 'main/images/logo.jpg' %}">
+  <link rel="shortcut icon" type="image/jpeg" href="{% static 'main/images/logo.jpg' %}">
+  <link rel="apple-touch-icon" href="{% static 'main/images/logo.jpg' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'main/css/header.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/contact.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/booking.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="{% static 'main/js/api.js' %}"></script>
+  <script src="{% static 'main/js/booking-modal.js' %}"></script>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="logo">
+      <img src="{% static 'main/images/logo.jpg' %}" alt="Singing Bowl & Gong House Logo">
+      <span class="logo-text">Singing Bowl & Gong House</span>
+    </div>
+
+    <nav class="nav">
+      <ul class="nav-list" id="nav-list">
+        <li><a href="{% url 'main:home' %}">HOME</a></li>
+        <li><a href="{% url 'main:about' %}">ABOUT</a></li>
+        <li><a href="{% url 'main:services' %}">SERVICES</a></li>
+        <li><a href="{% url 'main:courses' %}">COURSES</a></li>
+        <li><a href="{% url 'main:smiles' %}">SMILES</a></li>
+        <li><a href="{% url 'main:contact' %}" class="active">CONTACT</a></li>
+      </ul>
+    </nav>
+
+    <!-- Book Button (Right side) -->
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <a href="#" class="book-btn desktop-book" onclick="openBookingModal(); return false;">Book Now</a>
+    </div>
+
+    <!-- Hamburger -->
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+  <!-- Mobile floating Book Now -->
+  <!-- <a href="#" class="mobile-book-btn" onclick="openBookingModal(); return false;">Book Now</a> -->
+
+  <script>
+    /* Mobile menu toggle */
+    document.getElementById("hamburger").addEventListener("click", function () {
+      const navList = document.getElementById("nav-list");
+      const isOpen = navList.classList.contains("show");
+      navList.classList.toggle("show");
+      this.classList.toggle("active");
+      document.body.classList.toggle("menu-open", !isOpen);
+    });
+    
+    /* Close menu when clicking on a nav link */
+    document.querySelectorAll('.nav-list li a').forEach(link => {
+      link.addEventListener('click', function() {
+        document.getElementById("nav-list").classList.remove("show");
+        document.getElementById("hamburger").classList.remove("active");
+        document.body.classList.remove("menu-open");
+      });
+    });
+    
+    /* Close menu when clicking outside (on backdrop) */
+    document.getElementById("nav-list").addEventListener("click", function(e) {
+      if (e.target === this) {
+        this.classList.remove("show");
+        document.getElementById("hamburger").classList.remove("active");
+        document.body.classList.remove("menu-open");
+      }
+    });
+
+    /* Transparent → solid navbar on scroll */
+    window.addEventListener("scroll", function () {
+      const header = document.getElementById("header");
+      if (window.scrollY > 50) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+    });
+  </script>
+
+
+<!-- GSAP -->
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+<script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+
+<section class="contact-section">
+  <div class="contact-container">
+
+    <!-- Left -->
+    <div class="contact-info gsap-left">
+      <h2 class="contact-title">Get in Touch</h2>
+      <p class="contact-desc">
+        We’d love to hear from you. Reach out for collaborations, inquiries, or visits.
+      </p>
+
+      <div class="info-box">
+        <span>📍</span>
+        <p>P8G6+C27, Mhepi Janamarga, Kathmandu 44600, Nepal</p>
+      </div>
+
+      <div class="info-box">
+        <span>📧</span>
+        <p>singingbowlandgonghouse@gmail.com</p>
+      </div>
+
+      <div class="info-box">
+        <span>📞</span>
+        <p>+977 98XXXXXXXX</p>
+      </div>
+    </div>
+
+    <!-- Right -->
+    <div class="contact-form gsap-right">
+      <form id="contactForm">
+        <div class="input-group">
+          <input type="text" name="fullName" id="contactFullName" required>
+          <label>Full Name</label>
+        </div>
+
+        <div class="input-group">
+          <input type="email" name="email" id="contactEmail" required>
+          <label>Email</label>
+        </div>
+
+        <div class="input-group">
+          <input type="text" name="subject" id="contactSubject" required>
+          <label>Subject</label>
+        </div>
+
+        <div class="input-group">
+          <textarea name="message" id="contactMessage" rows="5" required></textarea>
+          <label>Message</label>
+        </div>
+
+        <button type="submit" class="send-btn">Send Message</button>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- Google Map -->
+  <div class="map-container gsap-map">
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.635635123456!2d85.3074847!3d27.7260313!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1900635d049f%3A0x28dff15b2a442a73!2sSinging%20bowl%20%26%20Gong%20House!5e0!3m2!1sen!2snp!4v1632382921275!5m2!1sen!2snp"
+      width="100%"
+      height="100%"
+      style="border:0;"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Singing Bowl & Gong House Location">
+    </iframe>
+    <div class="map-overlay-link">
+      <a href="https://maps.app.goo.gl/F9pjruB3xG2keZcB9" target="_blank" rel="noopener noreferrer" class="map-link-button">
+        <i class="fas fa-external-link-alt"></i> Open in Google Maps
+      </a>
+    </div>
+  </div>
+</section>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from(".gsap-left", {
+    scrollTrigger: {
+      trigger: ".contact-section",
+      start: "top 70%"
+    },
+    x: -60,
+    opacity: 0,
+    duration: 1.2,
+    ease: "power3.out"
+  });
+
+  gsap.from(".gsap-right", {
+    scrollTrigger: {
+      trigger: ".contact-section",
+      start: "top 70%"
+    },
+    x: 60,
+    opacity: 0,
+    duration: 1.2,
+    ease: "power3.out",
+    delay: 0.2
+  });
+
+  gsap.from(".map-container", {
+    scrollTrigger: {
+      trigger: ".map-container",
+      start: "top 80%"
+    },
+    y: 60,
+    opacity: 0,
+    duration: 1.3,
+    ease: "power3.out"
+  });
+
+  // Button animation
+  gsap.from(".send-btn", {
+    scrollTrigger: {
+      trigger: ".send-btn",
+      start: "top 90%"
+    },
+    scale: 0.8,
+    opacity: 0,
+    duration: 0.6,
+    ease: "back.out(1.7)"
+  });
+
+  // Contact form submission
+  const contactForm = document.getElementById("contactForm");
+  if (contactForm) {
+    contactForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.querySelector(".send-btn");
+      const originalText = btn.innerText;
+      
+      // Disable button and show loading state
+      btn.disabled = true;
+      btn.innerText = "Sending...";
+      
+      // Collect form data
+      const formData = new FormData(contactForm);
+      const inquiryData = {
+        fullName: formData.get('fullName') || contactForm.querySelector('input[type="text"]').value,
+        email: formData.get('email') || contactForm.querySelector('input[type="email"]').value,
+        subject: formData.get('subject') || contactForm.querySelectorAll('input[type="text"]')[1]?.value || 'General Inquiry',
+        message: formData.get('message') || contactForm.querySelector('textarea').value,
+      };
+      
+      // Submit to API
+      if (typeof window.apiUtils !== 'undefined' && window.apiUtils.submitInquiry) {
+        try {
+          const response = await window.apiUtils.submitInquiry(inquiryData);
+          
+          // Success
+          btn.innerText = "Message Sent ✓";
+          btn.style.background = "#10b548";
+          btn.style.color = "white";
+          
+          // Show success message
+          if (window.apiUtils.showSuccessMessage) {
+            window.apiUtils.showSuccessMessage('Thank you! Your message has been sent successfully.');
+          }
+          
+          // Reset form
+          contactForm.reset();
+          
+          // Reset button after 3 seconds
+          setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.background = "";
+            btn.style.color = "";
+            btn.disabled = false;
+          }, 3000);
+        } catch (error) {
+          // Error
+          btn.innerText = "Error - Try Again";
+          btn.style.background = "#e74c3c";
+          btn.style.color = "white";
+          
+          // Show error message
+          const errorMessage = error.message || 'Failed to send message. Please try again.';
+          if (window.apiUtils.showErrorMessage) {
+            window.apiUtils.showErrorMessage(errorMessage);
+          } else {
+            alert(errorMessage);
+          }
+          
+          // Reset button after 3 seconds
+          setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.background = "";
+            btn.style.color = "";
+            btn.disabled = false;
+          }, 3000);
+        }
+      } else {
+        // Fallback if API utils not loaded
+        console.error('API utilities not loaded. Please ensure api.js is included.');
+        btn.innerText = originalText;
+        btn.disabled = false;
+        alert('API utilities not loaded. Please refresh the page and try again.');
+      }
+    });
+  }
+</script>
+
+
+
+
+
+
+  <!-- Footer Section -->
+  <footer class="footer" id="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <!-- Logo & Description -->
+        <div class="footer-logo-section footer-column" style="--delay: 0">
+          <div class="footer-logo">
+            <img src="{% static 'main/images/logo.jpg' %}" alt="Singing Bowl & Gong House Logo">
+            <div class="footer-logo-text">Singing Bowl & Gong House</div>
+          </div>
+          <p class="footer-description">
+            Transform your life through the healing power of sound. Experience deep relaxation, 
+            emotional release, and spiritual growth in our serene sanctuary.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-column" style="--delay: 1">
+          <h3 class="footer-column-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li style="--delay: 0"><a href="{% url 'main:home' %}">Home</a></li>
+            <li style="--delay: 1"><a href="{% url 'main:about' %}">About Us</a></li>
+            <li style="--delay: 2"><a href="{% url 'main:services' %}">Services</a></li>
+            <li style="--delay: 3"><a href="{% url 'main:courses' %}">Courses</a></li>
+            <li style="--delay: 4"><a href="{% url 'main:smiles' %}">Smiles We Created</a></li>
+            <li style="--delay: 5"><a href="{% url 'main:contact' %}">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Services -->
+        <div class="footer-column" style="--delay: 2">
+          <h3 class="footer-column-title">Our Services</h3>
+          <ul class="footer-links">
+            <li style="--delay: 0"><a href="#" onclick="openBookingModal(); return false;">Sound Healing</a></li>
+            <li style="--delay: 1"><a href="#" onclick="openBookingModal(); return false;">Personal Therapy</a></li>
+            <li style="--delay: 2"><a href="#" onclick="openBookingModal(); return false;">Teacher Training</a></li>
+            <li style="--delay: 3"><a href="#" onclick="openBookingModal(); return false;">Group Sessions</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="footer-column" style="--delay: 3">
+          <h3 class="footer-column-title">Get In Touch</h3>
+          <div class="footer-contact-item" style="--delay: 0">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>P8G6+C27, Mhepi Janamarga, Kathmandu 44600, Nepal</span>
+          </div>
+          <div class="footer-contact-item" style="--delay: 1">
+            <i class="fas fa-phone"></i>
+            <span>+977 1234567890</span>
+          </div>
+          <div class="footer-contact-item" style="--delay: 2">
+            <i class="fas fa-envelope"></i>
+            <span>info@singingbowlhouse.com</span>
+          </div>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/sanjivaniyogaschool" target="_blank" class="footer-social-link" style="--delay: 0" aria-label="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com/singingbowlandgonghouse/" target="_blank" class="footer-social-link" style="--delay: 1" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="footer-social-link" style="--delay: 2" aria-label="YouTube">
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a href="#" class="footer-social-link" style="--delay: 3" aria-label="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </div>
+          <div class="footer-qr-codes" style="--delay: 4">
+            <div class="footer-qr-code-item">
+              <img src="{% static 'main/images/whatsapp.png' %}" alt="WhatsApp QR Code">
+              <span>WhatsApp</span>
+            </div>
+            <div class="footer-qr-code-item">
+              <img src="{% static 'main/images/wechat.png' %}" alt="WeChat QR Code">
+              <span>WeChat</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-bottom">
+        <p>
+          Copyright &copy; <span id="current-year">2024</span> Singing Bowl & Gong House. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Register GSAP plugins
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
+    // Hero animations
+    const heroTimeline = gsap.timeline();
+    heroTimeline
+      .from(".hero-badge", {
+        y: -30,
+        opacity: 0,
+        duration: 0.8,
+        ease: "back.out(1.7)"
+      })
+      .from(".title-line", {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: "power3.out"
+      }, "-=0.4")
+      .from(".hero-subtitle", {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.out"
+      }, "-=0.5")
+      .from(".hero-scroll-indicator", {
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+        ease: "power2.out"
+      }, "-=0.3");
+
+    // Floating shapes animation
+    gsap.to(".shape-1", {
+      y: -30,
+      x: 20,
+      rotation: 360,
+      duration: 20,
+      repeat: -1,
+      ease: "sine.inOut",
+      yoyo: true
+    });
+
+    gsap.to(".shape-2", {
+      y: 30,
+      x: -20,
+      rotation: -360,
+      duration: 25,
+      repeat: -1,
+      ease: "sine.inOut",
+      yoyo: true
+    });
+
+    gsap.to(".shape-3", {
+      y: -40,
+      x: -30,
+      rotation: 180,
+      duration: 18,
+      repeat: -1,
+      ease: "sine.inOut",
+      yoyo: true
+    });
+
+    gsap.to(".shape-4", {
+      y: 40,
+      x: 30,
+      rotation: -180,
+      duration: 22,
+      repeat: -1,
+      ease: "sine.inOut",
+      yoyo: true
+    });
+
+    gsap.to(".shape-5", {
+      y: -25,
+      x: 15,
+      rotation: 270,
+      duration: 24,
+      repeat: -1,
+      ease: "sine.inOut",
+      yoyo: true
+    });
+
+    // Scroll indicator animation
+    gsap.to(".scroll-line", {
+      scaleY: 1,
+      duration: 1.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "power2.inOut"
+    });
+
+    // Form section animation
+    gsap.from(".form-card", {
+      scrollTrigger: {
+        trigger: ".form-container",
+        start: "top 80%"
+      },
+      x: -100,
+      opacity: 0,
+      duration: 1.2,
+      ease: "power3.out"
+    });
+
+    // Info section animation
+    gsap.from(".info-card", {
+      scrollTrigger: {
+        trigger: ".info-container",
+        start: "top 80%"
+      },
+      x: 100,
+      opacity: 0,
+      duration: 1.2,
+      ease: "power3.out"
+    });
+
+    // Contact items stagger animation
+    gsap.from(".contact-item", {
+      scrollTrigger: {
+        trigger: ".contact-items",
+        start: "top 85%"
+      },
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power2.out"
+    });
+
+    // Hours items animation
+    gsap.from(".hours-item", {
+      scrollTrigger: {
+        trigger: ".hours-section",
+        start: "top 85%"
+      },
+      x: -30,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.1,
+      ease: "power2.out"
+    });
+
+    // Social icons animation
+    gsap.from(".social-link", {
+      scrollTrigger: {
+        trigger: ".social-section",
+        start: "top 85%"
+      },
+      scale: 0,
+      opacity: 0,
+      duration: 0.5,
+      stagger: 0.1,
+      ease: "back.out(1.7)"
+    });
+
+    // Map section animation
+    gsap.from(".map-wrapper", {
+      scrollTrigger: {
+        trigger: ".map-section",
+        start: "top 80%"
+      },
+      y: 60,
+      opacity: 0,
+      scale: 0.95,
+      duration: 1.2,
+      ease: "power3.out"
+    });
+
+    gsap.from(".map-header", {
+      scrollTrigger: {
+        trigger: ".map-section",
+        start: "top 85%"
+      },
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power2.out"
+    });
+
+    // Form inputs floating label
+    const inputs = document.querySelectorAll('.form-input');
+    
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        this.parentElement.classList.add('focused');
+        gsap.to(this.parentElement.querySelector('.input-line'), {
+          scaleX: 1,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+
+      input.addEventListener('blur', function() {
+        if (!this.value) {
+          this.parentElement.classList.remove('focused');
+        }
+        gsap.to(this.parentElement.querySelector('.input-line'), {
+          scaleX: this.value ? 1 : 0,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+
+      input.addEventListener('input', function() {
+        if (this.value) {
+          this.parentElement.classList.add('has-value');
+        } else {
+          this.parentElement.classList.remove('has-value');
+        }
+      });
+    });
+
+    // Form validation
+    function validateForm() {
+      let isValid = true;
+      
+      const name = document.getElementById('name');
+      const email = document.getElementById('email');
+      const phone = document.getElementById('phone');
+      const message = document.getElementById('message');
+      
+      // Reset errors
+      document.querySelectorAll('.error-message').forEach(error => {
+        error.textContent = '';
+      });
+      
+      // Name validation
+      if (name.value.trim().length < 2) {
+        document.getElementById('name-error').textContent = 'Name must be at least 2 characters';
+        isValid = false;
+        gsap.to(name.parentElement, {
+          x: -10,
+          duration: 0.1,
+          yoyo: true,
+          repeat: 3,
+          ease: "power2.inOut"
+        });
+      }
+      
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email.value)) {
+        document.getElementById('email-error').textContent = 'Please enter a valid email address';
+        isValid = false;
+        gsap.to(email.parentElement, {
+          x: -10,
+          duration: 0.1,
+          yoyo: true,
+          repeat: 3,
+          ease: "power2.inOut"
+        });
+      }
+      
+      // Phone validation
+      const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+      if (!phoneRegex.test(phone.value) || phone.value.trim().length < 10) {
+        document.getElementById('phone-error').textContent = 'Please enter a valid phone number';
+        isValid = false;
+        gsap.to(phone.parentElement, {
+          x: -10,
+          duration: 0.1,
+          yoyo: true,
+          repeat: 3,
+          ease: "power2.inOut"
+        });
+      }
+      
+      // Message validation
+      if (message.value.trim().length < 10) {
+        document.getElementById('message-error').textContent = 'Message must be at least 10 characters';
+        isValid = false;
+        gsap.to(message.parentElement, {
+          x: -10,
+          duration: 0.1,
+          yoyo: true,
+          repeat: 3,
+          ease: "power2.inOut"
+        });
+      }
+      
+      return isValid;
+    }
+
+    // Form submission
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      if (validateForm()) {
+        const submitBtn = form.querySelector('.submit-button');
+        const btnText = submitBtn.querySelector('.button-text');
+        const btnIcon = submitBtn.querySelector('.button-icon i');
+        const originalText = btnText.textContent;
+        
+        // Animate button
+        gsap.to(submitBtn, {
+          scale: 0.95,
+          duration: 0.1,
+          yoyo: true,
+          repeat: 1,
+          ease: "power2.inOut"
+        });
+
+        btnText.textContent = 'Sending...';
+        btnIcon.className = 'fas fa-spinner fa-spin';
+        submitBtn.disabled = true;
+        
+        // Simulate form submission
+        setTimeout(() => {
+          btnText.textContent = 'Message Sent!';
+          btnIcon.className = 'fas fa-check';
+          gsap.to(submitBtn, {
+            backgroundColor: "#10b548",
+            duration: 0.3
+          });
+          
+          setTimeout(() => {
+            btnText.textContent = originalText;
+            btnIcon.className = 'fas fa-paper-plane';
+            submitBtn.disabled = false;
+            gsap.to(submitBtn, {
+              backgroundColor: "#667eea",
+              duration: 0.3
+            });
+            form.reset();
+            inputs.forEach(input => {
+              input.parentElement.classList.remove('has-value', 'focused');
+            });
+          }, 2000);
+        }, 1500);
+      }
+    });
+
+    // Contact items hover effects
+    document.querySelectorAll('.contact-item').forEach(item => {
+      item.addEventListener('mouseenter', function() {
+        gsap.to(this, {
+          y: -5,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        gsap.to(this.querySelector('.contact-icon'), {
+          scale: 1.1,
+          rotation: 5,
+          duration: 0.3,
+          ease: "back.out(1.7)"
+        });
+      });
+
+      item.addEventListener('mouseleave', function() {
+        gsap.to(this, {
+          y: 0,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        gsap.to(this.querySelector('.contact-icon'), {
+          scale: 1,
+          rotation: 0,
+          duration: 0.3,
+          ease: "back.out(1.7)"
+        });
+      });
+    });
+
+    // Social icons hover effects
+    document.querySelectorAll('.social-link').forEach(link => {
+      link.addEventListener('mouseenter', function() {
+        gsap.to(this, {
+          y: -8,
+          scale: 1.15,
+          duration: 0.3,
+          ease: "back.out(1.7)"
+        });
+        gsap.to(this.querySelector('i'), {
+          rotation: 360,
+          duration: 0.5,
+          ease: "back.out(1.7)"
+        });
+        gsap.to(this.querySelector('.social-tooltip'), {
+          opacity: 1,
+          y: -5,
+          duration: 0.3
+        });
+      });
+
+      link.addEventListener('mouseleave', function() {
+        gsap.to(this, {
+          y: 0,
+          scale: 1,
+          duration: 0.3,
+          ease: "back.out(1.7)"
+        });
+        gsap.to(this.querySelector('i'), {
+          rotation: 0,
+          duration: 0.5,
+          ease: "back.out(1.7)"
+        });
+        gsap.to(this.querySelector('.social-tooltip'), {
+          opacity: 0,
+          y: 0,
+          duration: 0.3
+        });
+      });
+    });
+
+    // Set current year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Footer animations on scroll
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const footer = document.getElementById('footer');
+      if (footer) {
+        gsap.to('.footer-logo-section', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 90%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out'
+        });
+
+        gsap.to('.footer-column', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 90%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power2.out'
+        });
+
+        gsap.to('.footer-links li', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          stagger: 0.05,
+          ease: 'power2.out'
+        });
+
+        gsap.to('.footer-contact-item', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'power2.out'
+        });
+
+        gsap.to('.footer-social-link', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: 'back.out(1.2)'
+        });
+
+        // Animate QR codes
+        gsap.to('.footer-qr-codes', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          delay: 0.4,
+          ease: 'power2.out'
+        });
+
+        gsap.to('.footer-divider', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 80%'
+          },
+          opacity: 1,
+          scaleX: 1,
+          duration: 1,
+          ease: 'power2.out'
+        });
+
+        gsap.to('.footer-bottom', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 80%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          delay: 0.3,
+          ease: 'power2.out'
+        });
+      }
+    }
+
+  </script>
+  <script src="{% static 'main/js/booking-modal.js' %}"></script>
+</body>
+</html>
