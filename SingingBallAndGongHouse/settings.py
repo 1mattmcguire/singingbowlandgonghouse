@@ -150,10 +150,9 @@ STATIC_URL = '/static/'
 PORT = os.getenv("PORT", "8000")
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# This project keeps app assets in `main/static/main/...`.
-# Django's AppDirectoriesFinder will discover those automatically, so we avoid
-# duplicating that directory here (which otherwise causes collectstatic warnings).
-STATICFILES_DIRS: list[Path] = []
+# Static assets live in the `main/static/` folder (app_name/static/app_name/...).
+# Including this directory makes static discovery explicit for deployment.
+STATICFILES_DIRS = [BASE_DIR / 'main' / 'static']
 
 # Media files (User uploaded files)
 MEDIA_URL = '/media/'
