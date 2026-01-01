@@ -163,31 +163,25 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email Configuration
-# Use environment variables (recommended) so credentials are not committed to git.
-#
-# Required for SMTP sending:
-# - EMAIL_HOST_USER
-# - EMAIL_HOST_PASSWORD
-#
-# If EMAIL_HOST_PASSWORD is not set, Django will use the console email backend (dev-friendly).
-EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
-EMAIL_USE_TLS = _env_bool("EMAIL_USE_TLS", "1")
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "singingbowlandgonghouse@gmail.com").strip()
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "").strip()
+# Email Configuration (Render/Gmail SMTP)
+# IMPORTANT: Use a Gmail App Password (not your normal Gmail password).
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER).strip()
-ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", EMAIL_HOST_USER).strip()
+EMAIL_HOST_USER = (os.getenv("EMAIL_HOST_USER") or "").strip()
+EMAIL_HOST_PASSWORD = (os.getenv("EMAIL_HOST_PASSWORD") or "").strip()
 
+# Require credentials in production so booking emails work on Render.
+if not DEBUG and (not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD):
+    raise ImproperlyConfigured(
+        "EMAIL_HOST_USER and EMAIL_HOST_PASSWORD environment variables are required when DEBUG=False."
+    )
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+ADMIN_EMAIL = (os.getenv("ADMIN_EMAIL") or EMAIL_HOST_USER).strip()
 EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "10"))
-
-EMAIL_BACKEND = os.getenv(
-    "EMAIL_BACKEND",
-    "django.core.mail.backends.smtp.EmailBackend"
-    if EMAIL_HOST_PASSWORD
-    else "django.core.mail.backends.console.EmailBackend",
-)
 
 # WhatsApp Configuration
 ADMIN_WHATSAPP_NUMBER = os.getenv("ADMIN_WHATSAPP_NUMBER", "+9779843213802").strip()
