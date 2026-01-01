@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Section - Singing Bowl & Gong House</title>
+    <link rel="stylesheet" href="hero_section.css">
+    <!-- GSAP Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+    <!-- HERO SECTION -->
+    <section class="hero-tilt" id="home">
+        <div class="hero-content">
+            <h1 class="hero-anim">Singing Bowl &amp; Gong House</h1>
+            <p class="lead hero-anim">
+                We guide you into calm through immersive <strong>Sound Healing</strong>
+                and help you certify through our <strong>Advanced Teacher Training</strong>.
+            </p>
+            <a class="book-btn hero-anim" href="#" onclick="openBookingModal(); return false;">Book Now</a>
+        </div>
+        <div class="main">
+            <div class="mainBoxes"></div>
+            <div class="mainClose">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none">
+                    <circle cx="30" cy="30" r="30" fill="#000" opacity="0.4" />
+                    <path d="M15,16L45,46 M45,16L15,46" stroke="#000" stroke-width="3.5" opacity="0.5" />
+                    <path d="M15,15L45,45 M45,15L15,45" stroke="#fff" stroke-width="2" />
+                </svg>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Lightbox for image preview -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-backdrop"></div>
+        <img id="lightbox-img" alt="Hero preview">
+        <button id="lightbox-close" aria-label="Close preview">&times;</button>
+    </div>
+
+    <script src="hero_section.js"></script>
+</body>
+</html>
+
+
+

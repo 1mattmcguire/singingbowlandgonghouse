@@ -1,3 +1,11 @@
+# Large video files
+main/static/main/images/*.mp4
+main/static/main/images/Video Project.mp4
+main/static/main/images/video edit.mp4
+staticfiles/main/images/*.mp4
+staticfiles/main/images/Video Project.mp4
+staticfiles/main/images/video edit.mp4
+
 # Python
 __pycache__/
 *.py[cod]
@@ -7,51 +15,22 @@ __pycache__/
 env/
 venv/
 ENV/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+.venv
 
 # Django
 *.log
-local_settings.py
 db.sqlite3
 db.sqlite3-journal
 /media
 /staticfiles
-/static
-
-# Environment variables
-.env
-.env.local
-.env.*.local
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Project specific
-*.md
-!README.md
-color-preview.html
-hero_section*
-remove_unnecessary_files.ps1
-*.mp4

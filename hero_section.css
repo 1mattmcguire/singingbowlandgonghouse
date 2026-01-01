@@ -1,0 +1,369 @@
+/* HERO SECTION STYLES */
+.hero-tilt {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    align-items: center;
+    gap: 40px;
+    padding: 120px 6% 70px;
+    min-height: 100vh;
+    background-image: url("/static/main/images/bg-main.jpeg") !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+/* Very light overlay for text readability - minimal, allows floating images to be visible */
+.hero-tilt::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(11, 46, 42, 0.1);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+/* Ensure content stays above background layers */
+.hero-content * {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content h1 {
+    font-size: clamp(32px, 4vw, 52px);
+    color: #ffffff;
+    line-height: 1.1;
+    margin: 10px 0 14px;
+    text-shadow: 
+        0 2px 10px rgba(0, 0, 0, 0.6),
+        0 4px 20px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(240, 183, 70, 0.3);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.hero-content .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #d0b36b;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.hero-content .lead {
+    color: #ffffff;
+    font-size: clamp(16px, 2vw, 18px);
+    max-width: 540px;
+    margin-bottom: 18px;
+    line-height: 1.8;
+    text-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.5),
+        0 1px 4px rgba(0, 0, 0, 0.3);
+    font-weight: 400;
+}
+
+.hero-content .lead strong {
+    color: #f0b746;
+    font-weight: 700;
+    text-shadow: 
+        0 2px 8px rgba(240, 183, 70, 0.4),
+        0 0 15px rgba(240, 183, 70, 0.2);
+}
+
+.hero-content .book-btn {
+    margin-top: 20px;
+    display: inline-block;
+    padding: 16px 36px;
+    background: linear-gradient(135deg, #f0b746 0%, #d4af37 50%, #d69c2c 100%);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 4px 15px rgba(240, 183, 70, 0.4),
+        0 2px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content .book-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.hero-content .book-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.hero-content .book-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 8px 25px rgba(240, 183, 70, 0.6),
+        0 4px 12px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #f5c85a 0%, #f0b746 50%, #d4af37 100%);
+}
+
+.hero-content .book-btn span,
+.hero-content .book-btn {
+    position: relative;
+    z-index: 1;
+}
+
+/* Floating Images Container */
+.main {
+    position: relative;
+    width: 100%;
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+.mainBoxes {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1200px;
+    height: 720px;
+    transform-style: preserve-3d;
+    pointer-events: auto;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+.photoBox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+    cursor: pointer;
+    z-index: 4;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.mainClose {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Lightbox Styles */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.lightbox.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    z-index: 10001;
+}
+
+#lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: #fff;
+    font-size: 40px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10002;
+    transition: background 0.3s ease;
+}
+
+#lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* RESPONSIVE STYLES */
+@media (max-width: 1024px) {
+    .hero-tilt {
+        grid-template-columns: 1fr;
+        padding: 100px 4% 50px;
+        min-height: 100vh;
+        gap: 30px;
+    }
+    
+    .hero-tilt::before {
+        background-attachment: scroll;
+        background: rgba(11, 46, 42, 0.08);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-tilt {
+        padding: 100px 4% 50px;
+        min-height: 100vh;
+        gap: 40px;
+        grid-template-columns: 1fr;
+        position: relative;
+        overflow: visible;
+    }
+    
+    .hero-tilt::before {
+        background: rgba(11, 46, 42, 0.08);
+    }
+
+    .hero-content {
+        text-align: center;
+        padding: 0 15px;
+        z-index: 10;
+        position: relative;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .hero-content h1 {
+        font-size: clamp(32px, 8vw, 48px);
+        margin: 12px 0 16px;
+        line-height: 1.2;
+    }
+
+    .hero-content .lead {
+        font-size: 15px;
+        line-height: 1.7;
+        margin-bottom: 24px;
+        padding: 0 10px;
+        max-width: 100%;
+    }
+
+    .hero-content .book-btn {
+        width: 100%;
+        max-width: 280px;
+        margin: 24px auto 0;
+        display: block;
+        text-align: center;
+        padding: 16px 36px;
+        font-size: 15px;
+    }
+
+    .mainBoxes {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        min-height: 450px;
+        position: relative;
+        left: 0;
+        transform: none;
+        margin-top: 30px;
+        overflow-x: auto;
+        overflow-y: visible;
+    }
+
+    .photoBox {
+        width: 300px !important;
+        min-width: 300px !important;
+        height: 450px !important;
+        border-radius: 24px !important;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+        opacity: 1 !important;
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        transform: none !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-tilt {
+        padding: 90px 3% 40px;
+        min-height: 100vh;
+        gap: 30px;
+    }
+    
+    .hero-tilt::before {
+        background: rgba(11, 46, 42, 0.08);
+    }
+
+    .hero-content h1 {
+        font-size: 28px;
+        line-height: 1.2;
+        margin: 10px 0 14px;
+    }
+
+    .hero-content .lead {
+        font-size: 14px;
+        padding: 0 5px;
+        line-height: 1.6;
+    }
+
+    .mainBoxes {
+        min-height: 380px;
+        margin-top: 20px;
+        padding: 15px 10px;
+        gap: 15px;
+    }
+
+    .photoBox {
+        width: 260px !important;
+        min-width: 260px !important;
+        height: 380px !important;
+        border-radius: 20px !important;
+    }
+
+    .hero-content .book-btn {
+        max-width: 240px;
+        padding: 14px 28px;
+        font-size: 14px;
+    }
+}
+
