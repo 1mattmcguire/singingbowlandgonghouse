@@ -272,7 +272,7 @@ window.addEventListener("scroll", function () {
          "{% static 'main/images/scroll3.jpg' %}",
          "{% static 'main/images/scroll4.jpg' %}",
          "{% static 'main/images/training.jpg' %}",
-         "{% static 'main/images/Soundhealing.jpg' %}",
+         "{% static 'main/images/sound healing session.jpeg' %}",
          "{% static 'main/images/therapy.jpg' %}",
          "{% static 'main/images/IMG-20251111-WA0011.jpg' %}"
        ];
@@ -1437,15 +1437,18 @@ window.addEventListener("scroll", function () {
         <h2 class="video-title">A Glimpse Inside Our Sound Sanctuaries</h2>
 
         <p class="video-subtitle">
-            Step into a session with us and experience how singing bowls, gongs, 
+            Step into a session with us and experience how singing bowls, gongs,
             and handpans weave together to guide deep calm, clarity, and emotional reset.
         </p>
 
         <div class="video-wrapper">
-            <video controls class="video-player">
-                <source src="{% static 'main/images/Video Project.mp4' %}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <div class="video-placeholder" style="position: relative; border-radius: 18px; overflow: hidden; background: #000;">
+                <img src="{% static 'main/images/bgimg.jpg' %}" alt="Sound session preview" style="width: 100%; height: auto; display: block; opacity: 0.9;">
+                <a href="{% url 'main:contact' %}"
+                   style="position:absolute; inset:0; display:grid; place-items:center; color:#fff; text-decoration:none; font-weight:700; letter-spacing:0.5px; background:rgba(0,0,0,0.25);">
+                    Contact us for session videos
+                </a>
+            </div>
         </div>
 
     </div>
