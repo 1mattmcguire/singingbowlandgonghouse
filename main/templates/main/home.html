@@ -1502,12 +1502,6 @@ window.addEventListener("scroll", () => {
             and handpans weave together to guide deep calm, clarity, and emotional reset.
         </p>
 
-        {# NOTE:
-           The original template referenced "main/images/Video Project.mp4", but the file is not
-           shipped with the repo (often ignored in git), which causes a 500 in production when
-           using ManifestStaticFilesStorage. Replace this placeholder with a real hosted video URL
-           (YouTube/Vimeo) or add the mp4 to static files.
-        #}
         <div class="video-wrapper">
             <div class="video-placeholder" style="position: relative; border-radius: 18px; overflow: hidden; background: #000;">
                 <img src="{% static 'main/images/bgimg.jpg' %}" alt="Sound session preview" style="width: 100%; height: auto; display: block; opacity: 0.9;">
