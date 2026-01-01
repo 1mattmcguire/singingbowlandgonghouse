@@ -1,0 +1,345 @@
+/* ============================================
+   SERVICES PAGE STYLES
+   Matches classes used in services.html
+   ============================================ */
+
+:root {
+  --sbgh-dark: #0b2e2a;
+  --sbgh-dark-2: #1a3a3a;
+  --sbgh-gold: #d4af37;
+  --sbgh-gold-2: #c9a961;
+  --sbgh-text: #5e7380;
+  --sbgh-bg: #fafafa;
+  --sbgh-card: #ffffff;
+  --sbgh-border: rgba(0, 0, 0, 0.08);
+  --sbgh-shadow: 0 12px 40px rgba(0, 0, 0, 0.10);
+}
+
+/* Page spacing (header is fixed in header.css) */
+.services-hero,
+.training-section,
+.healing-section {
+  position: relative;
+  width: 100%;
+}
+
+.services-hero {
+  padding: 130px 0 70px;
+  background: linear-gradient(135deg, #ffffff 0%, #f7f5f0 55%, #ffffff 100%);
+  overflow: hidden;
+}
+
+.services-hero .container,
+.training-section .container,
+.healing-section .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.hero-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(212, 175, 55, 0.08);
+  margin-bottom: 18px;
+}
+
+.banner-text {
+  font-size: 12px;
+  letter-spacing: 2px;
+  font-weight: 800;
+  color: var(--sbgh-dark-2);
+  text-transform: uppercase;
+}
+
+.services-hero .hero-content {
+  max-width: 860px;
+}
+
+.services-hero .hero-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(34px, 4.8vw, 54px);
+  line-height: 1.15;
+  margin: 0 0 14px;
+  color: var(--sbgh-dark-2);
+}
+
+.services-hero .hero-description {
+  color: var(--sbgh-text);
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* Section header */
+.training-section,
+.healing-section {
+  padding: 80px 0;
+  background: var(--sbgh-bg);
+}
+
+.healing-section {
+  background: #ffffff;
+}
+
+.section-header,
+.healing-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.section-icon,
+.healing-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(212, 175, 55, 0.05));
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  color: var(--sbgh-gold);
+}
+
+.section-title,
+.healing-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(26px, 3.3vw, 38px);
+  color: var(--sbgh-dark-2);
+  margin: 0 0 6px;
+}
+
+.section-subtitle,
+.healing-subtitle {
+  margin: 0;
+  color: var(--sbgh-text);
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+.enroll-btn,
+.book-session-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, var(--sbgh-gold) 0%, var(--sbgh-gold-2) 100%);
+  box-shadow: 0 10px 26px rgba(212, 175, 55, 0.28);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.enroll-btn:hover,
+.book-session-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(212, 175, 55, 0.35);
+}
+
+/* Training cards */
+.training-cards,
+.healing-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 18px;
+}
+
+.training-card,
+.healing-card {
+  background: var(--sbgh-card);
+  border: 1px solid var(--sbgh-border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+}
+
+.training-card:hover,
+.healing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sbgh-shadow);
+}
+
+.card-image-wrapper,
+.healing-card-image-wrapper {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.card-image,
+.healing-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.02);
+  transition: transform 0.35s ease;
+}
+
+.training-card:hover .card-image,
+.healing-card:hover .healing-card-image {
+  transform: scale(1.08);
+}
+
+.card-image-overlay,
+.healing-card-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(26, 58, 58, 0.10) 0%, rgba(212, 175, 55, 0.14) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.training-card:hover .card-image-overlay,
+.healing-card:hover .healing-card-image-overlay {
+  opacity: 1;
+}
+
+.card-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: var(--sbgh-gold);
+}
+
+.card-content,
+.healing-card-content {
+  padding: 22px;
+}
+
+.card-title,
+.healing-card-title {
+  margin: 0 0 8px;
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  color: var(--sbgh-dark-2);
+}
+
+.card-duration,
+.healing-card-subtitle {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(26, 58, 58, 0.8);
+  margin-bottom: 10px;
+}
+
+.card-description,
+.healing-card-description {
+  margin: 0 0 14px;
+  color: var(--sbgh-text);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+.card-features,
+.healing-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.card-features li,
+.healing-features li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: var(--sbgh-text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.card-features li i,
+.healing-features li i {
+  color: var(--sbgh-gold);
+  margin-top: 2px;
+}
+
+.card-footer,
+.healing-card-footer {
+  margin-top: 10px;
+}
+
+.card-btn,
+.healing-card-btn {
+  display: inline-flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 800;
+  color: var(--sbgh-dark-2);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(212, 175, 55, 0.08);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.card-btn:hover,
+.healing-card-btn:hover {
+  background: rgba(212, 175, 55, 0.14);
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .training-cards,
+  .healing-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .section-header,
+  .healing-header {
+    grid-template-columns: auto 1fr;
+    grid-auto-flow: row;
+  }
+
+  .enroll-btn,
+  .book-session-btn {
+    grid-column: 1 / -1;
+    width: fit-content;
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .services-hero {
+    padding: 110px 0 60px;
+  }
+
+  .training-cards,
+  .healing-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card-image-wrapper,
+  .healing-card-image-wrapper {
+    height: 210px;
+  }
+}
+

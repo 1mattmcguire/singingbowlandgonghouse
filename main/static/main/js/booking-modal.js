@@ -522,17 +522,65 @@ function handleBookingSubmit(e) {
         return false;
       });
   } else {
+    // Fallback: submit directly to Django endpoint if api.js isn't available
+    // This prevents "API utilities not loaded" from blocking bookings when api.js fails to load.
+    const fallbackEndpoint = '/api/bookings/public/';
+    const fallbackPayload = {
+      service_type: (bookingData.serviceType === 'Courses & Trainings')
+        ? (bookingData.courseSelection && bookingData.courseSelection.includes('Gong')
+          ? 'gong'
+          : bookingData.courseSelection && bookingData.courseSelection.includes('Handpan')
+            ? 'handpan'
+            : 'singing_bowl')
+        : (bookingData.sessionType === 'Group Session' ? 'group' : 'personal'),
+      enrollment_date: bookingData.preferredDate,
+      full_name: bookingData.fullName,
+      email: bookingData.email,
+      phone: bookingData.phone,
+      age: parseInt(bookingData.age) || null,
+      session_type: bookingData.sessionType || null,
+      course_selection: bookingData.courseSelection || null,
+      medical_condition: bookingData.medicalCondition || null,
+    };
+
     // Reset submitting flag
-    isSubmittingBooking = false;
-    
-    // Fallback if API utils not loaded
-    console.error('API utilities not loaded. Please ensure api.js is included before booking-modal.js');
-    loading.classList.remove('active');
-    form.style.display = 'block';
-    submitBtn.disabled = false;
-    submitBtn.style.opacity = '1';
-    submitBtn.style.cursor = 'pointer';
-    alert('API utilities not loaded. Please refresh the page and try again.');
+    console.warn('API utilities not loaded; using direct fetch fallback:', fallbackEndpoint);
+
+    fetch(fallbackEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(fallbackPayload),
+    })
+      .then(async (res) => {
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          const msg = data.error || data.message || 'Booking failed. Please try again.';
+          throw new Error(msg);
+        }
+        return data;
+      })
+      .then((response) => {
+        bookingJustSubmitted = true;
+        isSubmittingBooking = false;
+        loading.classList.remove('active');
+        success.classList.add('active');
+        form.style.display = 'none';
+        submitBtn.disabled = true;
+        alert('You have successfully booked! We will contact you within 24 hours.');
+        return false;
+      })
+      .catch((error) => {
+        bookingJustSubmitted = false;
+        isSubmittingBooking = false;
+        loading.classList.remove('active');
+        form.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
+        alert('Error: ' + (error.message || 'Failed to submit booking.'));
+        return false;
+      });
+
     return false;
   }
   
