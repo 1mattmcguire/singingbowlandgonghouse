@@ -2,6 +2,9 @@
 main/static/main/images/*.mp4
 main/static/main/images/Video Project.mp4
 main/static/main/images/video edit.mp4
+staticfiles/main/images/*.mp4
+staticfiles/main/images/Video Project.mp4
+staticfiles/main/images/video edit.mp4
 
 # Python
 __pycache__/
