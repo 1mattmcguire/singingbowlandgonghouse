@@ -9,6 +9,7 @@ staticfiles/main/images/video edit.mp4
 # Python
 __pycache__/
 *.py[cod]
+*.pyc
 *$py.class
 *.so
 .Python
@@ -23,6 +24,9 @@ db.sqlite3
 db.sqlite3-journal
 /media
 /staticfiles
+media/
+staticfiles/
+.pytest_cache/
 
 # IDE
 .vscode/

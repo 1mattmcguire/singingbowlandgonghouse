@@ -147,13 +147,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-PORT = os.getenv("PORT", "8000")
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# Static files directories
-# Django's AppDirectoriesFinder will discover files in main/static/main/ automatically
-# But we also need to explicitly set STATICFILES_DIRS for proper collectstatic behavior
 STATICFILES_DIRS = [BASE_DIR / 'main' / 'static']
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Media files (User uploaded files)
 MEDIA_URL = '/media/'
@@ -170,16 +166,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # - EMAIL_HOST_USER=singingbowlandgonghouse@gmail.com
 # - EMAIL_HOST_PASSWORD=<gmail-app-password>  # NOT your regular Gmail password!
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "singingbowlandgonghouse@gmail.com").strip()
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "").strip()
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", EMAIL_HOST_USER).strip()
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", EMAIL_HOST_USER).strip() if EMAIL_HOST_USER else ""
 EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "10"))
 
 # WhatsApp Configuration
 ADMIN_WHATSAPP_NUMBER = os.getenv("ADMIN_WHATSAPP_NUMBER", "+9779843213802").strip()
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
