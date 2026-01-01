@@ -34,8 +34,8 @@
              <li><a href="{% url 'main:about' %}">ABOUT</a></li>
              <li><a href="{% url 'main:services' %}">SERVICES</a></li>
              <li><a href="{% url 'main:courses' %}">COURSES</a></li>
-            <li><a href="{% url 'main:smiles' %}">SMILES</a></li>
              <li><a href="{% url 'main:contact' %}">CONTACT</a></li>
+             <li><a href="{% url 'main:smiles' %}">SHARING LOVE</a></li>
          </ul>
      </nav>
 
@@ -104,8 +104,7 @@ window.addEventListener("scroll", function () {
                                   <div class="hero-content">
                                     <h1 class="hero-anim">Singing Bowl &amp; Gong House</h1>
                                     <p class="lead hero-anim">
-                                      We guide you into calm through immersive <strong>Sound Healing</strong>
-                                      and help you certify through our <strong>Advanced Teacher Training</strong>.
+                                      We guide you into calm through immersive Sound Healing and help you certify through our Advanced Teacher Training.
                                     </p>
                                     <a class="book-btn hero-anim" href="#" onclick="openBookingModal(); return false;">Book Now</a>
                                   </div>
@@ -138,29 +137,30 @@ window.addEventListener("scroll", function () {
         <!-- Frequency Section -->
         <div class="landing-stats-section">
           <div class="stat-item">
-            <div class="stat-number">1,080+</div>
+            <div class="stat-number">400+</div>
             <div class="stat-label">Sound baths</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">936hz</div>
-            <div class="stat-label">Healing frequency</div>
+            <div class="stat-number">656</div>
+            <div class="stat-label">People Served
+              </div>
           </div>
           <a href="#" class="landing-book-btn" onclick="openBookingModal(); return false;">Book A Session</a>
         </div>
       </div>
 
-      <!-- Bottom Section: Text and Image Side by Side -->
+      <!-- Bottom Section: Image and Text Side by Side -->
       <div class="landing-text-image-wrapper">
-        <!-- Text Section (Left) -->
-        <div class="landing-description-section">
-          <p class="landing-description">Take a moment to breathe, reconnect, and return to yourself. In a world that often feels loud and demanding, our sound healing sessions offer a sanctuary of stillness. Through soothing vibrations and gentle frequencies, your mind begins to soften, your nervous system relaxes, and tension slowly melts away. This is a space where you are allowed to pause, release what no longer serves you, and rediscover a sense of inner balance and emotional clarity. Allow yourself to feel grounded again — peaceful, centered, and aligned from within.</p>
-        </div>
-
-        <!-- Image Section (Right) -->
+        <!-- Image Section (Left) -->
         <div class="landing-images-section">
           <div class="landing-image-right">
             <img src="{% static 'main/images/bgimg.jpg' %}" alt="Sound Healing Session" class="landing-img">
           </div>
+        </div>
+
+        <!-- Text Section (Right) -->
+        <div class="landing-description-section">
+          <p class="landing-description">Take a moment to breathe, reconnect, and return to yourself. In a world that often feels loud and demanding, our sound healing sessions offer a sanctuary of stillness. Through soothing vibrations and gentle frequencies, your mind begins to soften, your nervous system relaxes, and tension slowly melts away. This is a space where you are allowed to pause, release what no longer serves you, and rediscover a sense of inner balance and emotional clarity. Allow yourself to feel grounded again — peaceful, centered, and aligned from within.</p>
         </div>
       </div>
     </div>
@@ -1033,7 +1033,7 @@ window.addEventListener("scroll", function () {
       bigMotherBowls: [
         {
           name: "Big Mother Bowls",
-          image: "{% static 'main/images/bigmotherbowls.jpeg' %}",
+          image: "{% static 'main/images/bigmotherbowls2.jpeg' %}",
           description: "Big Mother Bowls are large singing bowls made from five metals. They produce powerful, deep vibrations that you can feel standing above the bowl, with the sound resonating from your feet up to the crown chakra. The immersive experience allows you to truly feel the sound within your body, making it ideal for full-body sound healing, meditation, and energy balancing.",
           material: "-",
           weight: "-",
@@ -1237,11 +1237,12 @@ window.addEventListener("scroll", function () {
       
       // Gallery images array for Big Mother Bowls
       const bigMotherBowlsGallery = [
+        { src: "{% static 'main/images/bigmotherbowls2.jpeg' %}", alt: "Big Mother Bowls 2" },
         { src: "{% static 'main/images/bigmotherbowls.jpeg' %}", alt: "Big Mother Bowls" },
         { src: "{% static 'main/images/bigmotherbowls1.jpeg' %}", alt: "Big Mother Bowls 1" },
-        { src: "{% static 'main/images/bigmotherbowls2.jpeg' %}", alt: "Big Mother Bowls 2" },
         { src: "{% static 'main/images/bigmotherbowls3.jpeg' %}", alt: "Big Mother Bowls 3" },
-        { src: "{% static 'main/images/bigmotherbowls4.jpeg' %}", alt: "Big Mother Bowls 4" }
+        { src: "{% static 'main/images/bigmotherbowls5.jpeg' %}", alt: "Big Mother Bowls 5" },
+        { src: "{% static 'main/images/bigmotherbowls6.jpeg' %}", alt: "Big Mother Bowls 6" }
       ];
       
       // Select appropriate gallery
@@ -1276,7 +1277,7 @@ window.addEventListener("scroll", function () {
             <div class="modal-header-section">
             <h2 class="modal-title">${item.name}</h2>
               ${(isNewHandmade || isOldNippleGong || isNewNippleGong || isTamTamGong || isNewHandEtched || isChakraSets || isBigMotherBowls) ? 
-                `<div class="modal-image-title" id="modal-image-title">${isNewHandmade ? 'New Jam Tiger' : isOldNippleGong ? 'Old Nipple Gong 18.8kg' : isNewNippleGong ? 'New Nipple Gong' : isTamTamGong ? 'TamTam Gong' : isNewHandEtched ? 'New Etching and Carving Bowl' : isChakraSets ? 'Chakra Sets' : 'Big Mother Bowls'}</div>` : ''}
+                `<div class="modal-image-title" id="modal-image-title">${isNewHandmade ? 'New Jam Tiger' : isOldNippleGong ? 'Old Nipple Gong 18.8kg' : isNewNippleGong ? 'New Nipple Gong' : isTamTamGong ? 'TamTam Gong' : isNewHandEtched ? 'New Etching and Carving Bowl' : isChakraSets ? 'Chakra Sets' : 'Big Mother Bowls 2'}</div>` : ''}
             </div>
 
             <div class="modal-details-section">
@@ -1422,68 +1423,6 @@ window.addEventListener("scroll", function () {
 
 
 
-  <!-- statssss -->
-<section class="stats-section">
-    <div class="stats-container">
-
-        <div class="stats-left">
-            <h2>Singing bowl<br>and gong house</h2>
-            <div class="underline"></div>
-        </div>
-
-        <div class="stats-right">
-
-            <div class="stat-box">
-                <h1 class="count" data-target="600">0</h1>
-                <p class="stat-title">People Healed</p>
-                <p class="stat-desc">Through deep vibrational therapy sessions</p>
-            </div>
-
-            <div class="stat-box">
-                <h1 class="count" data-target="900">0</h1>
-                <p class="stat-title">People Served</p>
-                <p class="stat-desc">In our community workshops and classes</p>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<script>
-  const counters = document.querySelectorAll(".count");
-let started = false;
-
-function startCounting() {
-    counters.forEach(counter => {
-        const target = +counter.getAttribute("data-target");
-        let count = 0;
-        const speed = target / 80; // adjust speed
-
-        function updateCount() {
-            count += speed;
-
-            if (count < target) {
-                counter.innerText = Math.floor(count);
-                requestAnimationFrame(updateCount);
-            } else {
-                counter.innerText = target;
-            }
-        }
-        updateCount();
-    });
-}
-
-window.addEventListener("scroll", () => {
-    const section = document.querySelector(".stats-section");
-    const sectionTop = section.getBoundingClientRect().top;
-
-    if (sectionTop < window.innerHeight - 100 && !started) {
-        started = true;
-        startCounting();
-    }
-});
-
-</script>
 
 
 
@@ -1623,8 +1562,8 @@ window.addEventListener("scroll", () => {
             <li style="--delay: 1"><a href="{% url 'main:about' %}">About Us</a></li>
             <li style="--delay: 2"><a href="{% url 'main:services' %}">Services</a></li>
             <li style="--delay: 3"><a href="{% url 'main:courses' %}">Courses</a></li>
-            <li style="--delay: 4"><a href="{% url 'main:smiles' %}">Smiles We Created</a></li>
-            <li style="--delay: 5"><a href="{% url 'main:contact' %}">Contact Us</a></li>
+            <li style="--delay: 4"><a href="{% url 'main:contact' %}">Contact Us</a></li>
+            <li style="--delay: 5"><a href="{% url 'main:smiles' %}">Sharing Love</a></li>
           </ul>
         </div>
 

@@ -1,1 +1,1 @@
-web: gunicorn SingingBallAndGongHouse.wsgi
+web: gunicorn SingingBallAndGongHouse.wsgi:application
