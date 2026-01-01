@@ -1,1 +1,1 @@
-web: gunicorn SingingBallAndGongHouse.wsgi:application
+web: python manage.py migrate && gunicorn SingingBallAndGongHouse.wsgi:application
