@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import EmailValidator, RegexValidator
+from django.core.validators import EmailValidator
 
 
 class Booking(models.Model):

@@ -139,10 +139,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = os.getenv("TIME_ZONE", "Asia/Kathmandu").strip()
 USE_I18N = True
-
 USE_TZ = True
 
 
@@ -151,15 +149,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 PORT = os.getenv("PORT", "8000")
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'main' / 'static',
-]
+# This project keeps app assets in `main/static/main/...`.
+# Django's AppDirectoriesFinder will discover those automatically, so we avoid
+# duplicating that directory here (which otherwise causes collectstatic warnings).
+STATICFILES_DIRS: list[Path] = []
 
 # Media files (User uploaded files)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -193,9 +192,6 @@ EMAIL_BACKEND = os.getenv(
 )
 
 # WhatsApp Configuration
-ADMIN_WHATSAPP_NUMBER = '+9779843213802'  # Your WhatsApp number (without spaces or dashes)
+ADMIN_WHATSAPP_NUMBER = os.getenv("ADMIN_WHATSAPP_NUMBER", "+9779843213802").strip()
 
-# Timezone
-TIME_ZONE = 'Asia/Kathmandu'
-USE_TZ = True
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
