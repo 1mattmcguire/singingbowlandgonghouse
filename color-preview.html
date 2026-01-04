@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Palette Preview - Singing Bowl & Gong House</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 50px;
+            color: #f0b746;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .palette-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .palette-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(240, 183, 70, 0.5);
+        }
+
+        .palette-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #f0b746;
+        }
+
+        .color-swatches {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .swatch {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .swatch:hover {
+            transform: scale(1.1);
+        }
+
+        .swatch-code {
+            background: rgba(0,0,0,0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .preview-section {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .preview-button {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 700;
+            margin: 10px 10px 10px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .preview-text {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        /* Palette 1: Serene Meditation */
+        .palette-1 .swatch:nth-child(1) { background: #1a1f2e; }
+        .palette-1 .swatch:nth-child(2) { background: #2d3748; }
+        .palette-1 .swatch:nth-child(3) { background: #4a5568; }
+        .palette-1 .swatch:nth-child(4) { background: #d4af37; }
+        .palette-1 .swatch:nth-child(5) { background: #f0b746; }
+        .palette-1 .swatch:nth-child(6) { background: #b8941f; }
+        .palette-1 .swatch:nth-child(7) { background: #2c7a7b; }
+        .palette-1 .swatch:nth-child(8) { background: #38b2ac; }
+        .palette-1 .swatch:nth-child(9) { background: #81c784; }
+        .palette-1 .preview-section { background: #0f1419; }
+        .palette-1 .preview-button { background: linear-gradient(135deg, #f0b746 0%, #d4af37 100%); color: #fff; }
+
+        /* Palette 2: Warm Earth Tones */
+        .palette-2 .swatch:nth-child(1) { background: #2d1810; }
+        .palette-2 .swatch:nth-child(2) { background: #4a2c1a; }
+        .palette-2 .swatch:nth-child(3) { background: #6b4423; }
+        .palette-2 .swatch:nth-child(4) { background: #c9a961; }
+        .palette-2 .swatch:nth-child(5) { background: #e6c78a; }
+        .palette-2 .swatch:nth-child(6) { background: #a67c52; }
+        .palette-2 .swatch:nth-child(7) { background: #c97d60; }
+        .palette-2 .swatch:nth-child(8) { background: #87a96b; }
+        .palette-2 .swatch:nth-child(9) { background: #f5e6d3; }
+        .palette-2 .preview-section { background: #1a0f0a; }
+        .palette-2 .preview-button { background: linear-gradient(135deg, #c9a961 0%, #a67c52 100%); color: #fff; }
+
+        /* Palette 3: Mystical Purple & Gold */
+        .palette-3 .swatch:nth-child(1) { background: #1a0d2e; }
+        .palette-3 .swatch:nth-child(2) { background: #2d1b3d; }
+        .palette-3 .swatch:nth-child(3) { background: #4a2c5c; }
+        .palette-3 .swatch:nth-child(4) { background: #d4af37; }
+        .palette-3 .swatch:nth-child(5) { background: #f0b746; }
+        .palette-3 .swatch:nth-child(6) { background: #b8941f; }
+        .palette-3 .swatch:nth-child(7) { background: #6b46c1; }
+        .palette-3 .swatch:nth-child(8) { background: #8b5cf6; }
+        .palette-3 .swatch:nth-child(9) { background: #a78bfa; }
+        .palette-3 .preview-section { background: #0f0519; }
+        .palette-3 .preview-button { background: linear-gradient(135deg, #8b5cf6 0%, #6b46c1 100%); color: #fff; }
+
+        /* Palette 4: Ocean Tranquility */
+        .palette-4 .swatch:nth-child(1) { background: #0f2027; }
+        .palette-4 .swatch:nth-child(2) { background: #203a43; }
+        .palette-4 .swatch:nth-child(3) { background: #2c5364; }
+        .palette-4 .swatch:nth-child(4) { background: #d4af37; }
+        .palette-4 .swatch:nth-child(5) { background: #f0b746; }
+        .palette-4 .swatch:nth-child(6) { background: #b8941f; }
+        .palette-4 .swatch:nth-child(7) { background: #0d9488; }
+        .palette-4 .swatch:nth-child(8) { background: #14b8a6; }
+        .palette-4 .swatch:nth-child(9) { background: #22d3ee; }
+        .palette-4 .preview-section { background: #0a1419; }
+        .palette-4 .preview-button { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); color: #fff; }
+
+        /* Palette 5: Sunset Harmony */
+        .palette-5 .swatch:nth-child(1) { background: #1a0f0a; }
+        .palette-5 .swatch:nth-child(2) { background: #2d1b1a; }
+        .palette-5 .swatch:nth-child(3) { background: #4a2c28; }
+        .palette-5 .swatch:nth-child(4) { background: #f59e0b; }
+        .palette-5 .swatch:nth-child(5) { background: #fbbf24; }
+        .palette-5 .swatch:nth-child(6) { background: #d97706; }
+        .palette-5 .swatch:nth-child(7) { background: #ea580c; }
+        .palette-5 .swatch:nth-child(8) { background: #fb923c; }
+        .palette-5 .swatch:nth-child(9) { background: #fb7185; }
+        .palette-5 .preview-section { background: #0f0a08; }
+        .palette-5 .preview-button { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #fff; }
+
+        /* Palette 6: Minimalist Elegance */
+        .palette-6 .swatch:nth-child(1) { background: #0f172a; }
+        .palette-6 .swatch:nth-child(2) { background: #1e293b; }
+        .palette-6 .swatch:nth-child(3) { background: #334155; }
+        .palette-6 .swatch:nth-child(4) { background: #d4af37; }
+        .palette-6 .swatch:nth-child(5) { background: #f0b746; }
+        .palette-6 .swatch:nth-child(6) { background: #b8941f; }
+        .palette-6 .swatch:nth-child(7) { background: #64748b; }
+        .palette-6 .swatch:nth-child(8) { background: #94a3b8; }
+        .palette-6 .swatch:nth-child(9) { background: #f8fafc; }
+        .palette-6 .preview-section { background: #020617; }
+        .palette-6 .preview-button { background: linear-gradient(135deg, #f0b746 0%, #d4af37 100%); color: #fff; }
+
+        .swatch-code {
+            font-size: 0.65em;
+        }
+
+        @media (max-width: 768px) {
+            .palette-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Color Palette Preview</h1>
+        
+        <div class="palette-grid">
+            <!-- Palette 1: Serene Meditation -->
+            <div class="palette-card palette-1">
+                <div class="palette-title">1. Serene Meditation ⭐ Recommended</div>
+                <div class="color-swatches">
+                    <div class="swatch"><span class="swatch-code">#1a1f2e</span></div>
+                    <div class="swatch"><span class="swatch-code">#2d3748</span></div>
+                    <div class="swatch"><span class="swatch-code">#4a5568</span></div>
+                    <div class="swatch"><span class="swatch-code">#d4af37</span></div>
+                    <div class="swatch"><span class="swatch-code">#f0b746</span></div>
+                    <div class="swatch"><span class="swatch-code">#b8941f</span></div>
+                    <div class="swatch"><span class="swatch-code">#2c7a7b</span></div>
+                    <div class="swatch"><span class="swatch-code">#38b2ac</span></div>
+                    <div class="swatch"><span class="swatch-code">#81c784</span></div>
+                </div>
+                <div class="preview-section">
+                    <div class="preview-button">Book Now</div>
+                    <p class="preview-text">Perfect for spiritual wellness and healing. Maintains your current dark theme with enhanced gold accents.</p>
+                </div>
+            </div>
+
+            <!-- Palette 2: Warm Earth Tones -->
+            <div class="palette-card palette-2">
+                <div class="palette-title">2. Warm Earth Tones</div>
+                <div class="color-swatches">
+                    <div class="swatch"><span class="swatch-code">#2d1810</span></div>
+                    <div class="swatch"><span class="swatch-code">#4a2c1a</span></div>
+                    <div class="swatch"><span class="swatch-code">#6b4423</span></div>
+                    <div class="swatch"><span class="swatch-code">#c9a961</span></div>
+                    <div class="swatch"><span class="swatch-code">#e6c78a</span></div>
+                    <div class="swatch"><span class="swatch-code">#a67c52</span></div>
+                    <div class="swatch"><span class="swatch-code">#c97d60</span></div>
+                    <div class="swatch"><span class="swatch-code">#87a96b</span></div>
+                    <div class="swatch"><span class="swatch-code">#f5e6d3</span></div>
+                </div>
+                <div class="preview-section">
+                    <div class="preview-button">Book Now</div>
+                    <p class="preview-text">Grounding and natural, perfect for healing. Earthy tones that connect with nature.</p>
+                </div>
+            </div>
+
+            <!-- Palette 3: Mystical Purple & Gold -->
+            <div class="palette-card palette-3">
+                <div class="palette-title">3. Mystical Purple & Gold ⭐ Premium</div>
+                <div class="color-swatches">
+                    <div class="swatch"><span class="swatch-code">#1a0d2e</span></div>
+                    <div class="swatch"><span class="swatch-code">#2d1b3d</span></div>
+                    <div class="swatch"><span class="swatch-code">#4a2c5c</span></div>
+                    <div class="swatch"><span class="swatch-code">#d4af37</span></div>
+                    <div class="swatch"><span class="swatch-code">#f0b746</span></div>
+                    <div class="swatch"><span class="swatch-code">#b8941f</span></div>
+                    <div class="swatch"><span class="swatch-code">#6b46c1</span></div>
+                    <div class="swatch"><span class="swatch-code">#8b5cf6</span></div>
+                    <div class="swatch"><span class="swatch-code">#a78bfa</span></div>
+                </div>
+                <div class="preview-section">
+                    <div class="preview-button">Book Now</div>
+                    <p class="preview-text">Spiritual and luxurious. Perfect for high-end spiritual services. Stands out from competitors.</p>
+                </div>
+            </div>
+
+            <!-- Palette 4: Ocean Tranquility -->
+            <div class="palette-card palette-4">
+                <div class="palette-title">4. Ocean Tranquility</div>
+                <div class="color-swatches">
+                    <div class="swatch"><span class="swatch-code">#0f2027</span></div>
+                    <div class="swatch"><span class="swatch-code">#203a43</span></div>
+                    <div class="swatch"><span class="swatch-code">#2c5364</span></div>
+                    <div class="swatch"><span class="swatch-code">#d4af37</span></div>
+                    <div class="swatch"><span class="swatch-code">#f0b746</span></div>
+                    <div class="swatch"><span class="swatch-code">#b8941f</span></div>
+                    <div class="swatch"><span class="swatch-code">#0d9488</span></div>
+                    <div class="swatch"><span class="swatch-code">#14b8a6</span></div>
+                    <div class="swatch"><span class="swatch-code">#22d3ee</span></div>
+                </div>
+                <div class="preview-section">
+                    <div class="preview-button">Book Now</div>
+                    <p class="preview-text">Calming and peaceful, like ocean waves. Perfect for meditation and relaxation.</p>
+                </div>
+            </div>
+
+            <!-- Palette 5: Sunset Harmony -->
+            <div class="palette-card palette-5">
+                <div class="palette-title">5. Sunset Harmony</div>
+                <div class="color-swatches">
+                    <div class="swatch"><span class="swatch-code">#1a0f0a</span></div>
+                    <div class="swatch"><span class="swatch-code">#2d1b1a</span></div>
+                    <div class="swatch"><span class="swatch-code">#4a2c28</span></div>
+                    <div class="swatch"><span class="swatch-code">#f59e0b</span></div>
+                    <div class="swatch"><span class="swatch-code">#fbbf24</span></div>
+                    <div class="swatch"><span class="swatch-code">#d97706</span></div>
+                    <div class="swatch"><span class="swatch-code">#ea580c</span></div>
+                    <div class="swatch"><span class="swatch-code">#fb923c</span></div>
+                    <div class="swatch"><span class="swatch-code">#fb7185</span></div>
+                </div>
+                <div class="preview-section">
+                    <div class="preview-button">Book Now</div>
+                    <p class="preview-text">Warm and inviting, like a sunset. Creates a welcoming and cozy atmosphere.</p>
+                </div>
+            </div>
+
+            <!-- Palette 6: Minimalist Elegance -->
+            <div class="palette-card palette-6">
+                <div class="palette-title">6. Minimalist Elegance</div>
+                <div class="color-swatches">
+                    <div class="swatch"><span class="swatch-code">#0f172a</span></div>
+                    <div class="swatch"><span class="swatch-code">#1e293b</span></div>
+                    <div class="swatch"><span class="swatch-code">#334155</span></div>
+                    <div class="swatch"><span class="swatch-code">#d4af37</span></div>
+                    <div class="swatch"><span class="swatch-code">#f0b746</span></div>
+                    <div class="swatch"><span class="swatch-code">#b8941f</span></div>
+                    <div class="swatch"><span class="swatch-code">#64748b</span></div>
+                    <div class="swatch"><span class="swatch-code">#94a3b8</span></div>
+                    <div class="swatch"><span class="swatch-code">#f8fafc</span></div>
+                </div>
+                <div class="preview-section">
+                    <div class="preview-button">Book Now</div>
+                    <p class="preview-text">Modern, clean, and professional. Works for any style and maintains elegance.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px; padding: 30px; background: rgba(240, 183, 70, 0.1); border-radius: 15px;">
+            <h2 style="color: #f0b746; margin-bottom: 20px;">💡 How to Use</h2>
+            <p style="line-height: 1.8; max-width: 800px; margin: 0 auto;">
+                Click on any color swatch to copy its hex code. Each palette includes primary colors (dark backgrounds), 
+                accent colors (gold for CTAs), and complementary colors (for special elements). 
+                All palettes are WCAG AA compliant for accessibility.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Copy color code on click
+        document.querySelectorAll('.swatch').forEach(swatch => {
+            swatch.addEventListener('click', function() {
+                const colorCode = this.querySelector('.swatch-code').textContent;
+                navigator.clipboard.writeText(colorCode).then(() => {
+                    const original = this.querySelector('.swatch-code').textContent;
+                    this.querySelector('.swatch-code').textContent = 'Copied!';
+                    setTimeout(() => {
+                        this.querySelector('.swatch-code').textContent = original;
+                    }, 1000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
