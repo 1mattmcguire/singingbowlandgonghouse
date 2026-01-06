@@ -3,95 +3,140 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Book Your Session | Singing Bowl & Gong House</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Booking - Singing Bowl &amp; Gong House</title>
 
-  <link rel="icon" type="image/jpeg" href="{% static 'main/images/logo.jpg' %}">
-  <link rel="shortcut icon" type="image/jpeg" href="{% static 'main/images/logo.jpg' %}">
-  <link rel="apple-touch-icon" href="{% static 'main/images/logo.jpg' %}">
-
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="icon" href="{% static 'main/images/logo.jpg' %}">
   <link rel="stylesheet" href="{% static 'main/css/header.css' %}">
   <link rel="stylesheet" href="{% static 'main/css/footer.css' %}">
   <link rel="stylesheet" href="{% static 'main/css/booking.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <script src="{% static 'main/js/api.js' %}"></script>
-  <script src="{% static 'main/js/booking-modal.js' %}"></script>
+  <style>
+    body { background: #f7f7fb; }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    }
+    label { font-weight: 600; margin-bottom: 6px; display: block; }
+    button {
+      background: #d4af37;
+      color: #fff;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover { opacity: 0.9; }
+    .error { color: #e74c3c; font-size: 14px; }
+    .success { background: #d4edda; color: #155724; padding: 12px; border-radius: 8px; }
+  </style>
 </head>
+
 <body>
-  <!-- Header -->
-  <header class="header" id="header">
+
+  <!-- HEADER -->
+  <header class="header">
     <div class="logo">
-      <img src="{% static 'main/images/logo.jpg' %}" alt="Singing Bowl & Gong House Logo">
-      <span class="logo-text">Singing Bowl & Gong House</span>
-    </div>
-
-    <nav class="nav">
-      <ul class="nav-list" id="nav-list">
-        <li><a href="{% url 'main:home' %}">HOME</a></li>
-        <li><a href="{% url 'main:about' %}">ABOUT</a></li>
-        <li><a href="{% url 'main:services' %}">SERVICES</a></li>
-        <li><a href="{% url 'main:courses' %}">COURSES</a></li>
-        <li><a href="{% url 'main:smiles' %}">SMILES</a></li>
-        <li><a href="{% url 'main:contact' %}">CONTACT</a></li>
-      </ul>
-    </nav>
-
-    <div style="display: flex; align-items: center; gap: 15px;">
-      <a href="#" class="book-btn desktop-book" onclick="openBookingModal(); return false;">Book Now</a>
-    </div>
-
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
+      <img src="{% static 'main/images/logo.jpg' %}" alt="Logo">
+      <span>Singing Bowl & Gong House</span>
     </div>
   </header>
 
-  <!-- Simple content -->
-  <main style="min-height: 70vh; display: grid; place-items: center; padding: 48px 16px; background: #f7f7fb;">
-    <div style="max-width: 780px; width: 100%; background: white; border-radius: 16px; padding: 28px; box-shadow: 0 12px 40px rgba(0,0,0,0.12);">
-      <h1 style="font-family: 'Playfair Display', serif; margin: 0 0 10px;">Booking</h1>
-      <p style="margin: 0 0 18px; color: #444; line-height: 1.6;">
-        Click below to book a Sound Healing Session or enroll in Courses &amp; Trainings. We’ll contact you within 24 hours.
-      </p>
-      <a href="#" class="book-btn" onclick="openBookingModal(); return false;" style="display: inline-block;">Open Booking Form</a>
-    </div>
-  </main>
+  <!-- CONTENT -->
+  <div class="container">
+    <h1 style="text-align:center;">Book Your Session</h1>
+    <p style="text-align:center;">
+      Fill out the form below and we will contact you within 24 hours.
+    </p>
 
-  <script>
-    // Mobile menu toggle
-    document.getElementById("hamburger").addEventListener("click", function () {
-      const navList = document.getElementById("nav-list");
-      const isOpen = navList.classList.contains("show");
-      navList.classList.toggle("show");
-      this.classList.toggle("active");
-      document.body.classList.toggle("menu-open", !isOpen);
-    });
+    <!-- DJANGO MESSAGES -->
+    {% if messages %}
+      {% for message in messages %}
+        <div class="success">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
 
-    // Auto-open booking modal on page load
-    window.addEventListener("load", function () {
-      if (typeof window.openBookingModal === "function") {
-        window.openBookingModal();
-      }
-    });
-  </script>
+    <!-- NON FIELD ERRORS -->
+    {% if form.non_field_errors %}
+      <div class="error">{{ form.non_field_errors }}</div>
+    {% endif %}
 
-  <!-- Footer (lightweight) -->
-  <footer class="footer" id="footer">
-    <div class="footer-container">
-      <div class="footer-bottom">
-        <p>
-          Copyright &copy; <span id="current-year">2024</span> Singing Bowl &amp; Gong House. All rights reserved.
-        </p>
+    <!-- BOOKING FORM -->
+    <form method="POST" action="{% url 'main:booking' %}">
+      {% csrf_token %}
+
+      <div>
+        <label>Full Name *</label>
+        {{ form.name }}
+        <div class="error">{{ form.name.errors }}</div>
       </div>
-    </div>
+
+      <div>
+        <label>Email *</label>
+        {{ form.email }}
+        <div class="error">{{ form.email.errors }}</div>
+      </div>
+
+      <div>
+        <label>Phone *</label>
+        {{ form.phone }}
+        <div class="error">{{ form.phone.errors }}</div>
+      </div>
+
+      <div>
+        <label>Service *</label>
+        {{ form.service }}
+        <div class="error">{{ form.service.errors }}</div>
+      </div>
+
+      <div>
+        <label>Preferred Date *</label>
+        {{ form.booking_date }}
+        <div class="error">{{ form.booking_date.errors }}</div>
+      </div>
+
+      <div>
+        <label>Age</label>
+        {{ form.age }}
+      </div>
+
+      <div>
+        <label>Session Type</label>
+        {{ form.session_type }}
+      </div>
+
+      <div>
+        <label>Course Selection</label>
+        {{ form.course_selection }}
+      </div>
+
+      <div>
+        <label>Medical Condition</label>
+        {{ form.medical_condition }}
+      </div>
+
+      <div>
+        <label>Message</label>
+        {{ form.message }}
+      </div>
+
+      <br>
+      <button type="submit">Submit Booking</button>
+    </form>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p style="text-align:center;">
+      © {{ now|date:"Y" }} Singing Bowl & Gong House
+    </p>
   </footer>
-  <script>
-    const yearEl = document.getElementById("current-year");
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
-  </script>
+
 </body>
 </html>
-

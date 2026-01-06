@@ -16,7 +16,6 @@ urlpatterns = [
     # API endpoints
     path('api/bookings/public/', views.api_booking, name='api_booking'),
     path('api/contact/', views.api_inquiry, name='api_inquiry'),
-    path('test-email/', views.test_email, name='test_email'),
 ]
 
 

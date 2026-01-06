@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from django.conf import settings
-from django.core.mail import send_mail
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+import json
+import logging
 
 from .forms import InquiryForm, BookingForm
 from .models import Inquiry, Booking
+from .email_service import send_booking_emails
+
+logger = logging.getLogger(__name__)
 
 
 # =========================
@@ -44,39 +48,7 @@ def contact(request):
     if request.method == "POST":
         form = InquiryForm(request.POST)
         if form.is_valid():
-            inquiry = form.save()
-
-            # User email
-            send_mail(
-                subject="Thank you for contacting Singing Bowl & Gong House",
-                message=f"""
-Dear {inquiry.name},
-
-Thank you for contacting Singing Bowl & Gong House.
-We will get back to you within 24 hours.
-
-Best regards,
-Singing Bowl & Gong House
-""",
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[inquiry.email],
-                fail_silently=False,
-            )
-
-            # Admin email
-            send_mail(
-                subject=f"New Inquiry from {inquiry.name}",
-                message=f"""
-Name: {inquiry.name}
-Email: {inquiry.email}
-Message:
-{inquiry.message}
-""",
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[settings.ADMIN_EMAIL],
-                fail_silently=False,
-            )
-
+            form.save()
             messages.success(request, "Your inquiry has been sent successfully.")
             return redirect("main:success")
     else:
@@ -86,34 +58,31 @@ Message:
 
 
 # =========================
-# BOOKING
+# BOOKING (FORM)
 # =========================
 
+
+
 def booking(request):
+    print("🔔 BOOKING VIEW HIT:", request.method)
     if request.method == "POST":
         form = BookingForm(request.POST)
         if form.is_valid():
             booking = form.save()
 
-            # User email
-            send_mail(
-                subject="Booking Confirmation",
-                message="Thank you for your booking with Singing Bowl & Gong House.",
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[booking.email],
-                fail_silently=False,
-            )
+            try:
+                send_booking_emails(booking)
+                messages.success(
+                    request,
+                    "Your booking has been submitted. You will receive a confirmation email shortly."
+                )
+            except Exception as e:
+                logger.error(f"Email error: {str(e)}")
+                messages.success(
+                    request,
+                    "Your booking was submitted. Email confirmation may be delayed."
+                )
 
-            # Admin email
-            send_mail(
-                subject="New Booking Received",
-                message=f"New booking from {booking.name}",
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[settings.ADMIN_EMAIL],
-                fail_silently=False,
-            )
-
-            messages.success(request, "Your booking has been submitted.")
             return redirect("main:success")
     else:
         form = BookingForm()
@@ -122,23 +91,62 @@ def booking(request):
 
 
 # =========================
-# API ENDPOINTS
+# API BOOKING (AJAX)
 # =========================
 
+@csrf_exempt
 def api_booking(request):
-    return JsonResponse({"status": "ok"})
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
+    try:
+        data = json.loads(request.body) if request.content_type == "application/json" else request.POST.dict()
+
+        form_data = {
+            "name": data.get("full_name") or data.get("name"),
+            "email": data.get("email"),
+            "phone": data.get("phone"),
+            "service": data.get("service_type") or data.get("service"),
+            "booking_date": data.get("preferred_date") or data.get("booking_date"),
+            "age": data.get("age"),
+            "session_type": data.get("session_type"),
+            "course_selection": data.get("course_selection"),
+            "medical_condition": data.get("medical_condition"),
+            "message": data.get("message", ""),
+        }
+
+        form_data = {k: v for k, v in form_data.items() if v is not None}
+
+        form = BookingForm(form_data)
+
+        if form.is_valid():
+            booking = form.save()
+
+            user_sent, admin_sent = send_booking_emails(booking)
+
+            logger.info(
+                f"Booking #{booking.id} email status → user={user_sent}, admin={admin_sent}"
+            )
+
+            return JsonResponse({
+                "status": "success",
+                "message": "Booking submitted successfully.",
+                "booking_id": booking.id
+            })
+
+        return JsonResponse({
+            "status": "error",
+            "errors": form.errors,
+            "message": "Validation failed"
+        }, status=400)
+
+    except Exception as e:
+        logger.exception("Booking API error")
+        return JsonResponse({
+            "status": "error",
+            "message": "Server error"
+        }, status=500)
 
 
 def api_inquiry(request):
     return JsonResponse({"status": "ok"})
-
-
-def test_email(request):
-    send_mail(
-        "Test Email",
-        "This is a test email.",
-        settings.DEFAULT_FROM_EMAIL,
-        [settings.ADMIN_EMAIL],
-        fail_silently=False,
-    )
-    return JsonResponse({"status": "email sent"})

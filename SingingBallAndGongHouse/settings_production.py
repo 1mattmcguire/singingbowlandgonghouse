@@ -131,31 +131,46 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+# ============================
+# Email Configuration (SMTP)
+# ============================
+# Configure SMTP settings via environment variables
+# Example for Gmail: EMAIL_HOST=smtp.gmail.com EMAIL_PORT=587 EMAIL_USE_TLS=1
+# Example for custom SMTP: EMAIL_HOST=smtp.yourdomain.com EMAIL_PORT=587
 
-SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-EMAIL_HOST = "smtp.sendgrid.net"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+# SMTP server configuration (required in production)
+EMAIL_HOST = os.getenv("EMAIL_HOST", "").strip()
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "1") == "1"
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "0") == "1"
 
-EMAIL_HOST_USER = "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"
-EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+# SMTP authentication (required in production)
+# SMTP authentication (required)
+EMAIL_HOST_USER = os.getenv("singingbowlandgonghouse@gmail.com", "").strip()
+EMAIL_HOST_PASSWORD = os.getenv("mdkyqiwaqorlpjwh", "").strip()
 
+# Email addresses
 DEFAULT_FROM_EMAIL = os.getenv(
     "DEFAULT_FROM_EMAIL",
     "singingbowlandgonghouse@gmail.com"
-)
+).strip()
 
 ADMIN_EMAIL = os.getenv(
     "ADMIN_EMAIL",
-    "singingbowlandgonghouse@gmail.com"
-)
+    DEFAULT_FROM_EMAIL
+).strip()
 
-BOOKING_RECEIVER_EMAIL = os.getenv(
-    "BOOKING_RECEIVER_EMAIL",
-    ADMIN_EMAIL
-)
+# Validate required email settings in production
+if not EMAIL_HOST:
+    raise ImproperlyConfigured(
+        "EMAIL_HOST environment variable is required in production."
+    )
+if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
+    raise ImproperlyConfigured(
+        "EMAIL_HOST_USER and EMAIL_HOST_PASSWORD environment variables are required in production."
+    )
 
 # WhatsApp Configuration
 ADMIN_WHATSAPP_NUMBER = os.getenv("ADMIN_WHATSAPP_NUMBER", "+9779843213802").strip()

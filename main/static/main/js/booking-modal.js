@@ -546,16 +546,47 @@ function handleBookingSubmit(e) {
     // Reset submitting flag
     console.warn('API utilities not loaded; using direct fetch fallback:', fallbackEndpoint);
 
+    // Get CSRF token
+    function getCsrfToken() {
+      const name = 'csrftoken';
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    const csrfToken = getCsrfToken();
+    const headers = { 'Content-Type': 'application/json' };
+    if (csrfToken) {
+      headers['X-CSRFToken'] = csrfToken;
+    }
+
     fetch(fallbackEndpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: headers,
       body: JSON.stringify(fallbackPayload),
     })
       .then(async (res) => {
         const data = await res.json().catch(() => ({}));
         if (!res.ok) {
-          const msg = data.error || data.message || 'Booking failed. Please try again.';
-          throw new Error(msg);
+          // Handle validation errors
+          let errorMsg = data.message || data.error || 'Booking failed. Please try again.';
+          if (data.errors) {
+            // Format validation errors
+            const errorList = Object.entries(data.errors)
+              .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(', ') : errors}`)
+              .join('\n');
+            errorMsg = `Validation errors:\n${errorList}`;
+          }
+          throw new Error(errorMsg);
         }
         return data;
       })

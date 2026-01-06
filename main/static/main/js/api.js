@@ -37,6 +37,32 @@ function isAuthenticated() {
 }
 
 /**
+ * Get CSRF token from cookies
+ */
+function getCsrfToken() {
+    const name = 'csrftoken';
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    // Fallback: try to get from meta tag if available
+    if (!cookieValue) {
+        const metaTag = document.querySelector('meta[name="csrf-token"]');
+        if (metaTag) {
+            cookieValue = metaTag.getAttribute('content');
+        }
+    }
+    return cookieValue;
+}
+
+/**
  * Generic API request function
  */
 async function apiRequest(endpoint, method = 'GET', data = null, requiresAuth = false) {
@@ -48,6 +74,14 @@ async function apiRequest(endpoint, method = 'GET', data = null, requiresAuth = 
             'Content-Type': 'application/json',
         },
     };
+
+    // Add CSRF token for POST/PUT/PATCH/DELETE requests
+    if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
+        const csrfToken = getCsrfToken();
+        if (csrfToken) {
+            options.headers['X-CSRFToken'] = csrfToken;
+        }
+    }
 
     // Add authentication token if required
     if (requiresAuth) {
@@ -190,17 +224,19 @@ async function submitBooking(bookingData) {
             }
         }
         
-        const apiData = {
-            service_type: serviceType,
-            enrollment_date: bookingData.preferredDate,
-            full_name: bookingData.fullName,
-            email: bookingData.email,
-            phone: bookingData.phone,
-            age: parseInt(bookingData.age) || null,
-            session_type: bookingData.sessionType || null,
-            course_selection: bookingData.courseSelection || null,
-            medical_condition: bookingData.medicalCondition || null,
-        };
+    const apiData = {
+    name: bookingData.fullName,
+    email: bookingData.email,
+    phone: bookingData.phone,
+    service: serviceType,
+    booking_date: bookingData.preferredDate,   // ✅ THIS FIXES THE ERROR
+    age: parseInt(bookingData.age) || null,
+    session_type: bookingData.sessionType || null,
+    course_selection: bookingData.courseSelection || null,
+    medical_condition: bookingData.medicalCondition || null,
+    message: bookingData.message || "",
+};
+
 
         // Use public endpoint (no authentication required)
         // This allows users to book without logging in
