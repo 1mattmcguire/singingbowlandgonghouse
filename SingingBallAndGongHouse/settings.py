@@ -37,7 +37,8 @@ SECRET_KEY = os.getenv("SECRET_KEY", "").strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Set via environment variable: DEBUG=1/0
-DEBUG = _env_bool("DEBUG", "1")
+# Default to False for production safety (override locally with DEBUG=1)
+DEBUG = _env_bool("DEBUG", "0")
 
 if not SECRET_KEY:
     if DEBUG:
@@ -110,14 +111,26 @@ WSGI_APPLICATION = 'SingingBallAndGongHouse.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# - Production (Render): use PostgreSQL via DATABASE_URL
+# - Local dev fallback: SQLite
+DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
+if DATABASE_URL:
+    import dj_database_url
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=int(os.getenv("CONN_MAX_AGE", "600")),
+            ssl_require=not DEBUG,
+        )
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 # Password validation
@@ -154,7 +167,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'main' / 'static']
+# Render-friendly: keep an explicit project-level /static directory (can be empty).
+# App static (main/static/...) is still discovered automatically by AppDirectoriesFinder.
+STATICFILES_DIRS = [BASE_DIR / 'static']
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Media files (User uploaded files)
@@ -192,3 +207,16 @@ ADMIN_EMAIL = os.getenv(
 
 # WhatsApp Configuration
 ADMIN_WHATSAPP_NUMBER = os.getenv("ADMIN_WHATSAPP_NUMBER", "+9779843213802").strip()
+
+# Security (recommended when DEBUG=False)
+if not DEBUG:
+    SECURE_SSL_REDIRECT = _env_bool("SECURE_SSL_REDIRECT", "1")
+    SESSION_COOKIE_SECURE = _env_bool("SESSION_COOKIE_SECURE", "1")
+    CSRF_COOKIE_SECURE = _env_bool("CSRF_COOKIE_SECURE", "1")
+
+    # Render/HTTPS proxy awareness
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+    # CSRF trusted origins (comma-separated)
+    # Example: CSRF_TRUSTED_ORIGINS=https://your-service.onrender.com,https://www.yourdomain.com
+    CSRF_TRUSTED_ORIGINS = _env_csv("CSRF_TRUSTED_ORIGINS")
