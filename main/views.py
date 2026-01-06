@@ -4,12 +4,24 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import json
 import logging
+from threading import Thread
 
 from .forms import InquiryForm, BookingForm
 from .models import Inquiry, Booking
 from .email_service import send_booking_emails
 
 logger = logging.getLogger(__name__)
+
+
+# =========================
+# ASYNC EMAIL HANDLER
+# =========================
+
+def send_emails_async(booking):
+    try:
+        send_booking_emails(booking)
+    except Exception as e:
+        logger.error(f"Async email failed for booking {booking.id}: {e}")
 
 
 # =========================
@@ -61,27 +73,23 @@ def contact(request):
 # BOOKING (FORM)
 # =========================
 
-
-
 def booking(request):
-    print("🔔 BOOKING VIEW HIT:", request.method)
     if request.method == "POST":
         form = BookingForm(request.POST)
         if form.is_valid():
             booking = form.save()
 
-            try:
-                send_booking_emails(booking)
-                messages.success(
-                    request,
-                    "Your booking has been submitted. You will receive a confirmation email shortly."
-                )
-            except Exception as e:
-                logger.error(f"Email error: {str(e)}")
-                messages.success(
-                    request,
-                    "Your booking was submitted. Email confirmation may be delayed."
-                )
+            # 🔥 NON-BLOCKING EMAIL
+            Thread(
+                target=send_emails_async,
+                args=(booking,),
+                daemon=True
+            ).start()
+
+            messages.success(
+                request,
+                "Your booking has been submitted. You will receive a confirmation email shortly."
+            )
 
             return redirect("main:success")
     else:
@@ -115,30 +123,31 @@ def api_booking(request):
             "message": data.get("message", ""),
         }
 
-        form_data = {k: v for k, v in form_data.items() if v is not None}
+        form_data = {k: v for k, v in form_data.items() if v not in [None, ""]}
 
         form = BookingForm(form_data)
 
-        if form.is_valid():
-            booking = form.save()
-
-            user_sent, admin_sent = send_booking_emails(booking)
-
-            logger.info(
-                f"Booking #{booking.id} email status → user={user_sent}, admin={admin_sent}"
-            )
-
+        if not form.is_valid():
             return JsonResponse({
-                "status": "success",
-                "message": "Booking submitted successfully.",
-                "booking_id": booking.id
-            })
+                "status": "error",
+                "errors": form.errors,
+                "message": "Validation failed"
+            }, status=400)
+
+        booking = form.save()
+
+        # 🔥 NON-BLOCKING EMAIL
+        Thread(
+            target=send_emails_async,
+            args=(booking,),
+            daemon=True
+        ).start()
 
         return JsonResponse({
-            "status": "error",
-            "errors": form.errors,
-            "message": "Validation failed"
-        }, status=400)
+            "status": "success",
+            "message": "Booking submitted successfully.",
+            "booking_id": booking.id
+        })
 
     except Exception as e:
         logger.exception("Booking API error")
