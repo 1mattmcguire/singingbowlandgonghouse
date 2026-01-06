@@ -152,28 +152,29 @@ import os
 # ============================
 # Email Configuration (SendGrid SMTP)
 # ============================
+import os
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
-EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
-EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS") == "1"
-EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL") == "1"
-
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")  # MUST be 'apikey'
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")  # SendGrid key
-
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
-ADMIN_EMAIL = DEFAULT_FROM_EMAIL
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
 
-# Safety checks
-if not all([
-    EMAIL_HOST,
-    EMAIL_HOST_USER,
-    EMAIL_HOST_PASSWORD,
-    DEFAULT_FROM_EMAIL,
-]):
-    raise ImproperlyConfigured("Email environment variables not set")
+# SendGrid API settings
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+
+DEFAULT_FROM_EMAIL = os.getenv(
+    "DEFAULT_FROM_EMAIL",
+    "healing@singingbowlandgonghouse.com"
+)
+
+ADMIN_EMAIL = os.getenv(
+    "ADMIN_EMAIL",
+    DEFAULT_FROM_EMAIL
+)
+
+
+
+
+
 
 
 
