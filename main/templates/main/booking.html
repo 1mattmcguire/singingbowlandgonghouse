@@ -32,7 +32,10 @@
       border-radius: 8px;
       cursor: pointer;
     }
-    button:hover { opacity: 0.9; }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
     .error { color: #e74c3c; font-size: 14px; }
     .success { background: #d4edda; color: #155724; padding: 12px; border-radius: 8px; }
   </style>
@@ -55,21 +58,8 @@
       Fill out the form below and we will contact you within 24 hours.
     </p>
 
-    <!-- DJANGO MESSAGES -->
-    {% if messages %}
-      {% for message in messages %}
-        <div class="success">{{ message }}</div>
-      {% endfor %}
-    {% endif %}
-
-    <!-- NON FIELD ERRORS -->
-    {% if form.non_field_errors %}
-      <div class="error">{{ form.non_field_errors }}</div>
-    {% endif %}
-
-    <!-- BOOKING FORM -->
-    <form method="POST" action="{% url 'main:booking' %}">
-      {% csrf_token %}
+    <!-- BOOKING FORM (JS ONLY) -->
+    <form id="booking-form">
 
       <div>
         <label>Full Name *</label>
@@ -127,7 +117,11 @@
       </div>
 
       <br>
-      <button type="submit">Submit Booking</button>
+
+      <button type="submit" id="booking-submit">
+        Submit Booking
+      </button>
+
     </form>
   </div>
 
@@ -137,6 +131,45 @@
       © {{ now|date:"Y" }} Singing Bowl & Gong House
     </p>
   </footer>
+
+  <!-- ✅ SAFE JAVASCRIPT -->
+  <script>
+    (function () {
+      const form = document.getElementById("booking-form");
+      const button = document.getElementById("booking-submit");
+
+      if (!form) return;
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); // 🛑 stop page reload
+
+        button.disabled = true;
+        button.innerText = "Submitting...";
+
+        const formData = new FormData(form);
+
+        fetch("/api/bookings/public/", {
+          method: "POST",
+          body: formData,
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === "success") {
+            window.location.href = "/success/";
+          } else {
+            alert("Please check the form and try again.");
+            button.disabled = false;
+            button.innerText = "Submit Booking";
+          }
+        })
+        .catch(() => {
+          alert("Server error. Please try later.");
+          button.disabled = false;
+          button.innerText = "Submit Booking";
+        });
+      });
+    })();
+  </script>
 
 </body>
 </html>
