@@ -13,9 +13,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from django.core.exceptions import ImproperlyConfigured
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+# Load environment variables from .env
+load_dotenv(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -47,16 +49,20 @@ if not SECRET_KEY:
 # Hosts (comma-separated): ALLOWED_HOSTS=example.com,www.example.com
 ALLOWED_HOSTS = _env_csv("ALLOWED_HOSTS")
 
-# Render sets RENDER_EXTERNAL_HOSTNAME; auto-allow it to avoid DisallowedHost on deploy.
+# Auto-allow Render hostname
 render_hostname = os.getenv("RENDER_EXTERNAL_HOSTNAME", "").strip()
 if render_hostname:
     ALLOWED_HOSTS = list(dict.fromkeys([*ALLOWED_HOSTS, render_hostname]))
 
+# Local fallback
 if not ALLOWED_HOSTS:
     ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
-    if not DEBUG and not render_hostname:
-        raise ImproperlyConfigured("ALLOWED_HOSTS environment variable is required when DEBUG=False.")
 
+# Production safety
+if not DEBUG and not ALLOWED_HOSTS:
+    raise ImproperlyConfigured(
+        "ALLOWED_HOSTS environment variable is required when DEBUG=False."
+    )
 
 
 # Application definition
@@ -160,20 +166,29 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email Configuration for Render
-# Use environment variables for security (credentials not committed to git)
-# Required environment variables in Render:
-# - EMAIL_HOST_USER=singingbowlandgonghouse@gmail.com
-# - EMAIL_HOST_PASSWORD=<gmail-app-password>  # NOT your regular Gmail password!
+# ============================
+# Email Configuration (SendGrid SMTP)
+# ============================
+
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.sendgrid.net")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "1") == "1"
+
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", EMAIL_HOST_USER).strip() if EMAIL_HOST_USER else ""
-EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "10"))
+
+DEFAULT_FROM_EMAIL = os.getenv(
+    "DEFAULT_FROM_EMAIL",
+    "healing@singingballandgonghouse.com"
+)
+
+ADMIN_EMAIL = os.getenv(
+    "ADMIN_EMAIL",
+    DEFAULT_FROM_EMAIL
+)
+
 
 # WhatsApp Configuration
 ADMIN_WHATSAPP_NUMBER = os.getenv("ADMIN_WHATSAPP_NUMBER", "+9779843213802").strip()

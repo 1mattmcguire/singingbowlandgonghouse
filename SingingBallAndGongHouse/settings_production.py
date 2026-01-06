@@ -131,16 +131,31 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email Configuration
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+
+EMAIL_HOST = "smtp.sendgrid.net"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", EMAIL_HOST_USER).strip() if EMAIL_HOST_USER else ""
-EMAIL_TIMEOUT = 10
+
+EMAIL_HOST_USER = "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"
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+
+DEFAULT_FROM_EMAIL = os.getenv(
+    "DEFAULT_FROM_EMAIL",
+    "singingbowlandgonghouse@gmail.com"
+)
+
+ADMIN_EMAIL = os.getenv(
+    "ADMIN_EMAIL",
+    "singingbowlandgonghouse@gmail.com"
+)
+
+BOOKING_RECEIVER_EMAIL = os.getenv(
+    "BOOKING_RECEIVER_EMAIL",
+    ADMIN_EMAIL
+)
 
 # WhatsApp Configuration
 ADMIN_WHATSAPP_NUMBER = os.getenv("ADMIN_WHATSAPP_NUMBER", "+9779843213802").strip()
