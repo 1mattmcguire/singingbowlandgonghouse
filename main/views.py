@@ -18,10 +18,16 @@ logger = logging.getLogger(__name__)
 # =========================
 
 def send_emails_async(booking):
+    """
+    Wrapper to safely send emails in a background thread.
+    Any exception will be logged and NOT crash Gunicorn.
+    """
     try:
+        logger.error("🔥 send_emails_async() started")
         send_booking_emails(booking)
+        logger.error("✅ send_emails_async() finished")
     except Exception as e:
-        logger.error(f"Async email failed for booking {booking.id}: {e}")
+        logger.exception(f"❌ Async email failed for booking {booking.id}")
 
 
 # =========================
@@ -70,12 +76,17 @@ def contact(request):
 
 
 # =========================
-# BOOKING (FORM)
+# BOOKING (HTML FORM)
 # =========================
 
 def booking(request):
+    """
+    Normal Django form booking (non-AJAX).
+    Email is sent asynchronously so the page never hangs.
+    """
     if request.method == "POST":
         form = BookingForm(request.POST)
+
         if form.is_valid():
             booking = form.save()
 
@@ -104,11 +115,19 @@ def booking(request):
 
 @csrf_exempt
 def api_booking(request):
+    """
+    AJAX booking endpoint.
+    Used by JS-based booking form.
+    """
     if request.method != "POST":
         return JsonResponse({"error": "Method not allowed"}, status=405)
 
     try:
-        data = json.loads(request.body) if request.content_type == "application/json" else request.POST.dict()
+        data = (
+            json.loads(request.body)
+            if request.content_type == "application/json"
+            else request.POST.dict()
+        )
 
         form_data = {
             "name": data.get("full_name") or data.get("name"),
@@ -123,11 +142,13 @@ def api_booking(request):
             "message": data.get("message", ""),
         }
 
+        # Remove empty values
         form_data = {k: v for k, v in form_data.items() if v not in [None, ""]}
 
         form = BookingForm(form_data)
 
         if not form.is_valid():
+            logger.warning("❌ Booking form validation failed")
             return JsonResponse({
                 "status": "error",
                 "errors": form.errors,
@@ -135,6 +156,7 @@ def api_booking(request):
             }, status=400)
 
         booking = form.save()
+        logger.error(f"📌 Booking #{booking.id} saved successfully")
 
         # 🔥 NON-BLOCKING EMAIL
         Thread(
@@ -149,8 +171,8 @@ def api_booking(request):
             "booking_id": booking.id
         })
 
-    except Exception as e:
-        logger.exception("Booking API error")
+    except Exception:
+        logger.exception("❌ Booking API error")
         return JsonResponse({
             "status": "error",
             "message": "Server error"
