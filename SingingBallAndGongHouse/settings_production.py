@@ -131,30 +131,29 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+import os
+from django.core.exceptions import ImproperlyConfigured
+
 # ============================
-# Email Configuration (SMTP)
+# Email Configuration (SendGrid SMTP)
 # ============================
-# Configure SMTP settings via environment variables
-# Example for Gmail: EMAIL_HOST=smtp.gmail.com EMAIL_PORT=587 EMAIL_USE_TLS=1
-# Example for custom SMTP: EMAIL_HOST=smtp.yourdomain.com EMAIL_PORT=587
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-# SMTP server configuration (required in production)
-EMAIL_HOST = os.getenv("EMAIL_HOST", "").strip()
+# SMTP server configuration
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.sendgrid.net").strip()
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "1") == "1"
 EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "0") == "1"
 
-# SMTP authentication (required in production)
-# SMTP authentication (required)
-EMAIL_HOST_USER = os.getenv("singingbowlandgonghouse@gmail.com", "").strip()
-EMAIL_HOST_PASSWORD = os.getenv("mdkyqiwaqorlpjwh", "").strip()
+# SMTP authentication (SendGrid)
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "apikey").strip()
+EMAIL_HOST_PASSWORD = os.getenv("SENDGRID_API_KEY", "").strip()
 
 # Email addresses
 DEFAULT_FROM_EMAIL = os.getenv(
     "DEFAULT_FROM_EMAIL",
-    "singingbowlandgonghouse@gmail.com"
+    "healing@singingbowlandgonghouse.com"
 ).strip()
 
 ADMIN_EMAIL = os.getenv(
@@ -162,15 +161,17 @@ ADMIN_EMAIL = os.getenv(
     DEFAULT_FROM_EMAIL
 ).strip()
 
-# Validate required email settings in production
+# ============================
+# Validation (Production Safety)
+# ============================
 if not EMAIL_HOST:
-    raise ImproperlyConfigured(
-        "EMAIL_HOST environment variable is required in production."
-    )
+    raise ImproperlyConfigured("EMAIL_HOST is required.")
+
 if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
     raise ImproperlyConfigured(
-        "EMAIL_HOST_USER and EMAIL_HOST_PASSWORD environment variables are required in production."
+        "EMAIL_HOST_USER and SENDGRID_API_KEY are required."
     )
+
 
 # WhatsApp Configuration
 ADMIN_WHATSAPP_NUMBER = os.getenv("ADMIN_WHATSAPP_NUMBER", "+9779843213802").strip()

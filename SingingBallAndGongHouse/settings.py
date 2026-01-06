@@ -1,14 +1,14 @@
+from dotenv import load_dotenv
 from pathlib import Path
 import os
 from django.core.exceptions import ImproperlyConfigured
-from dotenv import load_dotenv
 from django.core.mail import send_mail
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load environment variables from .env (local dev)
-load_dotenv(dotenv_path=BASE_DIR / ".env")
+# Load environment variables from .env (local de
+load_dotenv(BASE_DIR / ".env", override=True)
 
 # ---------------------------
 # Helpers
@@ -146,42 +146,35 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# ===========================
-# Email Configuration (SMTP)
-# ===========================
-# IMPORTANT: Uses these env vars:
-# EMAIL_HOST, EMAIL_PORT, EMAIL_USE_TLS, EMAIL_USE_SSL,
-# EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL, ADMIN_EMAIL, EMAIL_TIMEOUT
+from django.core.exceptions import ImproperlyConfigured
+import os
+
+# ============================
+# Email Configuration (SendGrid SMTP)
+# ============================
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = '587'
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS") == "1"
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL") == "1"
 
-EMAIL_HOST_USER = 'singingbowlandgonghouse@gmail.com'
-EMAIL_HOST_PASSWORD ='hlsajhwhdgfqosgo'
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")  # MUST be 'apikey'
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")  # SendGrid key
 
-# Use authenticated SMTP user by default (best for Gmail)
-DEFAULT_FROM_EMAIL = 'singingbowlandgonghouse@gmail.com'
-ADMIN_EMAIL = 'singingbowlandgonghouse@gmail.com'
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+ADMIN_EMAIL = DEFAULT_FROM_EMAIL
 
-EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "10"))
+# Safety checks
+if not all([
+    EMAIL_HOST,
+    EMAIL_HOST_USER,
+    EMAIL_HOST_PASSWORD,
+    DEFAULT_FROM_EMAIL,
+]):
+    raise ImproperlyConfigured("Email environment variables not set")
 
-# Validate SMTP settings
-if not EMAIL_HOST or not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
-    if DEBUG:
-        # Dev fallback: print emails to console
-        EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-        print("⚠️ Email running in CONSOLE mode (missing SMTP settings).")
-        print("EMAIL_HOST:", EMAIL_HOST)
-        print("EMAIL_HOST_USER:", EMAIL_HOST_USER)
-        print("EMAIL_HOST_PASSWORD set?:", bool(EMAIL_HOST_PASSWORD))
-    else:
-        raise ImproperlyConfigured(
-            "EMAIL_HOST, EMAIL_HOST_USER, and EMAIL_HOST_PASSWORD are required when DEBUG=False."
-        )
 
 
 # WhatsApp Configuration
