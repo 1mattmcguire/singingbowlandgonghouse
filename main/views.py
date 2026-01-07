@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
+
 import json
 import logging
 from threading import Thread
@@ -12,27 +13,22 @@ from .email_service import send_booking_emails
 
 logger = logging.getLogger(__name__)
 
-
-# =========================
-# ASYNC EMAIL HANDLER
-# =========================
+# ======================================================
+# ASYNC EMAIL HANDLER (SAFE FOR GUNICORN)
+# ======================================================
 
 def send_emails_async(booking):
-    """
-    Wrapper to safely send emails in a background thread.
-    Any exception will be logged and NOT crash Gunicorn.
-    """
     try:
-        logger.error("🔥 send_emails_async() started")
+        logger.info("📧 Email sending started")
         send_booking_emails(booking)
-        logger.error("✅ send_emails_async() finished")
-    except Exception as e:
-        logger.exception(f"❌ Async email failed for booking {booking.id}")
+        logger.info("✅ Email sending finished")
+    except Exception:
+        logger.exception("❌ Email sending failed")
 
 
-# =========================
+# ======================================================
 # PAGE VIEWS
-# =========================
+# ======================================================
 
 def home(request):
     return render(request, "main/home.html")
@@ -58,13 +54,14 @@ def success(request):
     return render(request, "main/success.html")
 
 
-# =========================
-# CONTACT
-# =========================
+# ======================================================
+# CONTACT FORM
+# ======================================================
 
 def contact(request):
     if request.method == "POST":
         form = InquiryForm(request.POST)
+
         if form.is_valid():
             form.save()
             messages.success(request, "Your inquiry has been sent successfully.")
@@ -75,50 +72,38 @@ def contact(request):
     return render(request, "main/contact.html", {"form": form})
 
 
-# =========================
+# ======================================================
 # BOOKING (HTML FORM)
-# =========================
+# ======================================================
 
 def booking(request):
-    """
-    Normal Django form booking (non-AJAX).
-    Email is sent asynchronously so the page never hangs.
-    """
     if request.method == "POST":
         form = BookingForm(request.POST)
 
         if form.is_valid():
             booking = form.save()
 
-            # 🔥 NON-BLOCKING EMAIL
             Thread(
-                target=send_emails_async,
+                target=send_booking_emails,
                 args=(booking,),
                 daemon=True
             ).start()
 
-            messages.success(
-                request,
-                "Your booking has been submitted. You will receive a confirmation email shortly."
-            )
-
+            messages.success(request, "Booking submitted successfully.")
             return redirect("main:success")
+
     else:
         form = BookingForm()
 
-    return render(request, "main/booking.html", {"form": form})
 
 
-# =========================
-# API BOOKING (AJAX)
-# =========================
+# ======================================================
+# BOOKING API (AJAX / FETCH)
+# ======================================================
 
 @csrf_exempt
 def api_booking(request):
-    """
-    AJAX booking endpoint.
-    Used by JS-based booking form.
-    """
+
     if request.method != "POST":
         return JsonResponse({"error": "Method not allowed"}, status=405)
 
@@ -129,36 +114,19 @@ def api_booking(request):
             else request.POST.dict()
         )
 
-        form_data = {
-            "name": data.get("full_name") or data.get("name"),
-            "email": data.get("email"),
-            "phone": data.get("phone"),
-            "service": data.get("service_type") or data.get("service"),
-            "booking_date": data.get("preferred_date") or data.get("booking_date"),
-            "age": data.get("age"),
-            "session_type": data.get("session_type"),
-            "course_selection": data.get("course_selection"),
-            "medical_condition": data.get("medical_condition"),
-            "message": data.get("message", ""),
-        }
-
-        # Remove empty values
-        form_data = {k: v for k, v in form_data.items() if v not in [None, ""]}
-
-        form = BookingForm(form_data)
+        form = BookingForm(data)
 
         if not form.is_valid():
-            logger.warning("❌ Booking form validation failed")
+            logger.warning("❌ Booking validation failed")
             return JsonResponse({
                 "status": "error",
-                "errors": form.errors,
-                "message": "Validation failed"
+                "errors": form.errors
             }, status=400)
 
         booking = form.save()
-        logger.error(f"📌 Booking #{booking.id} saved successfully")
+        logger.info(f"✅ Booking #{booking.id} saved")
 
-        # 🔥 NON-BLOCKING EMAIL
+        # 🔥 ASYNC EMAIL
         Thread(
             target=send_emails_async,
             args=(booking,),
@@ -167,17 +135,20 @@ def api_booking(request):
 
         return JsonResponse({
             "status": "success",
-            "message": "Booking submitted successfully.",
-            "booking_id": booking.id
+            "message": "Booking submitted successfully."
         })
 
     except Exception:
-        logger.exception("❌ Booking API error")
+        logger.exception("❌ API booking error")
         return JsonResponse({
             "status": "error",
             "message": "Server error"
         }, status=500)
 
+
+# ======================================================
+# SIMPLE API HEALTH CHECK
+# ======================================================
 
 def api_inquiry(request):
     return JsonResponse({"status": "ok"})

@@ -2,59 +2,37 @@ from django import forms
 from .models import Booking, Inquiry
 
 
+from django import forms
+from .models import Booking
+
+
 class BookingForm(forms.ModelForm):
+
     class Meta:
         model = Booking
-        fields = ['name', 'email', 'phone', 'service', 'booking_date', 'message', 
-                  'age', 'session_type', 'course_selection', 'medical_condition']
-        widgets = {
-            'name': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Enter your full name',
-                'required': True
-            }),
-            'email': forms.EmailInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'your.email@example.com',
-                'required': True
-            }),
-            'phone': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': '1234567890',
-                'required': True
-            }),
-            'service': forms.Select(attrs={
-                'class': 'form-control',
-                'required': True
-            }),
-            'booking_date': forms.DateInput(attrs={
-                'class': 'form-control',
-                'type': 'date',
-                'required': True
-            }),
-            'message': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 4,
-                'placeholder': 'Any additional information...'
-            }),
-            'age': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'min': 16,
-                'max': 100
-            }),
-            'session_type': forms.Select(attrs={
-                'class': 'form-control'
-            }),
-            'course_selection': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Course name if applicable'
-            }),
-            'medical_condition': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 3,
-                'placeholder': 'Please share any medical conditions or specific needs...'
-            }),
-        }
+        fields = "__all__"
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        required_fields = [
+            "name",
+            "email",
+            "phone",
+            "service",
+            "booking_date",
+            "session_type",
+        ]
+
+        missing = [f for f in required_fields if not cleaned_data.get(f)]
+
+        if missing:
+            raise forms.ValidationError(
+                "Please fill all required fields before submitting the form."
+            )
+
+        return cleaned_data
+    
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

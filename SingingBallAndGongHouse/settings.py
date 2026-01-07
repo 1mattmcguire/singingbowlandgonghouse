@@ -1,8 +1,9 @@
 from dotenv import load_dotenv
-from pathlib import Path
 import os
+from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
 from django.core.mail import send_mail
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -147,31 +148,21 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-from django.core.exceptions import ImproperlyConfigured
-import os
 
 # ============================
 # Email Configuration (SendGrid SMTP)
 # ============================
-import os
 
-SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = "apikey"
+EMAIL_HOST_PASSWORD = os.getenv("SENDGRID_API_KEY")
 ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
-
-# SendGrid API settings
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
-
-DEFAULT_FROM_EMAIL = os.getenv(
-    "DEFAULT_FROM_EMAIL",
-    "healing@singingbowlandgonghouse.com"
-)
-
-ADMIN_EMAIL = os.getenv(
-    "ADMIN_EMAIL",
-    DEFAULT_FROM_EMAIL
-)
-
 
 
 
