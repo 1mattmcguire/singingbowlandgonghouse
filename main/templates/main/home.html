@@ -99,6 +99,7 @@ window.addEventListener("scroll", function () {
 
                                 <!-- HERO (2-Column Layout: Image with Text Overlay + Floating Images) -->
                                 <section class="hero" id="home">
+                                  <!-- Desktop Hero Layout -->
                                   <div class="hero-image-wrapper">
                                     <div class="hero-image"></div>
                                   <div class="hero-content">
@@ -112,6 +113,7 @@ window.addEventListener("scroll", function () {
                                   <div class="hero-animation-wrapper">
                                   <div class="main">
                                     <div class="mainBoxes"></div>
+                                    <div class="carousel-indicators" id="carousel-indicators"></div>
                                     <div class="mainClose">
                                       <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none">
                                         <circle cx="30" cy="30" r="30" fill="#000" opacity="0.4" />
@@ -120,6 +122,12 @@ window.addEventListener("scroll", function () {
                                       </svg>
                                       </div>
                                     </div>
+                                  </div>
+                                  
+                                  <!-- Mobile Hero Carousel -->
+                                  <div class="mobile-hero-carousel" id="mobile-hero-carousel">
+                                    <div class="carousel-slides-container" id="carousel-slides-container"></div>
+                                    <div class="mobile-carousel-indicators" id="mobile-carousel-indicators"></div>
                                   </div>
                                 </section>
                                 <div class="lightbox" id="lightbox">
@@ -415,27 +423,8 @@ window.addEventListener("scroll", function () {
             ease: "power2.out"
           });
           
-          // Mobile: Show all images in horizontal scrollable carousel
-          const photoBoxes = document.querySelectorAll(".photoBox");
-          photoBoxes.forEach((box, index) => {
-            // Show all images on mobile in a scrollable carousel
-            gsap.set(box, { 
-              opacity: 1, 
-              display: "block",
-              x: 0,
-              y: 0,
-              scale: 1
-            });
-            
-            // Animate entrance
-            gsap.from(box, {
-              opacity: 0,
-              x: 50,
-              duration: 0.6,
-              delay: 0.8 + (index * 0.1),
-              ease: "power2.out"
-            });
-          });
+          // Mobile: Initialize hero carousel
+          initMobileHeroCarousel();
         } else {
           // Desktop: Original animations
           gsap.from(".hero-anim", { y: 30, opacity: 0, duration: 0.6, stagger: 0.12, ease: "power2.out" });
@@ -573,18 +562,254 @@ window.addEventListener("scroll", function () {
 
         // Add event listeners for both click and touch
         mainBoxes.addEventListener("click", handleImageInteraction);
-        if (isMobile) {
-          mainBoxes.addEventListener("touchend", (e) => {
-            e.preventDefault();
-            handleImageInteraction(e);
-          });
-        }
       };
 
       lightboxClose?.addEventListener("click", lightboxCloseFn);
       lightbox?.addEventListener("click", (e) => {
         if (e.target.classList.contains("lightbox-backdrop")) lightboxCloseFn();
       });
+
+      // Initialize mobile carousel on DOM ready (fallback)
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          if (window.innerWidth <= 768) {
+            initMobileHeroCarousel();
+          }
+        });
+      } else {
+        // DOM already loaded
+        if (window.innerWidth <= 768) {
+          initMobileHeroCarousel();
+        }
+      }
+
+      // Mobile Hero Carousel Functionality
+      function initMobileHeroCarousel() {
+        if (window.innerWidth > 768) {
+          // Hide mobile carousel on desktop
+          const mobileCarousel = document.getElementById("mobile-hero-carousel");
+          if (mobileCarousel) {
+            mobileCarousel.style.display = "none";
+          }
+          return;
+        }
+        
+        const mobileCarousel = document.getElementById("mobile-hero-carousel");
+        const slidesContainer = document.getElementById("carousel-slides-container");
+        const indicatorsContainer = document.getElementById("mobile-carousel-indicators");
+        
+        if (!mobileCarousel || !slidesContainer || !indicatorsContainer) return;
+        
+        // Show mobile carousel
+        mobileCarousel.style.display = "block";
+        
+        // Hero content text
+        const heroTitle = "Singing Bowl & Gong House";
+        const heroTagline = "We guide you into calm through immersive Sound Healing and help you certify through our Advanced Teacher Training.";
+        
+        let currentIndex = 0;
+        let autoSlideInterval = null;
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let isSwiping = false;
+        let isTransitioning = false;
+        const slideInterval = 4500; // 4.5 seconds
+
+        // Clear existing slides and indicators
+        slidesContainer.innerHTML = "";
+        indicatorsContainer.innerHTML = "";
+
+        // Create slides with images and text overlays
+        heroImages.forEach((src, index) => {
+          // Create slide
+          const slide = document.createElement("div");
+          slide.className = "carousel-slide";
+          if (index === 0) slide.classList.add("active");
+          
+          // Create image
+          const image = document.createElement("div");
+          image.className = "carousel-slide-image";
+          image.style.backgroundImage = `url(${src})`;
+          
+          // Create overlay
+          const overlay = document.createElement("div");
+          overlay.className = "carousel-slide-overlay";
+          
+          // Create content
+          const content = document.createElement("div");
+          content.className = "carousel-slide-content";
+          
+          const h1 = document.createElement("h1");
+          h1.textContent = heroTitle;
+          
+          const p = document.createElement("p");
+          p.className = "lead";
+          p.innerHTML = heroTagline.replace("Sound Healing", "<strong>Sound Healing</strong>").replace("Advanced Teacher Training", "<strong>Advanced Teacher Training</strong>");
+          
+          const btn = document.createElement("a");
+          btn.className = "book-btn";
+          btn.href = "#";
+          btn.onclick = function(e) { e.preventDefault(); openBookingModal(); return false; };
+          btn.innerHTML = '<span>Book Now</span>';
+          
+          content.appendChild(h1);
+          content.appendChild(p);
+          content.appendChild(btn);
+          
+          slide.appendChild(image);
+          slide.appendChild(overlay);
+          slide.appendChild(content);
+          slidesContainer.appendChild(slide);
+          
+          // Create indicator
+          const indicator = document.createElement("div");
+          indicator.className = "mobile-carousel-indicator";
+          if (index === 0) indicator.classList.add("active");
+          indicator.addEventListener("click", () => {
+            if (!isTransitioning) goToSlide(index);
+          });
+          indicatorsContainer.appendChild(indicator);
+        });
+
+        const slides = slidesContainer.querySelectorAll(".carousel-slide");
+        const indicators = indicatorsContainer.querySelectorAll(".mobile-carousel-indicator");
+        
+        if (slides.length === 0) return;
+
+        // Initialize first slide
+        updateCarousel();
+
+        // Auto-slide functionality
+        function startAutoSlide() {
+          stopAutoSlide();
+          autoSlideInterval = setInterval(() => {
+            nextSlide();
+          }, slideInterval);
+        }
+
+        function stopAutoSlide() {
+          if (autoSlideInterval) {
+            clearInterval(autoSlideInterval);
+            autoSlideInterval = null;
+          }
+        }
+
+        function nextSlide() {
+          if (isTransitioning) return;
+          currentIndex = (currentIndex + 1) % slides.length;
+          updateCarousel();
+        }
+
+        function prevSlide() {
+          if (isTransitioning) return;
+          currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+          updateCarousel();
+        }
+
+        function goToSlide(index) {
+          if (isTransitioning || index === currentIndex) return;
+          currentIndex = index;
+          updateCarousel();
+        }
+
+        function updateCarousel() {
+          isTransitioning = true;
+          
+          // Update slides with smooth transition
+          slides.forEach((slide, index) => {
+            slide.classList.remove("active", "prev", "next");
+            
+            if (index === currentIndex) {
+              slide.classList.add("active");
+            } else if (index === (currentIndex - 1 + slides.length) % slides.length) {
+              slide.classList.add("prev");
+            } else if (index === (currentIndex + 1) % slides.length) {
+              slide.classList.add("next");
+            }
+          });
+
+          // Update indicators
+          indicators.forEach((indicator, index) => {
+            indicator.classList.toggle("active", index === currentIndex);
+          });
+
+          // Reset transition flag after animation
+          setTimeout(() => {
+            isTransitioning = false;
+          }, 1000);
+
+          // Restart auto-slide
+          startAutoSlide();
+        }
+
+        // Touch swipe support
+        if (mobileCarousel) {
+          mobileCarousel.addEventListener("touchstart", (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            stopAutoSlide();
+            isSwiping = false;
+          }, { passive: true });
+
+          mobileCarousel.addEventListener("touchmove", (e) => {
+            // Detect if user is swiping
+            const currentX = e.changedTouches[0].screenX;
+            const diff = Math.abs(touchStartX - currentX);
+            if (diff > 10) {
+              isSwiping = true;
+            }
+          }, { passive: true });
+
+          mobileCarousel.addEventListener("touchend", (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+            startAutoSlide();
+          }, { passive: true });
+        }
+
+        function handleSwipe() {
+          const swipeThreshold = 50; // Minimum distance for swipe
+          const diff = touchStartX - touchEndX;
+
+          if (Math.abs(diff) > swipeThreshold && isSwiping && !isTransitioning) {
+            if (diff > 0) {
+              // Swipe left - next slide
+              nextSlide();
+            } else {
+              // Swipe right - previous slide
+              prevSlide();
+            }
+          }
+        }
+
+        // Pause auto-slide on interaction
+        if (mobileCarousel) {
+          mobileCarousel.addEventListener("mouseenter", stopAutoSlide);
+          mobileCarousel.addEventListener("mouseleave", startAutoSlide);
+          mobileCarousel.addEventListener("touchstart", stopAutoSlide, { passive: true });
+        }
+
+        // Start auto-slide
+        startAutoSlide();
+
+        // Handle window resize
+        let resizeTimeout;
+        window.addEventListener("resize", () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(() => {
+            if (window.innerWidth <= 768) {
+              // Reinitialize if still on mobile
+              initMobileHeroCarousel();
+            } else {
+              // Clean up on desktop
+              stopAutoSlide();
+              const mobileCarousel = document.getElementById("mobile-hero-carousel");
+              if (mobileCarousel) {
+                mobileCarousel.style.display = "none";
+              }
+            }
+          }, 250);
+        });
+      }
 
       // Animated text section animations
       if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
