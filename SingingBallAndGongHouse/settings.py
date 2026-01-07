@@ -41,7 +41,8 @@ if render_hostname:
     ALLOWED_HOSTS = list(dict.fromkeys([*ALLOWED_HOSTS, render_hostname]))
 
 if not ALLOWED_HOSTS:
-    ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+	ALLOWED_HOSTS = ["singingbowlandgonghouse.com", "www.singingbowlandgonghouse.com"]
+    
 
 
 # ---------------------------
