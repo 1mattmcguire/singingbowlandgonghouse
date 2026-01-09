@@ -297,6 +297,13 @@ function setupBookingForm() {
     if (serviceTypeInputs.length > 0 && courseDropdown && courseSelect) {
       serviceTypeInputs.forEach(input => {
         input.addEventListener('change', function() {
+          // Clear any errors on service type selection
+          const serviceTypeGroup = this.closest('.booking-service-type');
+          if (serviceTypeGroup) {
+            const errorMsg = serviceTypeGroup.parentElement.querySelector('.error-message');
+            if (errorMsg) errorMsg.remove();
+          }
+          
           if (this.value === 'Courses & Trainings') {
             courseDropdown.classList.add('show');
             courseSelect.setAttribute('required', 'required');
@@ -304,6 +311,12 @@ function setupBookingForm() {
             courseDropdown.classList.remove('show');
             courseSelect.removeAttribute('required');
             courseSelect.value = '';
+            // Clear course selection error if any
+            if (courseSelect.classList.contains('error-field')) {
+              courseSelect.classList.remove('error-field');
+              const errorMsg = courseSelect.parentElement.querySelector('.error-message');
+              if (errorMsg) errorMsg.remove();
+            }
           }
         });
       });
@@ -372,8 +385,61 @@ function setupBookingForm() {
         } else {
           e.target.setCustomValidity('');
         }
+        // Clear error on input
+        if (e.target.classList.contains('error-field')) {
+          e.target.classList.remove('error-field');
+          const errorMsg = e.target.parentElement.querySelector('.error-message');
+          if (errorMsg) errorMsg.remove();
+        }
       });
     }
+    
+    // Clear errors on input/change for all fields
+    const allInputs = freshForm.querySelectorAll('input, select, textarea');
+    allInputs.forEach(input => {
+      input.addEventListener('input', function() {
+        if (this.classList.contains('error-field')) {
+          this.classList.remove('error-field');
+          const errorMsg = this.parentElement.querySelector('.error-message') || 
+                          this.closest('.booking-form-group')?.querySelector('.error-message');
+          if (errorMsg) errorMsg.remove();
+        }
+      });
+      
+      input.addEventListener('change', function() {
+        if (this.classList.contains('error-field')) {
+          this.classList.remove('error-field');
+          const errorMsg = this.parentElement.querySelector('.error-message') || 
+                          this.closest('.booking-form-group')?.querySelector('.error-message');
+          if (errorMsg) errorMsg.remove();
+        }
+      });
+    });
+    
+    // Clear errors for radio buttons
+    const radioGroups = freshForm.querySelectorAll('input[type="radio"]');
+    radioGroups.forEach(radio => {
+      radio.addEventListener('change', function() {
+        const group = this.closest('.booking-service-type, .booking-session-type');
+        if (group) {
+          const errorMsg = group.parentElement.querySelector('.error-message');
+          if (errorMsg) errorMsg.remove();
+        }
+      });
+    });
+    
+    // Clear errors for select dropdowns
+    const selectFields = freshForm.querySelectorAll('select');
+    selectFields.forEach(select => {
+      select.addEventListener('change', function() {
+        if (this.classList.contains('error-field')) {
+          this.classList.remove('error-field');
+          const errorMsg = this.parentElement.querySelector('.error-message') || 
+                          this.closest('.booking-form-group')?.querySelector('.error-message');
+          if (errorMsg) errorMsg.remove();
+        }
+      });
+    });
   }
 
   // Close modal on Escape key
@@ -418,9 +484,14 @@ function handleBookingSubmit(e) {
     return false;
   }
   
-  // Validate form
-  if (!form.checkValidity()) {
-    form.reportValidity();
+  // Validate form with custom validation
+  if (!validateBookingForm(form)) {
+    // Scroll to first error
+    const firstError = form.querySelector('.error-message, .error-field');
+    if (firstError) {
+      const errorField = firstError.classList.contains('error-field') ? firstError : firstError.previousElementSibling || firstError.parentElement;
+      errorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
     return false;
   }
   
@@ -621,8 +692,154 @@ function handleBookingSubmit(e) {
 // Track if booking was just submitted successfully
 let bookingJustSubmitted = false;
 
+// Clear all form error messages
+function clearFormErrors(form) {
+  if (!form) return;
+  const errorMessages = form.querySelectorAll('.error-message');
+  errorMessages.forEach(msg => msg.remove());
+  const errorFields = form.querySelectorAll('.error-field');
+  errorFields.forEach(field => field.classList.remove('error-field'));
+}
+
+// Show inline error message for a field
+function showFieldError(field, message) {
+  // Remove existing error message
+  const existingError = field.parentElement.querySelector('.error-message');
+  if (existingError) {
+    existingError.remove();
+  }
+  
+  // Add error class to field
+  field.classList.add('error-field');
+  
+  // Create error message element
+  const errorMsg = document.createElement('span');
+  errorMsg.className = 'error-message';
+  errorMsg.textContent = message;
+  errorMsg.style.cssText = 'display: block; color: #e74c3c; font-size: 12px; margin-top: 4px; font-weight: 500;';
+  
+  // Insert error message after the input wrapper or field
+  const fieldWrapper = field.closest('.booking-input-with-icon, .booking-phone-wrapper, .booking-date-input-wrapper') || field.parentElement;
+  if (fieldWrapper) {
+    fieldWrapper.appendChild(errorMsg);
+  } else {
+    field.parentElement.appendChild(errorMsg);
+  }
+}
+
+// Validate form fields and show inline errors
+function validateBookingForm(form) {
+  if (!form) return false;
+  
+  let isValid = true;
+  clearFormErrors(form);
+  
+  // Validate service type
+  const serviceTypeInputs = form.querySelectorAll('input[name="serviceType"]');
+  const selectedServiceType = Array.from(serviceTypeInputs).find(input => input.checked);
+  if (!selectedServiceType) {
+    isValid = false;
+    const serviceTypeGroup = form.querySelector('.booking-service-type');
+    if (serviceTypeGroup) {
+      const errorMsg = document.createElement('span');
+      errorMsg.className = 'error-message';
+      errorMsg.textContent = 'Please select a service type';
+      errorMsg.style.cssText = 'display: block; color: #e74c3c; font-size: 12px; margin-top: 8px; font-weight: 500;';
+      serviceTypeGroup.parentElement.appendChild(errorMsg);
+    }
+  }
+  
+  // Validate course selection if Courses & Trainings is selected
+  if (selectedServiceType && selectedServiceType.value === 'Courses & Trainings') {
+    const courseSelect = document.getElementById('courseSelection');
+    if (courseSelect && !courseSelect.value) {
+      isValid = false;
+      showFieldError(courseSelect, 'Please select a course');
+    }
+  }
+  
+  // Validate full name
+  const fullNameInput = document.getElementById('fullName');
+  if (fullNameInput && !fullNameInput.value.trim()) {
+    isValid = false;
+    showFieldError(fullNameInput, 'This field is required');
+  }
+  
+  // Validate age
+  const ageInput = document.getElementById('age');
+  if (ageInput && !ageInput.value) {
+    isValid = false;
+    showFieldError(ageInput, 'This field is required');
+  } else if (ageInput && ageInput.value) {
+    const age = parseInt(ageInput.value);
+    if (age < 16 || age > 100) {
+      isValid = false;
+      showFieldError(ageInput, 'Please enter a valid age (16-100)');
+    }
+  }
+  
+  // Validate email
+  const emailInput = document.getElementById('email');
+  if (emailInput && !emailInput.value.trim()) {
+    isValid = false;
+    showFieldError(emailInput, 'This field is required');
+  } else if (emailInput && emailInput.value && !emailInput.validity.valid) {
+    isValid = false;
+    showFieldError(emailInput, 'Please enter a valid email address');
+  }
+  
+  // Validate phone
+  const phoneInput = document.getElementById('phone');
+  const countryCodeSelect = document.getElementById('countryCode');
+  if (phoneInput && !phoneInput.value.trim()) {
+    isValid = false;
+    showFieldError(phoneInput, 'This field is required');
+  } else if (phoneInput && phoneInput.value) {
+    const phoneValue = phoneInput.value.replace(/\D/g, '');
+    if (phoneValue.length < 7) {
+      isValid = false;
+      showFieldError(phoneInput, 'Please enter a complete phone number (at least 7 digits)');
+    }
+  }
+  if (countryCodeSelect && !countryCodeSelect.value) {
+    isValid = false;
+    showFieldError(countryCodeSelect, 'Please select a country code');
+  }
+  
+  // Validate session type
+  const sessionTypeInputs = form.querySelectorAll('input[name="sessionType"]');
+  const selectedSessionType = Array.from(sessionTypeInputs).find(input => input.checked);
+  if (!selectedSessionType) {
+    isValid = false;
+    const sessionTypeGroup = form.querySelector('.booking-session-type');
+    if (sessionTypeGroup) {
+      const errorMsg = document.createElement('span');
+      errorMsg.className = 'error-message';
+      errorMsg.textContent = 'Please select a session type';
+      errorMsg.style.cssText = 'display: block; color: #e74c3c; font-size: 12px; margin-top: 8px; font-weight: 500;';
+      sessionTypeGroup.parentElement.appendChild(errorMsg);
+    }
+  }
+  
+  // Validate preferred date
+  const dateInput = document.getElementById('preferredDate');
+  if (dateInput && !dateInput.value) {
+    isValid = false;
+    showFieldError(dateInput, 'This field is required');
+  }
+  
+  // Validate medical condition
+  const medicalConditionInput = document.getElementById('medicalCondition');
+  if (medicalConditionInput && !medicalConditionInput.value.trim()) {
+    isValid = false;
+    showFieldError(medicalConditionInput, 'This field is required');
+  }
+  
+  return isValid;
+}
+
 // Open booking modal
-function openBookingModal(serviceType = null) {
+function openBookingModal(serviceType = null, courseSelection = null, sessionType = null) {
   // Note: We allow bookings without authentication (using public endpoint)
   // If you want to require authentication, uncomment the code below:
   /*
@@ -640,6 +857,12 @@ function openBookingModal(serviceType = null) {
     }
   }
   */
+  
+  // Check URL parameters for service/course selection
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlServiceType = urlParams.get('service') || serviceType;
+  const urlCourseSelection = urlParams.get('course') || courseSelection;
+  const urlSessionType = urlParams.get('session') || sessionType;
   
   createBookingModal();
   const modal = document.getElementById('bookingModal');
@@ -666,6 +889,9 @@ function openBookingModal(serviceType = null) {
       form.reset();
       form.style.display = 'block';
       
+      // Clear any existing error messages
+      clearFormErrors(form);
+      
       // Reset course dropdown
       if (courseDropdown) {
         courseDropdown.classList.remove('show');
@@ -678,14 +904,41 @@ function openBookingModal(serviceType = null) {
     if (loading) loading.classList.remove('active');
     if (success) success.classList.remove('active');
     
-    // Pre-select service type if provided
-    if (serviceType) {
-      const serviceInput = document.querySelector(`input[value="${serviceType}"]`);
-      if (serviceInput) {
-        serviceInput.checked = true;
-        serviceInput.dispatchEvent(new Event('change'));
+    // Auto-fill form based on parameters
+    setTimeout(() => {
+      // Pre-select service type if provided
+      if (urlServiceType) {
+        const serviceInput = document.querySelector(`input[name="serviceType"][value="${urlServiceType}"]`);
+        if (serviceInput) {
+          serviceInput.checked = true;
+          serviceInput.dispatchEvent(new Event('change'));
+        }
       }
-    }
+      
+      // Pre-select course if provided
+      if (urlCourseSelection) {
+        const courseSelect = document.getElementById('courseSelection');
+        if (courseSelect) {
+          // Make sure course dropdown is visible
+          if (urlServiceType === 'Courses & Trainings') {
+            const courseDropdown = document.getElementById('courseDropdown');
+            if (courseDropdown) {
+              courseDropdown.classList.add('show');
+              courseSelect.setAttribute('required', 'required');
+            }
+          }
+          courseSelect.value = urlCourseSelection;
+        }
+      }
+      
+      // Pre-select session type if provided
+      if (urlSessionType) {
+        const sessionInput = document.querySelector(`input[name="sessionType"][value="${urlSessionType}"]`);
+        if (sessionInput) {
+          sessionInput.checked = true;
+        }
+      }
+    }, 100);
     
     // Show modal
     modal.classList.add('active');
@@ -758,8 +1011,19 @@ function closeBookingModal() {
     if (form) {
       form.reset();
       form.style.display = 'block';
+      clearFormErrors(form);
       const submitBtn = form.querySelector('.booking-submit-btn');
       if (submitBtn) submitBtn.disabled = false;
+      
+      // Reset course dropdown
+      const courseDropdown = document.getElementById('courseDropdown');
+      if (courseDropdown) {
+        courseDropdown.classList.remove('show');
+        const courseSelect = document.getElementById('courseSelection');
+        if (courseSelect) {
+          courseSelect.removeAttribute('required');
+        }
+      }
     }
     if (loading) loading.classList.remove('active');
     if (success) success.classList.remove('active');
@@ -793,7 +1057,33 @@ window.closeBookingModal = closeBookingModal;
 
 // Initialize on page load
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', createBookingModal);
+  document.addEventListener('DOMContentLoaded', function() {
+    createBookingModal();
+    // Check for URL parameters on page load
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('service') || urlParams.get('course') || urlParams.get('session')) {
+      // Small delay to ensure modal is created
+      setTimeout(() => {
+        openBookingModal(
+          urlParams.get('service'),
+          urlParams.get('course'),
+          urlParams.get('session')
+        );
+      }, 300);
+    }
+  });
 } else {
   createBookingModal();
+  // Check for URL parameters on page load
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('service') || urlParams.get('course') || urlParams.get('session')) {
+    // Small delay to ensure modal is created
+    setTimeout(() => {
+      openBookingModal(
+        urlParams.get('service'),
+        urlParams.get('course'),
+        urlParams.get('session')
+      );
+    }, 300);
+  }
 }

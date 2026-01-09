@@ -220,6 +220,48 @@
   transform: translateY(-1px);
 }
 
+/* Error Field Styling */
+.booking-form-group input.error-field,
+.booking-form-group select.error-field,
+.booking-form-group textarea.error-field {
+  border-color: #e74c3c;
+  background: rgba(231, 76, 60, 0.05);
+  box-shadow: 
+    0 0 0 4px rgba(231, 76, 60, 0.1),
+    0 2px 8px rgba(231, 76, 60, 0.15);
+}
+
+.booking-form-group input.error-field:focus,
+.booking-form-group select.error-field:focus,
+.booking-form-group textarea.error-field:focus {
+  border-color: #e74c3c;
+  box-shadow: 
+    0 0 0 4px rgba(231, 76, 60, 0.15),
+    0 4px 12px rgba(231, 76, 60, 0.2);
+}
+
+/* Error Message Styling */
+.error-message {
+  display: block;
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 6px;
+  font-weight: 500;
+  font-family: 'Montserrat', sans-serif;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .booking-form-group input:hover,
 .booking-form-group select:hover,
 .booking-form-group textarea:hover {
