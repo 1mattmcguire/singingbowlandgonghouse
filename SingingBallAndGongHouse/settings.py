@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",  # ✅ REQUIRED (fixes your error)
+    "django.contrib.sitemaps",  # required so the built-in sitemap.xml template is loadable
     "main",
 ]
 

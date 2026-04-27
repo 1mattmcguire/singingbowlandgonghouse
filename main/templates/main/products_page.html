@@ -2,7 +2,8 @@
 {% load static %}
 {% load main_extras %}
 
-{% block title %}Products - Singing Bowl & Gong House{% endblock %}
+{% block title %}Buy Singing Bowls & Sound Healing Tools | Nepal{% endblock %}
+{% block meta_description %}Shop authentic handmade Himalayan singing bowls, gongs &amp; handpans sourced directly from Nepal — perfect for sound healing, meditation, and chakra balancing.{% endblock %}
 {% block nav_products_active %}class="active"{% endblock %}
 
 {% block extra_head %}
@@ -18,8 +19,13 @@
   <section class="instruments-section" id="instruments">
     <div class="instruments-container">
       <div class="catalog-simple-header">
-        <h2 class="instruments-main-title">Our Sacred Instruments</h2>
-        <a href="https://drive.google.com/uc?export=download&id=1G_NTlEErlRevN1y-EPVd52hjQNLqvjM6" class="catalog-download-btn-simple" target="_blank" rel="noopener noreferrer">
+        <h1 class="instruments-main-title">Authentic Himalayan Singing Bowls &amp; Sound Healing Instruments — Kathmandu, Nepal</h1>
+        <a href="https://drive.google.com/uc?export=download&id=1G_NTlEErlRevN1y-EPVd52hjQNLqvjM6"
+   class="catalog-download-btn-simple"
+   target="_blank"
+   rel="noopener noreferrer">
+   Download Catalogue
+</a>
           <i class="fas fa-download"></i> Download Catalogue
         </a>
         <p class="instruments-subtitle">Discover our collection of traditional and modern sound healing instruments.</p>
@@ -31,6 +37,51 @@
         <h3 class="instrument-category-title">{{ subcategory.name }}</h3>
         <div class="instruments-simple-grid">
           {% for instrument in subcategory.instruments.all %}
+          <script type="application/ld+json">
+          {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": "{{ instrument.name|escapejs }}",
+            "description": "{{ instrument.description|escapejs }}",
+            "category": "{{ subcategory.name|escapejs }}",
+            {% with first_related_image=instrument.images.all|first %}
+            {% if first_related_image and first_related_image.image %}
+            "image": "{{ first_related_image.image.url|escapejs }}",
+            {% elif instrument.image %}
+            "image": "{{ instrument.image.url|escapejs }}",
+            {% endif %}
+            {% endwith %}
+            {% if instrument.material %}"material": "{{ instrument.material|escapejs }}",{% endif %}
+            {% if instrument.size %}"size": "{{ instrument.size|escapejs }}",{% endif %}
+            {% if instrument.weight %}"weight": "{{ instrument.weight|escapejs }}",{% endif %}
+            "brand": {
+              "@type": "Brand",
+              "name": "Singing Bowl & Gong House"
+            },
+            "manufacturer": {
+              "@type": "Organization",
+              "name": "Singing Bowl & Gong House",
+              "url": "https://singingbowlandgonghouse.com/",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "P8G6+C27, Mhepi Janamarga",
+                "addressLocality": "Kathmandu",
+                "postalCode": "44600",
+                "addressCountry": "NP"
+              }
+            },
+            "offers": {
+              "@type": "Offer",
+              "url": "https://wa.me/9779843213802?text=Hello%2C%20I%20am%20interested%20in%20{{ instrument.name|urlencode }}",
+              "availability": "https://schema.org/InStock",
+              "priceCurrency": "USD",
+              "seller": {
+                "@type": "Organization",
+                "name": "Singing Bowl & Gong House"
+              }
+            }
+          }
+          </script>
           <div class="product-card-simple">
             <div class="product-card-image">
               {% with first_related_image=instrument.images.all|first %}
