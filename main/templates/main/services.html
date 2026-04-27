@@ -1,0 +1,640 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services - Singing Bowl & Gong House</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="{% static 'main/images/logo.jpg' %}">
+  <link rel="shortcut icon" type="image/jpeg" href="{% static 'main/images/logo.jpg' %}">
+  <link rel="apple-touch-icon" href="{% static 'main/images/logo.jpg' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'main/css/services.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/header.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/popup-notice.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="{% static 'main/js/popup-notice.js' %}" defer></script>
+
+  <!-- Google Analytics -->
+  <!-- Replace with your real Google Analytics ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S8K7GVD9S3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-S8K7GVD9S3');
+  </script>
+</head>
+<body>
+
+  <!-- header -->
+<header class="header" id="header">
+    <div class="logo">
+      <img src="{% static 'main/images/logo.jpg' %}" alt="Singing Bowl & Gong House Logo">
+      <span class="logo-text">Singing Bowl & Gong House</span>
+    </div>
+
+    <nav class="nav">
+        <ul class="nav-list" id="nav-list">
+          <li><a href="{% url 'main:home' %}" >HOME</a></li>
+          <li><a href="{% url 'main:about' %}">ABOUT</a></li>
+            <li><a href="{% url 'main:services' %}" class="active">SERVICES</a></li>
+            <li><a href="{% url 'main:products' %}">PRODUCTS</a></li>
+            <li><a href="{% url 'main:smiles' %}">SHARING LOVE</a></li>
+        </ul>
+    </nav>
+
+    <!-- Auth & Book Buttons (Right side) -->
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <a href="#" class="book-btn desktop-book" onclick="openBookingModal(); return false;">Book Now</a>
+    </div>
+
+    <!-- Hamburger -->
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</header>
+
+<!-- Mobile floating Book Now -->
+<!-- <a href="#" class="mobile-book-btn" onclick="openBookingModal(); return false;">Book Now</a> -->
+  <!-- Services Hero Section -->
+  <section class="services-hero">
+    <div class="container">
+      <div class="hero-banner">
+        <span class="banner-text">13+ YEARS GUIDING SOUND HEALERS</span>
+      </div>
+      <div class="hero-content">
+        <h1 class="hero-title">Services at Singing Bowl & Gong House</h1>
+        <p class="hero-description">
+          Explore our advanced teacher trainings and restorative sound healing journeys, crafted to nurture wisdom, balance, and heartfelt connection.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advanced Teacher Training Services -->
+  <section class="training-section" id="training-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-icon">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="section-title-group">
+          <h2 class="section-title">Advanced Teacher Training Courses</h2>
+          <p class="section-subtitle">
+            Deepen your craft with lineage-inspired facilitation skills, mentorship, and certification designed for future sound leaders.
+          </p>
+        </div>
+        <a href="#" class="enroll-btn" onclick="openBookingModal('Courses & Trainings'); return false;">Enroll Today</a>
+      </div>
+
+      <div class="training-cards">
+        <!-- Singing Bowl Teacher Training -->
+        <div class="training-card">
+          <div class="card-image-wrapper">
+            <img src="{% static 'main/images/Singing Bowl Teacher Training.jpeg' %}" alt="Singing Bowl Teacher Training" class="card-image">
+            <div class="card-image-overlay"></div>
+          </div>
+          <div class="card-badge">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Singing Bowl Teacher Training</h3>
+            <span class="card-duration">6-WEEK IMMERSIVE CERTIFICATION</span>
+            <p class="card-description">
+              Master Himalayan bowl techniques, chakra mapping, and session sequencing to craft transformative journeys.
+            </p>
+            <ul class="card-features">
+              <li><i class="fas fa-check-circle"></i> Develop confident facilitation skills</li>
+              <li><i class="fas fa-check-circle"></i> Gain lineage-informed protocols</li>
+              <li><i class="fas fa-check-circle"></i> Receive certification recognized by global wellness communities</li>
+            </ul>
+            <div class="card-footer">
+              <a href="#" class="card-btn" onclick="openBookingModal('Courses & Trainings', 'Singing Bowl Course'); return false;">Book Now</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gong Mastery Training -->
+        <div class="training-card">
+          <div class="card-image-wrapper">
+            <img src="{% static 'main/images/Gong Mastery Training.jpeg' %}" alt="Gong Mastery Training" class="card-image">
+            <div class="card-image-overlay"></div>
+          </div>
+          <div class="card-badge">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Gong Mastery Training</h3>
+            <span class="card-duration">5-WEEK APPRENTICESHIP</span>
+            <p class="card-description">
+              Explore symphonic, planetary, and tam-tam gongs with emphasis on energetic storytelling and client safety.
+            </p>
+            <ul class="card-features">
+              <li><i class="fas fa-check-circle"></i> Learn dynamic play patterns</li>
+              <li><i class="fas fa-check-circle"></i> Understand vibrational anatomy</li>
+              <li><i class="fas fa-check-circle"></i> Curate immersive group ceremonies</li>
+            </ul>
+            <div class="card-footer">
+              <a href="#" class="card-btn" onclick="openBookingModal('Courses & Trainings', 'Gong Course'); return false;">Book Now</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Handpan Facilitator Training -->
+        <div class="training-card">
+          <div class="card-image-wrapper">
+            <img src="{% static 'main/images/Handpan Facilitator Training.jpeg' %}" alt="Handpan Facilitator Training" class="card-image">
+            <div class="card-image-overlay"></div>
+          </div>
+          <div class="card-badge">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Handpan Course</h3>
+            <span class="card-duration">3 DAYS | 2 HOURS / DAY</span>
+            <p class="card-description">
+              A beginner-friendly handpan course focused on rhythm, flow, meditation music, and intuitive playing.
+            </p>
+            <ul class="card-features">
+              <li><i class="fas fa-check-circle"></i> Basic notes, scales, and rhythm patterns</li>
+              <li><i class="fas fa-check-circle"></i> Healing melodies and meditation music</li>
+              <li><i class="fas fa-check-circle"></i> Improvisation techniques</li>
+              <li><i class="fas fa-check-circle"></i> Using handpan in sound sessions</li>
+            </ul>
+            <div class="card-footer">
+              <a href="#" class="card-btn" onclick="openBookingModal('Courses & Trainings', 'Handpan Course'); return false;">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sound Healing Journeys Section -->
+  <section class="healing-section">
+    <div class="container">
+      <div class="healing-header">
+        <div class="healing-icon">
+          <i class="fas fa-heart"></i>
+        </div>
+        <div class="healing-title-group">
+          <h2 class="healing-title">Sound Healing Journeys</h2>
+          <p class="healing-subtitle">
+            Personalized and collective sessions that dissolve stress, calm the nervous system, and rekindle emotional harmony.
+          </p>
+        </div>
+        <a href="#" class="book-session-btn" onclick="openBookingModal('Sound Healing Session'); return false;">Book a Session</a>
+      </div>
+
+      <div class="healing-cards">
+        <!-- Personal Healing Journey -->
+        <div class="healing-card">
+          <div class="healing-card-image-wrapper">
+            <img src="{% static 'main/images/personalhealing.jpeg' %}" alt="Personal Healing Journey" class="healing-card-image" onerror="this.onerror=null; this.src='images/mainimage.jpg';">
+            <div class="healing-card-image-overlay"></div>
+          </div>
+          <div class="healing-card-content">
+            <h3 class="healing-card-title">Personal Healing Journey</h3>
+            <span class="healing-card-subtitle">DEEP RELAXATION & ENERGETIC RESET</span>
+            <p class="healing-card-description">
+              A tailored one-to-one session blending bowls, gongs, and handpan resonance to soothe the nervous system and release stored emotion.
+            </p>
+            <ul class="healing-features">
+              <li><i class="fas fa-check-circle"></i> Guided nervous system regulation</li>
+              <li><i class="fas fa-check-circle"></i> Emotional release & clarity</li>
+              <li><i class="fas fa-check-circle"></i> Renewed energy and vitality</li>
+            </ul>
+            <div class="healing-card-footer">
+              <a href="#" class="healing-card-btn" onclick="openBookingModal('Sound Healing Session', null, 'One to One'); return false;">Book Personal Session</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Group Sound Bath -->
+        <div class="healing-card">
+          <div class="healing-card-image-wrapper">
+            <img src="{% static 'main/images/grouphealing.jpeg' %}" alt="Group Sound Bath" class="healing-card-image" onerror="this.onerror=null; this.src='images/mainimage.jpg';">
+            <div class="healing-card-image-overlay"></div>
+          </div>
+          <div class="healing-card-content">
+            <h3 class="healing-card-title">Group Sound Bath</h3>
+            <span class="healing-card-subtitle">COLLECTIVE BALANCE & COMMUNITY CARE</span>
+            <p class="healing-card-description">
+              Experience a layered symphony of sacred instruments that invites shared harmony, mindful connection, and expansive calm.
+            </p>
+            <ul class="healing-features">
+              <li><i class="fas fa-check-circle"></i> Shared meditative journey</li>
+              <li><i class="fas fa-check-circle"></i> Stress relief & better sleep</li>
+              <li><i class="fas fa-check-circle"></i> Strengthened emotional resilience</li>
+            </ul>
+            <div class="healing-card-footer">
+              <a href="#" class="healing-card-btn" onclick="openBookingModal('Sound Healing Session', null, 'Group Session'); return false;">Reserve Group Circle</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="courses-section" class="courses-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-icon">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <div class="section-title-group">
+          <h2 class="section-title">Our Courses</h2>
+          <p class="section-subtitle">
+            Explore our professional training and learning programs.
+          </p>
+        </div>
+        <a href="#" class="enroll-btn" onclick="openBookingModal('Courses & Trainings'); return false;">Enroll Today</a>
+      </div>
+
+      <div class="courses-grid training-cards">
+        <div class="training-card course-card">
+          <div class="card-image-wrapper">
+            <img src="{% static 'main/images/singing bowl course.jpg' %}" alt="Singing Bowl Course" class="card-image">
+            <div class="card-image-overlay"></div>
+          </div>
+          <div class="card-badge">
+            <i class="fas fa-award"></i>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Singing Bowl Course</h3>
+            <span class="card-duration">3 DAYS | 5 HOURS / DAY</span>
+            <p class="card-description">
+              Learn the ancient Himalayan techniques of singing bowl healing with hands-on practice, theory, and guided sound work.
+            </p>
+            <ul class="card-features">
+              <li><i class="fas fa-check-circle"></i> History and origin of Himalayan bowls</li>
+              <li><i class="fas fa-check-circle"></i> Producing harmonics and balanced tones</li>
+              <li><i class="fas fa-check-circle"></i> Chakra balancing and one-to-one healing</li>
+              <li><i class="fas fa-check-circle"></i> Aura cleansing and group sound bath setup</li>
+            </ul>
+            <div class="card-footer">
+              <a href="#" class="card-btn" onclick="openBookingModal('Courses & Trainings', 'Singing Bowl Course'); return false;">Book Now</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="training-card course-card">
+          <div class="card-image-wrapper">
+            <img src="{% static 'main/images/scroll3.jpg' %}" alt="Gong Course" class="card-image">
+            <div class="card-image-overlay"></div>
+          </div>
+          <div class="card-badge">
+            <i class="fas fa-award"></i>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Gong Course</h3>
+            <span class="card-duration">2 DAYS | 5 HOURS / DAY</span>
+            <p class="card-description">
+              Discover the transformative vibrations of the gong and learn professional techniques for healing and meditation.
+            </p>
+            <ul class="card-features">
+              <li><i class="fas fa-check-circle"></i> Gong history and vibrational theory</li>
+              <li><i class="fas fa-check-circle"></i> Playing techniques for deep resonance</li>
+              <li><i class="fas fa-check-circle"></i> Creating rhythm cycles and waves</li>
+              <li><i class="fas fa-check-circle"></i> Group gong bath facilitation</li>
+            </ul>
+            <div class="card-footer">
+              <a href="#" class="card-btn" onclick="openBookingModal('Courses & Trainings', 'Gong Course'); return false;">Book Now</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="training-card course-card">
+          <div class="card-image-wrapper">
+            <img src="{% static 'main/images/handpan course.jpg' %}" alt="Handpan Course" class="card-image">
+            <div class="card-image-overlay"></div>
+          </div>
+          <div class="card-badge">
+            <i class="fas fa-award"></i>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Handpan Facilitator Training</h3>
+            <span class="card-duration">4-WEEK CREATIVE INTENSIVE</span>
+            <p class="card-description">
+              Blend melodic handpan flows with breathwork and guided meditation, creating uplifting therapeutic experiences.
+            </p>
+            <ul class="card-features">
+              <li><i class="fas fa-check-circle"></i> Build melodic improvisation confidence</li>
+              <li><i class="fas fa-check-circle"></i> Integrate mindfulness storytelling</li>
+              <li><i class="fas fa-check-circle"></i> Design uplifting community sound gatherings</li>
+            </ul>
+            <div class="card-footer">
+              <a href="#" class="card-btn" onclick="openBookingModal('Courses & Trainings', 'Handpan Course'); return false;">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% include 'footer.html' %}
+
+  <link rel="stylesheet" href="{% static 'main/css/booking.css' %}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="{% static 'main/js/api.js' %}"></script>
+  <script src="{% static 'main/js/booking-modal.js' %}"></script>
+  <script>
+    // Mobile menu toggle - ensure DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+      const hamburger = document.getElementById('hamburger');
+      const navList = document.getElementById('nav-list');
+      
+      if (hamburger && navList) {
+        hamburger.addEventListener('click', function () {
+          const isOpen = navList.classList.contains('show');
+          navList.classList.toggle('show');
+          this.classList.toggle('active');
+          document.body.classList.toggle('menu-open', !isOpen);
+        });
+        
+        // Close menu when clicking on a nav link
+        document.querySelectorAll('.nav-list li a').forEach(link => {
+          link.addEventListener('click', function() {
+            navList.classList.remove('show');
+            hamburger.classList.remove('active');
+            document.body.classList.remove('menu-open');
+          });
+        });
+        
+        // Close menu when clicking outside (on backdrop)
+        navList.addEventListener('click', function(e) {
+          if (e.target === this) {
+            this.classList.remove('show');
+            hamburger.classList.remove('active');
+            document.body.classList.remove('menu-open');
+          }
+        });
+      }
+
+      // Navbar scroll effect
+      window.addEventListener("scroll", function () {
+        const header = document.getElementById("header");
+        if (header) {
+          if (window.scrollY > 50) {
+            header.classList.add("scrolled");
+          } else {
+            header.classList.remove("scrolled");
+          }
+        }
+      });
+    });
+
+    // GSAP Animations for Service Images
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Animate training card images on scroll
+      const trainingCards = document.querySelectorAll('.training-card');
+      trainingCards.forEach((card, index) => {
+        const cardImage = card.querySelector('.card-image');
+        const cardContent = card.querySelector('.card-content');
+        
+        if (cardImage) {
+          // Initial state - hidden and slightly scaled
+          gsap.set(cardImage, {
+            scale: 1.2,
+            opacity: 0
+          });
+          
+          // Animate image on scroll
+          gsap.to(cardImage, {
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 80%',
+              end: 'top 50%',
+              toggleActions: 'play none none reverse'
+            },
+            scale: 1,
+            opacity: 1,
+            duration: 1.2,
+            ease: 'power3.out',
+            delay: index * 0.15
+          });
+        }
+        
+        if (cardContent) {
+          // Animate card content
+          gsap.from(cardContent, {
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 75%',
+              toggleActions: 'play none none reverse'
+            },
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            delay: index * 0.15 + 0.3
+          });
+        }
+      });
+
+      // Animate healing card images on scroll
+      const healingCards = document.querySelectorAll('.healing-card');
+      healingCards.forEach((card, index) => {
+        const cardImage = card.querySelector('.healing-card-image');
+        const cardContent = card.querySelector('.healing-card-content');
+        
+        if (cardImage) {
+          // Initial state - hidden and slightly scaled
+          gsap.set(cardImage, {
+            scale: 1.2,
+            opacity: 0
+          });
+          
+          // Animate image on scroll
+          gsap.to(cardImage, {
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 80%',
+              end: 'top 50%',
+              toggleActions: 'play none none reverse'
+            },
+            scale: 1,
+            opacity: 1,
+            duration: 1.2,
+            ease: 'power3.out',
+            delay: index * 0.15
+          });
+        }
+        
+        if (cardContent) {
+          // Animate card content
+          gsap.from(cardContent, {
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 75%',
+              toggleActions: 'play none none reverse'
+            },
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            delay: index * 0.15 + 0.3
+          });
+        }
+      });
+
+      // Parallax effect for images on scroll
+      trainingCards.forEach((card) => {
+        const cardImage = card.querySelector('.card-image');
+        if (cardImage) {
+          gsap.to(cardImage, {
+            scrollTrigger: {
+              trigger: card,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1
+            },
+            y: -50,
+            ease: 'none'
+          });
+        }
+      });
+
+      healingCards.forEach((card) => {
+        const cardImage = card.querySelector('.healing-card-image');
+        if (cardImage) {
+          gsap.to(cardImage, {
+            scrollTrigger: {
+              trigger: card,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1
+            },
+            y: -50,
+            ease: 'none'
+          });
+        }
+      });
+    }
+
+    // Footer animations on scroll
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const footer = document.getElementById('footer');
+      if (footer) {
+        // Animate footer columns
+        gsap.to('.footer-logo-section', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 90%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out'
+        });
+
+        gsap.to('.footer-column', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 90%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power2.out'
+        });
+
+        // Animate footer links
+        gsap.to('.footer-links li', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          stagger: 0.05,
+          ease: 'power2.out'
+        });
+
+        // Animate contact items
+        gsap.to('.footer-contact-item', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'power2.out'
+        });
+
+        // Animate social links
+        gsap.to('.footer-social-link', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: 'back.out(1.2)'
+        });
+
+        // Animate QR codes
+        gsap.to('.footer-qr-codes', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          delay: 0.4,
+          ease: 'power2.out'
+        });
+
+        // Animate divider
+        gsap.to('.footer-divider', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 80%'
+          },
+          opacity: 1,
+          scaleX: 1,
+          duration: 1,
+          ease: 'power2.out'
+        });
+
+        // Animate footer bottom
+        gsap.to('.footer-bottom', {
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 80%'
+          },
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          delay: 0.3,
+          ease: 'power2.out'
+        });
+      }
+    }
+
+    // Set current year
+    const yearElement = document.getElementById('current-year');
+    if (yearElement) {
+      yearElement.textContent = new Date().getFullYear();
+    }
+  </script>
+</body>
+</html>
+

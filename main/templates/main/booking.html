@@ -1,0 +1,187 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book Your Session | Singing Bowl & Gong House</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="icon" href="{% static 'main/images/logo.jpg' %}">
+  <link rel="stylesheet" href="{% static 'main/css/header.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/booking.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/popup-notice.css' %}">
+  <script src="{% static 'main/js/popup-notice.js' %}" defer></script>
+
+  <style>
+    body { background: #f7f7fb; }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    }
+    label { font-weight: 600; margin-bottom: 6px; display: block; }
+    button {
+      background: #d4af37;
+      color: #fff;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .error { color: #e74c3c; font-size: 14px; }
+    .success { background: #d4edda; color: #155724; padding: 12px; border-radius: 8px; }
+  </style>
+
+  <!-- Google Analytics -->
+  <!-- Replace with your real Google Analytics ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S8K7GVD9S3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-S8K7GVD9S3');
+  </script>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">
+      <img src="{% static 'main/images/logo.jpg' %}" alt="Logo">
+      <span>Singing Bowl & Gong House</span>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="container">
+    <h1 style="text-align:center;">Book Your Session</h1>
+    <p style="text-align:center;">
+      Fill out the form below and we will contact you within 24 hours.
+    </p>
+
+    <!-- BOOKING FORM (JS ONLY) -->
+    <form id="booking-form">
+
+      <div>
+        <label>Full Name *</label>
+        {{ form.name }}
+        <div class="error">{{ form.name.errors }}</div>
+      </div>
+
+      <div>
+        <label>Email *</label>
+        {{ form.email }}
+        <div class="error">{{ form.email.errors }}</div>
+      </div>
+
+      <div>
+        <label>Phone *</label>
+        {{ form.phone }}
+        <div class="error">{{ form.phone.errors }}</div>
+      </div>
+
+      <div>
+        <label>Service *</label>
+        {{ form.service }}
+        <div class="error">{{ form.service.errors }}</div>
+      </div>
+
+      <div>
+        <label>Preferred Date *</label>
+        {{ form.booking_date }}
+        <div class="error">{{ form.booking_date.errors }}</div>
+      </div>
+
+      <div>
+        <label>Age</label>
+        {{ form.age }}
+      </div>
+
+      <div>
+        <label>Session Type</label>
+        {{ form.session_type }}
+      </div>
+
+      <div>
+        <label>Course Selection</label>
+        {{ form.course_selection }}
+      </div>
+
+      <div>
+        <label>Medical Condition</label>
+        {{ form.medical_condition }}
+      </div>
+
+      <div>
+        <label>Message</label>
+        {{ form.message }}
+      </div>
+
+      <br>
+
+      <button type="submit" id="booking-submit">
+        Submit Booking
+      </button>
+
+    </form>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p style="text-align:center;">
+      © {{ now|date:"Y" }} Singing Bowl & Gong House
+    </p>
+  </footer>
+
+  <!-- ✅ SAFE JAVASCRIPT -->
+  <script>
+    (function () {
+      const form = document.getElementById("booking-form");
+      const button = document.getElementById("booking-submit");
+
+      if (!form) return;
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); // 🛑 stop page reload
+
+        button.disabled = true;
+        button.innerText = "Submitting...";
+
+        const formData = new FormData(form);
+
+        fetch("/api/bookings/public/", {
+          method: "POST",
+          body: formData,
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === "success") {
+            window.location.href = "/success/";
+          } else {
+            alert("Please check the form and try again.");
+            button.disabled = false;
+            button.innerText = "Submit Booking";
+          }
+        })
+        .catch(() => {
+          alert("Server error. Please try later.");
+          button.disabled = false;
+          button.innerText = "Submit Booking";
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

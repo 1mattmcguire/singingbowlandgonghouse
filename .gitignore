@@ -1,0 +1,48 @@
+# Large video files
+main/static/main/images/*.mp4
+main/static/main/images/Video Project.mp4
+main/static/main/images/video edit.mp4
+staticfiles/main/images/*.mp4
+staticfiles/main/images/Video Project.mp4
+staticfiles/main/images/video edit.mp4
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+/media
+/staticfiles
+media/
+staticfiles/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+db.sqlite3
+.env
+GIT_RESOLUTION_GUIDE.md
+ 
+ 
+.env
+.env.*
+local_settings.py
+main/static/main/catalog/*.pdf

@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load main_extras %}
+
+{% block title %}Products - Singing Bowl & Gong House{% endblock %}
+{% block nav_products_active %}class="active"{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'main/css/home.css' %}">
+  <style>
+    .instruments-section {
+      padding-bottom: 80px;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <section class="instruments-section" id="instruments">
+    <div class="instruments-container">
+      <div class="catalog-simple-header">
+        <h2 class="instruments-main-title">Our Sacred Instruments</h2>
+        <a href="{% static 'main/catalog/catalogue.pdf' %}" class="catalog-download-btn-simple" download>
+          <i class="fas fa-download"></i> Download Full Catalogue
+        </a>
+        <p class="instruments-subtitle">Discover our collection of traditional and modern sound healing instruments.</p>
+      </div>
+
+      {% for category in categories %}
+      {% for subcategory in category.subcategories.all %}
+      <div class="instrument-category-block">
+        <h3 class="instrument-category-title">{{ subcategory.name }}</h3>
+        <div class="instruments-simple-grid">
+          {% for instrument in subcategory.instruments.all %}
+          <div class="product-card-simple">
+            <div class="product-card-image">
+              {% with first_related_image=instrument.images.all|first %}
+              {% if first_related_image and first_related_image.image %}
+              <img src="{{ first_related_image.image.url }}" alt="{{ instrument.name }}" loading="lazy">
+              {% elif instrument.image %}
+              <img src="{{ instrument.image.url }}" alt="{{ instrument.name }}" loading="lazy">
+              {% else %}
+              <div class="product-card-placeholder">No image</div>
+              {% endif %}
+              {% endwith %}
+            </div>
+            <div class="product-card-body">
+              <h3 class="product-card-title">{{ instrument.name }}</h3>
+              <p class="product-card-desc">{{ instrument.description|truncatewords:30 }}</p>
+              <ul class="product-card-specs">
+                <li><strong>Material:</strong> {{ instrument.material|default:"-" }}</li>
+                <li><strong>Size:</strong> {{ instrument.size|default:"-" }}</li>
+                <li><strong>Weight:</strong> {{ instrument.weight|default:"-" }}</li>
+              </ul>
+              <div class="product-card-actions">
+                <a href="https://wa.me/9779843213802?text=Hello%2C%20I%20am%20interested%20in%20{{ instrument.name|urlencode }}" class="product-card-whatsapp" target="_blank" rel="noopener noreferrer">
+                  <i class="fa-brands fa-whatsapp"></i> Inquire via WhatsApp
+                </a>
+                <button type="button" class="product-card-view-details card-btn" data-instrument='{{ instrument|instrument_json }}'>
+                  <i class="fas fa-circle-info"></i> View Details
+                </button>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <div class="instrument-modal" id="instrument-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-wrapper">
+      <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+      <div class="modal-content-wrapper" id="modal-content"></div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    const modal = document.getElementById("instrument-modal");
+    const modalContent = document.getElementById("modal-content");
+    const closeBtn = document.getElementById("modal-close-btn");
+    const overlay = document.querySelector(".modal-overlay");
+    const fallbackImage = "{% static 'main/images/mainimage.jpg' %}";
+    let lastGalleryTouchTime = 0;
+
+    function updateModalMainImage(thumbnailImg) {
+      const galleryRoot = thumbnailImg.closest('.instrument-gallery-instance');
+      if (!galleryRoot) return;
+      const mainImage = galleryRoot.querySelector('.main-image');
+      const scopedItems = galleryRoot.querySelectorAll('.gallery-item');
+      const galleryItem = thumbnailImg.closest('.gallery-item');
+      if (!galleryItem) return;
+      const src = galleryItem.getAttribute('data-image-src') || thumbnailImg.getAttribute('src') || '';
+      const alt = galleryItem.getAttribute('data-image-alt') || thumbnailImg.getAttribute('alt') || '';
+      if (mainImage && src) {
+        mainImage.style.opacity = '0';
+        mainImage.style.transition = 'opacity 0.3s ease';
+        setTimeout(function() {
+          mainImage.src = src;
+          mainImage.alt = alt;
+          mainImage.style.opacity = '1';
+        }, 150);
+        scopedItems.forEach(function(item) { item.classList.remove('active'); });
+        galleryItem.classList.add('active');
+      }
+    }
+
+    function openModal(item) {
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+      const itemId = String(item.id || item.name || Date.now()).replace(/[^a-zA-Z0-9_-]/g, '-');
+      const galleryInstanceId = 'gallery-' + itemId;
+      const galleryImages = item.galleryImages || [];
+      const firstImg = galleryImages[0] || { url: item.image || fallbackImage, alt: item.name };
+      const galleryHTML = galleryImages.length > 0 ? `
+        <div class="modal-gallery-section">
+          <h4 class="details-section-title">Gallery</h4>
+          <div class="modal-gallery-grid" data-gallery-id="${galleryInstanceId}">
+            ${galleryImages.map(function(img, i) {
+              const src = (img.url || fallbackImage).replace(/'/g, "&#39;");
+              const alt = (img.alt || item.name).replace(/"/g, '&quot;');
+              return '<div class="gallery-item' + (i === 0 ? ' active' : '') + '" data-gallery-id="' + galleryInstanceId + '" data-image-src="' + src + '" data-image-alt="' + alt + '">' +
+                '<img src="' + src + '" alt="' + alt + '" class="gallery-image thumbnail-img" data-image-src="' + src + '" onerror="this.onerror=null;this.src=\'' + fallbackImage + '\'">' +
+                '</div>';
+            }).join('')}
+          </div>
+        </div>` : '';
+
+      modalContent.innerHTML =
+        '<div class="modal-content instrument-gallery-instance" data-gallery-id="' + galleryInstanceId + '">' +
+          '<div class="modal-image-section">' +
+            '<div class="modal-image-wrapper">' +
+              '<img src="' + (firstImg.url || fallbackImage).replace(/'/g, "&#39;") + '" class="modal-image main-image" alt="' + (item.name || '').replace(/"/g, '&quot;') + '" onerror="this.onerror=null;this.src=\'' + fallbackImage + '\'">' +
+            '</div>' +
+          '</div>' +
+          '<div class="modal-text-section">' +
+            '<div class="modal-header-section"><h2 class="modal-title">' + (item.name || '').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</h2></div>' +
+            '<div class="modal-details-section">' +
+              '<h4 class="details-section-title">Details</h4>' +
+              '<div class="details-info">' +
+                '<div class="details-row">' +
+                  '<div class="detail-item"><p><b>Material:</b> ' + (item.material || '-') + '</p></div>' +
+                  '<div class="detail-item"><p><b>Size:</b> ' + (item.size || '-') + '</p></div>' +
+                '</div>' +
+                '<div class="details-row">' +
+                  '<div class="detail-item"><p><b>Weight:</b> ' + (item.weight || '-') + '</p></div>' +
+                  '<div class="detail-item"><p><b>Note:</b> ' + (item.note || '-') + '</p></div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="modal-description-section"><h4 class="details-section-title">Description</h4><p class="modal-description">' + (item.description || 'No description available.').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</p></div>' +
+            galleryHTML +
+            '<div class="modal-actions"><a class="modal-btn whatsapp-btn" target="_blank" href="https://wa.me/9779843213802?text=' + encodeURIComponent('Hello, tell me about ' + item.name) + '"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a></div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function closeModal() {
+      modal.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+
+    document.addEventListener("click", (e) => {
+      const thumb = e.target.closest(".thumbnail-img");
+      if (!thumb) return;
+      if (Date.now() - lastGalleryTouchTime < 500) return;
+      updateModalMainImage(thumb);
+    });
+
+    document.addEventListener("touchstart", (e) => {
+      const thumb = e.target.closest(".thumbnail-img");
+      if (!thumb) return;
+      lastGalleryTouchTime = Date.now();
+      updateModalMainImage(thumb);
+    }, { passive: true });
+
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".card-btn");
+      if (!btn) return;
+      try {
+        openModal(JSON.parse(btn.dataset.instrument));
+      } catch (error) {
+        console.error("Error parsing instrument data:", error);
+      }
+    });
+
+    if (closeBtn) closeBtn.addEventListener("click", closeModal);
+    if (overlay) overlay.addEventListener("click", closeModal);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("active")) closeModal();
+    });
+  </script>
+{% endblock %}

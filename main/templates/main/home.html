@@ -1,0 +1,763 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Singing Bowl & Gong House{% endblock %}
+{% block nav_home_active %}class="active"{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'main/css/home.css' %}">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S8K7GVD9S3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-S8K7GVD9S3');
+  </script>
+{% endblock %}
+
+{% block content %}
+  <!-- HERO (2-Column Layout: Image with Text Overlay + Floating Images) -->
+  <section class="hero" id="home">
+    <div class="hero-image-wrapper">
+      <div class="hero-image"></div>
+      <div class="hero-content">
+        <h1 class="hero-anim">Singing Bowl &amp; Gong House</h1>
+        <p class="lead hero-anim">
+          We guide you into calm through immersive Sound Healing and help you certify through our Advanced Teacher Training.
+        </p>
+        <a class="book-btn hero-anim" href="#" onclick="openBookingModal(); return false;">Book Now</a>
+      </div>
+    </div>
+    <div class="hero-animation-wrapper">
+      <div class="main">
+        <div class="mainBoxes"></div>
+        <div class="mainClose">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none">
+            <circle cx="30" cy="30" r="30" fill="#000" opacity="0.4" />
+            <path d="M15,16L45,46 M45,16L15,46" stroke="#000" stroke-width="3.5" opacity="0.5" />
+            <path d="M15,15L45,45 M45,15L15,45" stroke="#fff" stroke-width="2" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-backdrop"></div>
+    <img id="lightbox-img" alt="Hero preview">
+    <button id="lightbox-close" aria-label="Close preview">&times;</button>
+  </div>
+
+  <!-- Modern Landing Section -->
+  <section class="modern-landing-section">
+    <div class="landing-container">
+      <!-- Top Section: Heading and Stats Side by Side -->
+      <div class="landing-header-stats">
+        <h2 class="landing-title">Relax, recalibrate, and find inner peace again</h2>
+        <!-- Frequency Section -->
+        <div class="landing-stats-section">
+          <div class="stat-item">
+            <div class="stat-number">400+</div>
+            <div class="stat-label">Sound baths</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">656</div>
+            <div class="stat-label">People Served
+              </div>
+          </div>
+          <a href="#" class="landing-book-btn" onclick="openBookingModal(); return false;">Book A Session</a>
+        </div>
+      </div>
+
+      <!-- Bottom Section: Image and Text Side by Side -->
+      <div class="landing-text-image-wrapper">
+        <!-- Image Section (Left) -->
+        <div class="landing-images-section">
+          <div class="landing-image-right">
+            <img src="{% static 'main/images/bgimg.jpg' %}" alt="Sound Healing Session" class="landing-img">
+          </div>
+        </div>
+
+        <!-- Text Section (Right) -->
+        <div class="landing-description-section">
+          <p class="landing-description">Take a moment to breathe, reconnect, and return to yourself. In a world that often feels loud and demanding, our sound healing sessions offer a sanctuary of stillness. Through soothing vibrations and gentle frequencies, your mind begins to soften, your nervous system relaxes, and tension slowly melts away. This is a space where you are allowed to pause, release what no longer serves you, and rediscover a sense of inner balance and emotional clarity. Allow yourself to feel grounded again — peaceful, centered, and aligned from within.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services and Featured Section -->
+  <section class="services-featured-section">
+    <div class="services-featured-container">
+      <!-- Top Services Row -->
+      <div class="services-row">
+        <div class="service-block">
+          <h3 class="service-title">Group Healing</h3>
+          <p class="service-description">Experience sound therapy together in a shared space. Perfect for friends, families, or small groups seeking relaxation, balance, and emotional harmony</p>
+        </div>
+        <div class="service-block">
+          <h3 class="service-title">Personal Healing</h3>
+          <p class="service-description">Experience personalized sound therapy aligned with your own energy field. Perfect for anyone who needs individual healing, inner peace, and greater self-awareness.</p>
+        </div>
+        <div class="service-block">
+          <h3 class="service-title">Advanced Teacher Training</h3>
+          <p class="service-description">Get advanced instruction in Himalayan singing bowls, gongs, handpans, and therapeutic sound instruments to improve your abilities. Perfect for practitioners getting ready to lead and guide sessions.</p>
+        </div>
+      </div>
+
+      <!-- Featured Two-Column Section -->
+      <div class="featured-section">
+        <div class="featured-image-wrapper">
+          <img src="{% static 'main/images/sound healing session.jpeg' %}" alt="Sound Healing Session" class="featured-image">
+        </div>
+        <div class="featured-content-panel">
+          <h2 class="featured-heading">Everything in life is vibration</h2>
+          <p class="featured-text">Every cell, emotion, and thought in life is a vibration. Stress, discomfort, and restlessness result from an imbalance in our inner frequencies. We restore harmony between the body and mind through the therapeutic resonance of gongs, singing bowls, and sound instruments. Energy realigns, tension releases, and a profound sense of inner peace emerges as the vibrations pass through you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="benefits-section">
+    <div class="benefits-container">
+      <div class="benefits-content">
+        <!-- Left Column: Text Content -->
+        <div class="benefits-text-block">
+          <h2 class="benefits-heading">Benefits of sound healing & music therapy</h2>
+          <p class="benefits-description">Sound healing and music therapy use gentle vibrations, rhythms, and frequencies to balance the mind and body. The tones produced by instruments like singing bowls, gongs, and tuning forks help calm the nervous system, reduce stress, and release emotional tension. Regular sound sessions support deeper relaxation, improve sleep, enhance focus, and promote inner peace. Many people also experience reduced anxiety, improved breathing, better mood, and a stronger mind-body connection. Whether for meditation, healing, or personal well-being, sound and music therapy offer a natural and powerful way to restore harmony within.</p>
+          <ul class="benefits-list">
+            <li class="benefit-item">Reduced stress</li>
+            <li class="benefit-item">Pain management</li>
+            <li class="benefit-item">Increased clarity</li>
+            <li class="benefit-item">Improved sleep</li>
+            <li class="benefit-item">Deep relaxation</li>
+            <li class="benefit-item">Increased energy</li>
+          </ul>
+        </div>
+
+        <!-- Right Column: Images -->
+        <div class="benefits-images-block">
+          <div class="benefit-image-wrapper">
+            <img src="{% static 'main/images/scroll5.jpeg' %}" alt="Private Sessions" class="benefit-image">
+            <div class="benefit-image-overlay">
+              <span class="benefit-overlay-text" onclick="openBookingModal(); return false;">Private Sessions</span>
+            </div>
+          </div>
+          <div class="benefit-image-wrapper">
+            <img src="{% static 'main/images/Group Session.jpeg' %}" alt="Group Session" class="benefit-image">
+            <div class="benefit-image-overlay">
+              <span class="benefit-overlay-text" onclick="openBookingModal(); return false;">Group Session</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Animated Text Section -->
+  <section class="animated-text-section">
+    <div class="animated-text-container">
+      <div class="animated-text-content">
+        <h2 class="animated-title">Transform Your Life Through the Power of Sound</h2>
+        <p class="animated-subtitle">Experience deep healing, inner peace, and spiritual growth in our sacred space</p>
+        <div class="animated-features">
+          <div class="feature-item">
+            <i class="fas fa-heart"></i>
+            <span>Deep Healing</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-leaf"></i>
+            <span>Inner Peace</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-star"></i>
+            <span>Spiritual Growth</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-users"></i>
+            <span>Community</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founder's Journey Section -->
+  <section class="founder-section-home" id="founder">
+    <div class="container-home">
+      <div class="founder-content-home">
+        <div class="founder-image-home">
+          <div class="founder-image-wrapper">
+            <img src="{% static 'main/images/mainimage.jpg' %}" alt="Founder - Ishor Shrestha" class="founder-img-home">
+            <div class="founder-image-overlay"></div>
+            <div class="founder-quote-badge">
+              <i class="fas fa-quote-left"></i>
+            </div>
+          </div>
+        </div>
+        <div class="founder-text-home">
+          <span class="founder-label">Founder's Journey</span>
+          <h2 class="founder-title-home">A Path to Healing</h2>
+          <p class="founder-description-home">
+            My journey with sound healing began over <strong>13 years ago</strong>, born from a deep personal need for healing and transformation.
+            After experiencing the profound effects of sound therapy during a difficult period in my life, I became passionate about
+            sharing this ancient wisdom with others.
+          </p>
+          <p class="founder-description-home">
+            What started as a personal quest for inner peace has evolved into a lifelong mission to help others discover the transformative
+            power of sound. Through years of dedicated study, practice, and mentorship with master healers from the Himalayas, I have
+            developed a deep understanding of vibrational healing and its ability to restore balance to mind, body, and spirit.
+          </p>
+          <p class="founder-description-home">
+            Today, I am honored to guide hundreds of individuals on their own healing journeys and to train the next generation of
+            sound healers. My commitment is to preserve the authentic teachings while making them accessible to everyone seeking
+            peace, healing, and spiritual growth.
+          </p>
+          <div class="founder-signature-home">
+            <div class="signature-line"></div>
+            <p class="founder-name-home">Ishor Shrestha</p>
+            <p class="founder-title-home-text">Founder & Master Sound Healer</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Videos Section -->
+  <section class="video-section">
+    <div class="video-content">
+      <div class="video-badge">FEEL THE RESONANCE</div>
+      <h2 class="video-title">A Glimpse Inside Our Sound Sanctuaries</h2>
+      <p class="video-subtitle">
+        Step into a session with us and experience how singing bowls, gongs,
+        and handpans weave together to guide deep calm, clarity, and emotional reset.
+      </p>
+      <div class="video-wrapper">
+        <div class="video-placeholder" style="position: relative; border-radius: 18px; overflow: hidden; background: #000;">
+          <img src="{% static 'main/images/bgimg.jpg' %}" alt="Sound session preview" style="width: 100%; height: auto; display: block; opacity: 0.9;">
+          <a href="#"
+             onclick="openBookingModal(); return false;"
+             style="position:absolute; inset:0; display:grid; place-items:center; color:#fff; text-decoration:none; font-weight:700; letter-spacing:0.5px; background:rgba(0,0,0,0.25);">
+            Request session videos
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <p>Common questions about sound healing and our center.</p>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>What should I wear to a sound bath?</span>
+        <span class="icon">+</span>
+      </div>
+      <div class="faq-answer">
+        We recommend loose, comfortable clothing that promotes relaxation.
+        Layers are a good idea since you may cool down during the session.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>Do I need any prior experience with meditation?</span>
+        <span class="icon">+</span>
+      </div>
+      <div class="faq-answer">
+        No prior experience is needed. Our classes are open to all levels.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>How long is a typical session?</span>
+        <span class="icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Sessions typically last between 45 and 60 minutes.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>Is sound healing safe for everyone?</span>
+        <span class="icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Sound healing is safe for most people, but those with implants
+        or sound sensitivity should consult their doctor.
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonial">
+    <div class="testimonials-container">
+      <h2 class="section-title">What Our Clients Say</h2>
+      <p class="section-subtitle">Real experiences from our sound healing community</p>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="quote-icon">"</div>
+            <div class="stars">★★★★★</div>
+          </div>
+          <p class="testimonial-text">"An amazing experience! I feel lighter and more relaxed after each session. The vibrations truly work wonders for my stress levels."</p>
+          <div class="testimonial-author">
+            <div class="author-info">
+              <h4>Sarah Johnson</h4>
+              <span>Regular Client</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="quote-icon">"</div>
+            <div class="stars">★★★★★</div>
+          </div>
+          <p class="testimonial-text">"The sound bath helped me sleep better and feel more in tune with myself. I've been coming weekly for 3 months now."</p>
+          <div class="testimonial-author">
+            <div class="author-info">
+              <h4>Michael Chen</h4>
+              <span>Wellness Enthusiast</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="quote-icon">"</div>
+            <div class="stars">★★★★★</div>
+          </div>
+          <p class="testimonial-text">"Highly recommend their crystal singing bowl therapy sessions! The instructors are knowledgeable and create such a peaceful atmosphere."</p>
+          <div class="testimonial-author">
+            <div class="author-info">
+              <h4>Emma Rodriguez</h4>
+              <span>First-Time Visitor</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="quote-icon">"</div>
+            <div class="stars">★★★★★</div>
+          </div>
+          <p class="testimonial-text">"Beautifully calming and deeply restorative. A must-try for anyone needing peace and mental clarity in their busy life."</p>
+          <div class="testimonial-author">
+            <div class="author-info">
+              <h4>David Thompson</h4>
+              <span>Corporate Professional</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="quote-icon">"</div>
+            <div class="stars">★★★★★</div>
+          </div>
+          <p class="testimonial-text">"I completed the Advanced Teacher Training and it transformed my practice. The depth of knowledge shared here is incredible."</p>
+          <div class="testimonial-author">
+            <div class="author-info">
+              <h4>Priya Sharma</h4>
+              <span>Certified Practitioner</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="quote-icon">"</div>
+            <div class="stars">★★★★★</div>
+          </div>
+          <p class="testimonial-text">"After just one session, I felt a profound sense of release. The gong bath experience is unlike anything I've tried before."</p>
+          <div class="testimonial-author">
+            <div class="author-info">
+              <h4>James Wilson</h4>
+              <span>New Client</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="quote-icon">"</div>
+            <div class="stars">★★★★★</div>
+          </div>
+          <p class="testimonial-text">"The healing frequencies helped me process emotions I didn't even know I was holding. Truly transformative work."</p>
+          <div class="testimonial-author">
+            <div class="author-info">
+              <h4>Lisa Anderson</h4>
+              <span>Therapy Client</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="quote-icon">"</div>
+            <div class="stars">★★★★★</div>
+          </div>
+          <p class="testimonial-text">"I bring my team here for corporate wellness sessions. It's improved our workplace harmony and reduced stress significantly."</p>
+          <div class="testimonial-author">
+            <div class="author-info">
+              <h4>Robert Martinez</h4>
+              <span>Business Owner</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Hero images
+  const heroImages = [
+    "{% static 'main/images/mainimage.jpg' %}",
+    "{% static 'main/images/bgimg.jpg' %}",
+    "{% static 'main/images/scroll2.jpg' %}",
+    "{% static 'main/images/scroll3.jpg' %}",
+    "{% static 'main/images/scroll4.jpg' %}",
+    "{% static 'main/images/training.jpg' %}",
+    "{% static 'main/images/sound healing session.jpeg' %}",
+    "{% static 'main/images/therapy.jpg' %}",
+    "{% static 'main/images/IMG-20251111-WA0011.jpg' %}"
+  ];
+
+  const mainBoxes = document.querySelector(".mainBoxes");
+  const mainClose = document.querySelector(".mainClose");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
+  const lightboxClose = document.getElementById("lightbox-close");
+
+  let currentImg = null;
+  let currentImgProps = { x: 0, y: 0 };
+  let isZooming = false;
+  let column = -1;
+  let mouse = { x: 0, y: 0 };
+  let delayedPlay;
+
+  const isMobile = window.innerWidth <= 768;
+  const isSmallMobile = window.innerWidth <= 480;
+
+  heroImages.forEach((src, i) => {
+    if (i % 3 === 0) column++;
+    const b = document.createElement("div");
+    mainBoxes.appendChild(b);
+
+    let colX, startY, endY, duration, boxWidth, boxHeight, boxScale;
+
+    if (isSmallMobile) {
+      colX = 0;
+      startY = -400;
+      endY = 400;
+      duration = 30;
+      boxWidth = 240;
+      boxHeight = 350;
+      boxScale = 1;
+    } else if (isMobile) {
+      colX = 0;
+      startY = -450;
+      endY = 450;
+      duration = 35;
+      boxWidth = 280;
+      boxHeight = 400;
+      boxScale = 1;
+    } else {
+      colX = [60, 280, 500][column];
+      startY = [-575, 800, 800][column];
+      endY = [800, -575, -575][column];
+      duration = [40, 35, 26][column];
+      boxWidth = 400;
+      boxHeight = 640;
+      boxScale = 0.5;
+    }
+
+    gsap.set(b, {
+      id: `b${i}`,
+      className: `photoBox pb-col${column}`,
+      backgroundImage: `url(${src})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      overflow: "hidden",
+      x: colX,
+      width: boxWidth,
+      height: boxHeight,
+      borderRadius: isMobile ? 24 : 20,
+      scale: boxScale,
+      zIndex: isMobile ? (3 - (i % 3)) : 1,
+      opacity: isMobile ? 0 : 1
+    });
+
+    if (!isMobile) {
+      b.tl = gsap.timeline({ paused: true, repeat: -1 })
+        .fromTo(b, { y: startY, rotation: -0.05 }, { duration, y: endY, rotation: 0.05, ease: "none" })
+        .progress((i % 3) / 3);
+    } else {
+      b.tl = null;
+    }
+  });
+
+  function pauseBoxes(box) {
+    if (window.innerWidth <= 768) return;
+    const classStr = box.classList.contains("pb-col1") ? "pb-col1" : box.classList.contains("pb-col2") ? "pb-col2" : "pb-col0";
+    Array.from(mainBoxes.children).forEach((child) => {
+      if (child.classList.contains(classStr) && child.tl) gsap.to(child.tl, { timeScale: 0, ease: "sine" });
+    });
+  }
+
+  function playBoxes() {
+    if (window.innerWidth <= 768) return;
+    Array.from(mainBoxes.children).forEach((child) => {
+      if (child.tl) {
+        const tl = child.tl;
+        tl.play();
+        gsap.to(tl, { duration: 0.4, timeScale: 1, ease: "sine.in", overwrite: true });
+      }
+    });
+  }
+
+  function lightboxOpen(src) {
+    lightboxImg.src = src;
+    lightbox.classList.add("show");
+  }
+  function lightboxCloseFn() {
+    lightbox.classList.remove("show");
+  }
+
+  window.addEventListener('load', function () {
+    const isMobile = window.innerWidth <= 768;
+    const isTablet = window.innerWidth > 768 && window.innerWidth <= 1024;
+
+    if (isMobile) {
+      gsap.from(".hero-content h1", { y: 30, opacity: 0, duration: 0.8, delay: 0.1, ease: "power2.out" });
+      gsap.from(".hero-content .lead", { y: 30, opacity: 0, duration: 0.8, delay: 0.4, ease: "power2.out" });
+      gsap.from(".hero-content .book-btn", { y: 30, opacity: 0, duration: 0.8, delay: 0.6, ease: "power2.out" });
+
+      const photoBoxes = document.querySelectorAll(".photoBox");
+      photoBoxes.forEach((box, index) => {
+        gsap.set(box, { opacity: 1, display: "block", x: 0, y: 0, scale: 1 });
+        gsap.from(box, { opacity: 0, x: 50, duration: 0.6, delay: 0.8 + (index * 0.1), ease: "power2.out" });
+      });
+    } else {
+      gsap.from(".hero-anim", { y: 30, opacity: 0, duration: 0.6, stagger: 0.12, ease: "power2.out" });
+    }
+
+    let mainBoxesWidth = 1200;
+    let mainBoxesLeft = "72%";
+    let rotationX = 14;
+    let rotationY = -15;
+    let rotationZ = 10;
+
+    if (isMobile) {
+      mainBoxesWidth = Math.min(window.innerWidth - 40, 600);
+      mainBoxesLeft = "50%";
+      rotationX = 0;
+      rotationY = 0;
+      rotationZ = 0;
+    } else if (isTablet) {
+      mainBoxesWidth = 800;
+      mainBoxesLeft = "60%";
+      rotationX = 8;
+      rotationY = -8;
+      rotationZ = 5;
+    }
+
+    const _tl = gsap.timeline({ onStart: !isMobile ? playBoxes : null })
+      .set(".main", { perspective: isMobile ? 0 : 800 })
+      .set(".photoBox", { opacity: isMobile ? 0 : 1, cursor: "pointer" })
+      .set(".mainBoxes", { left: mainBoxesLeft, xPercent: -50, width: mainBoxesWidth, rotationX: rotationX, rotationY: rotationY, rotationZ: rotationZ })
+      .set(".mainClose", { autoAlpha: 0, width: 60, height: 60, left: -30, top: -31, pointerEvents: "none", display: isMobile ? "none" : "block" })
+      .fromTo(".main", { autoAlpha: 0 }, { duration: 0.6, ease: "power2.inOut", autoAlpha: 1 }, 0.2);
+
+    mainBoxes.addEventListener("mousemove", (e) => {
+      mouse.x = e.x;
+      mouse.y = e.layerY;
+      if (currentImg) gsap.to(".mainClose", { duration: 0.1, x: mouse.x, y: mouse.y, overwrite: "auto" });
+    });
+
+    if (!isMobile) {
+      mainBoxes.addEventListener("mouseenter", (e) => {
+        const target = e.target.closest(".photoBox");
+        if (!target || currentImg) return;
+        if (delayedPlay) delayedPlay.kill();
+        pauseBoxes(target);
+        gsap.to(".photoBox", { duration: 0.2, overwrite: "auto", opacity: (i, t) => (t === target ? 1 : 0.33) });
+        gsap.fromTo(target, { zIndex: 100 }, { duration: 0.2, scale: 0.62, overwrite: "auto", ease: "power3" });
+      }, true);
+
+      mainBoxes.addEventListener("mouseleave", (e) => {
+        const target = e.target.closest(".photoBox");
+        if (!target || currentImg) return;
+        if (gsap.getProperty(target, "scale") > 0.62) delayedPlay = gsap.delayedCall(0.3, playBoxes);
+        else playBoxes();
+        gsap.timeline()
+          .set(target, { zIndex: 1 })
+          .to(target, { duration: 0.3, scale: 0.5, overwrite: "auto", ease: "expo" }, 0)
+          .to(".photoBox", { duration: 0.5, opacity: 1, ease: "power2.inOut" }, 0);
+      }, true);
+    }
+
+    const handleImageInteraction = (e) => {
+      const target = e.target.closest(".photoBox");
+      if (!target || isZooming) return;
+      isZooming = true;
+      gsap.delayedCall(0.8, () => { isZooming = false; });
+
+      if (currentImg) {
+        const isMobile = window.innerWidth <= 768;
+        const isTablet = window.innerWidth > 768 && window.innerWidth <= 1024;
+        let resetWidth = 1200;
+        let resetLeft = "72%";
+        let resetRotationX = 14;
+        let resetRotationY = -15;
+        let resetRotationZ = 10;
+
+        if (isMobile) {
+          resetWidth = Math.min(window.innerWidth - 40, 600);
+          resetLeft = "50%";
+          resetRotationX = 0;
+          resetRotationY = 0;
+          resetRotationZ = 0;
+        } else if (isTablet) {
+          resetWidth = 800;
+          resetLeft = "60%";
+          resetRotationX = 8;
+          resetRotationY = -8;
+          resetRotationZ = 5;
+        }
+
+        gsap.timeline({ defaults: { ease: "expo.inOut" } })
+          .to(".mainClose", { duration: 0.1, autoAlpha: 0, overwrite: true }, 0)
+          .to(".mainBoxes", { duration: 0.5, scale: 1, left: resetLeft, width: resetWidth, rotationX: resetRotationX, rotationY: resetRotationY, rotationZ: resetRotationZ, overwrite: true }, 0)
+          .to(".photoBox", { duration: 0.6, opacity: 1, ease: "power4.inOut" }, 0)
+          .to(currentImg, { duration: 0.6, width: isMobile ? Math.min(window.innerWidth - 40, 280) : 400, height: isMobile ? 400 : 640, borderRadius: 20, x: currentImgProps.x, y: currentImgProps.y, scale: 0.5, rotation: 0, zIndex: 1 }, 0);
+        currentImg = null;
+      } else {
+        pauseBoxes(target);
+        currentImg = target;
+        currentImgProps.x = gsap.getProperty(currentImg, "x");
+        currentImgProps.y = gsap.getProperty(currentImg, "y");
+
+        gsap.timeline({ defaults: { duration: 0.6, ease: "expo.inOut" } })
+          .set(currentImg, { zIndex: 100 })
+          .fromTo(".mainClose", { x: mouse.x, y: mouse.y, background: "rgba(0,0,0,0)" }, { autoAlpha: 1, duration: 0.3, ease: "power3.inOut" }, 0)
+          .to(".photoBox", { opacity: 0 }, 0)
+          .to(currentImg, { width: "100%", height: "100%", borderRadius: 0, x: 0, top: 0, y: 0, scale: 1, opacity: 1 }, 0)
+          .to(".mainBoxes", { duration: 0.5, left: "50%", width: "100%", rotationX: 0, rotationY: 0, rotationZ: 0 }, 0.15)
+          .to(".mainBoxes", { duration: 5, scale: 1.06, rotation: 0.05, ease: "none" }, 0.65);
+
+        lightboxOpen(getComputedStyle(currentImg).backgroundImage.slice(5, -2));
+      }
+    };
+
+    mainBoxes.addEventListener("click", handleImageInteraction);
+    if (isMobile) {
+      mainBoxes.addEventListener("touchend", (e) => {
+        e.preventDefault();
+        handleImageInteraction(e);
+      });
+    }
+  });
+
+  lightboxClose?.addEventListener("click", lightboxCloseFn);
+  lightbox?.addEventListener("click", (e) => {
+    if (e.target.classList.contains("lightbox-backdrop")) lightboxCloseFn();
+  });
+
+  // Animated + founder section scroll animations
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.to(".animated-title", {
+      scrollTrigger: { trigger: ".animated-text-section", start: "top 80%" },
+      opacity: 1, y: 0, duration: 1, ease: "power3.out"
+    });
+
+    gsap.to(".animated-subtitle", {
+      scrollTrigger: { trigger: ".animated-text-section", start: "top 75%" },
+      opacity: 1, y: 0, duration: 0.8, delay: 0.2, ease: "power2.out"
+    });
+
+    gsap.to(".feature-item", {
+      scrollTrigger: { trigger: ".animated-features", start: "top 85%" },
+      opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.15, ease: "back.out(1.2)"
+    });
+
+    gsap.fromTo(".founder-image-home",
+      { opacity: 0, x: -100 },
+      { scrollTrigger: { trigger: ".founder-section-home", start: "top 75%" }, opacity: 1, x: 0, duration: 1.2, ease: "power3.out", immediateRender: false }
+    );
+
+    gsap.fromTo(".founder-image-wrapper",
+      { rotationY: -15, scale: 0.95 },
+      { scrollTrigger: { trigger: ".founder-section-home", start: "top 75%" }, rotationY: 0, scale: 1, duration: 1.5, ease: "power3.out", delay: 0.3 }
+    );
+
+    gsap.fromTo(".founder-text-home",
+      { opacity: 0, x: 100 },
+      { scrollTrigger: { trigger: ".founder-section-home", start: "top 75%" }, opacity: 1, x: 0, duration: 1.2, ease: "power3.out", delay: 0.2, immediateRender: false }
+    );
+
+    gsap.from(".founder-label", {
+      scrollTrigger: { trigger: ".founder-section-home", start: "top 75%" },
+      opacity: 0, x: -30, duration: 0.8, ease: "power2.out", delay: 0.4
+    });
+
+    gsap.from(".founder-title-home", {
+      scrollTrigger: { trigger: ".founder-section-home", start: "top 75%" },
+      opacity: 0, y: 40, duration: 1, ease: "power3.out", delay: 0.5
+    });
+
+    gsap.fromTo(".founder-description-home",
+      { opacity: 0, y: 30 },
+      { scrollTrigger: { trigger: ".founder-section-home", start: "top 70%" }, opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power2.out", delay: 0.7, immediateRender: false }
+    );
+
+    gsap.fromTo(".founder-signature-home",
+      { opacity: 0, y: 40 },
+      { scrollTrigger: { trigger: ".founder-signature-home", start: "top 85%" }, opacity: 1, y: 0, duration: 1, ease: "power2.out", delay: 1.2, immediateRender: false }
+    );
+
+    gsap.from(".signature-line", {
+      scrollTrigger: { trigger: ".founder-signature-home", start: "top 85%" },
+      width: 0, duration: 0.8, ease: "power2.out", delay: 1.3
+    });
+
+    gsap.from(".founder-name-home", {
+      scrollTrigger: { trigger: ".founder-signature-home", start: "top 85%" },
+      opacity: 0, x: -20, duration: 0.8, ease: "power2.out", delay: 1.4
+    });
+
+    gsap.from(".founder-title-home-text", {
+      scrollTrigger: { trigger: ".founder-signature-home", start: "top 85%" },
+      opacity: 0, x: -20, duration: 0.8, ease: "power2.out", delay: 1.5
+    });
+
+    gsap.fromTo(".founder-quote-badge",
+      { scale: 0, rotation: 0 },
+      { scrollTrigger: { trigger: ".founder-section-home", start: "top 75%" }, scale: 1, rotation: 360, duration: 1, ease: "back.out(1.7)", delay: 1.8, immediateRender: false }
+    );
+
+    gsap.to(".founder-quote-badge", {
+      y: -10, duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 2.5
+    });
+  }
+
+  // FAQ toggle
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => {
+      item.classList.toggle('active');
+    });
+  });
+</script>
+{% endblock %}

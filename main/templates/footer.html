@@ -1,0 +1,86 @@
+{% load static %}
+<footer class="footer" id="footer">
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="footer-logo-section footer-column" style="--delay: 0">
+        <div class="footer-logo">
+          <img src="{% static 'main/images/logo.jpg' %}" alt="Singing Bowl & Gong House Logo">
+          <div class="footer-logo-text">Singing Bowl & Gong House</div>
+        </div>
+        <p class="footer-description">
+          Transform your life through the healing power of sound. Experience deep relaxation,
+          emotional release, and spiritual growth in our serene sanctuary.
+        </p>
+      </div>
+
+      <div class="footer-column" style="--delay: 1">
+        <h3 class="footer-column-title">Quick Links</h3>
+        <ul class="footer-links">
+          <li style="--delay: 0"><a href="{% url 'main:home' %}">Home</a></li>
+          <li style="--delay: 1"><a href="{% url 'main:about' %}">About Us</a></li>
+          <li style="--delay: 2"><a href="{% url 'main:services' %}">Services</a></li>
+          <li style="--delay: 3"><a href="{% url 'main:products' %}">Products</a></li>
+          <li style="--delay: 4"><a href="{% url 'main:smiles' %}">Sharing Love</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column" style="--delay: 2">
+        <h3 class="footer-column-title">Our Services</h3>
+        <ul class="footer-links">
+          <li style="--delay: 0"><a href="#" onclick="openBookingModal(); return false;">Sound Healing</a></li>
+          <li style="--delay: 1"><a href="#" onclick="openBookingModal(); return false;">Personal Therapy</a></li>
+          <li style="--delay: 2"><a href="#" onclick="openBookingModal(); return false;">Teacher Training</a></li>
+          <li style="--delay: 3"><a href="#" onclick="openBookingModal(); return false;">Group Sessions</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column" style="--delay: 3">
+        <h3 class="footer-column-title">Get In Touch</h3>
+        <div class="footer-contact-item" style="--delay: 0">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>P8G6+C27, Mhepi Janamarga, Kathmandu 44600, Nepal</span>
+        </div>
+        <div class="footer-contact-item" style="--delay: 1">
+          <i class="fas fa-phone"></i>
+          <span><a href="tel:+9779843213802">+977 9843213802</a></span>
+        </div>
+        <div class="footer-contact-item" style="--delay: 2">
+          <i class="fas fa-envelope"></i>
+          <span>singingbowlandgonghouse@gmail.com</span>
+        </div>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/sanjivaniyogaschool" target="_blank" class="footer-social-link" style="--delay: 0" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://www.instagram.com/singingbowlandgonghouse/" target="_blank" class="footer-social-link" style="--delay: 1" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.youtube.com/@Singingbowlandgonghouse" target="_blank" class="footer-social-link" style="--delay: 2" aria-label="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="#" class="footer-social-link" style="--delay: 3" aria-label="Twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+        </div>
+        <div class="footer-qr-codes" style="--delay: 4">
+          <div class="footer-qr-code-item">
+            <a href="https://wa.me/message/FOC7LNZS2YEHC1" target="_blank">
+              <img src="{% static 'main/images/whatsapp.png' %}" alt="WhatsApp QR Code">
+            </a>
+            <span>WhatsApp</span>
+          </div>
+          <div class="footer-qr-code-item">
+            <img src="{% static 'main/images/wechat.png' %}" alt="WeChat QR Code">
+            <span>WeChat</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-divider"></div>
+
+    <div class="footer-bottom">
+      <p>Copyright &copy; <span id="current-year">2024</span> Singing Bowl & Gong House. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
