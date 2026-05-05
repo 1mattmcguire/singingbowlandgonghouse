@@ -84,6 +84,8 @@ def booking(request):
     else:
         form = BookingForm()
 
+    return render(request, "main/booking.html", {"form": form})
+
 
 
 # ======================================================
