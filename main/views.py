@@ -84,6 +84,13 @@ def booking(request):
     else:
         form = BookingForm()
 
+    # Render the page for GET requests and re-render with errors when a POST
+    # submission fails validation. Without this, the view falls off the end
+    # and returns None, which causes Django to raise a 500 ValueError on every
+    # GET to /booking/ (the URL is also listed in sitemap.xml, so search
+    # engine crawlers were hitting the same crash).
+    return render(request, "main/booking.html", {"form": form})
+
 
 
 # ======================================================

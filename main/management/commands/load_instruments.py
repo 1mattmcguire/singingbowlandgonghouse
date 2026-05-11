@@ -164,7 +164,6 @@ def find_static_image(filename):
     candidates = [
         base / "main" / "static" / "main" / "images" / filename,
         base / "static" / "main" / "images" / filename,
-        base / "images" / filename,  # backup images folder in project root
     ]
     for p in candidates:
         if p.exists():
