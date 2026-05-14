@@ -28,6 +28,40 @@ def _get_gallery_images(instrument):
     return result
 
 
+OLD_SINGING_BOWLS_ORDER = [
+    "Old Jam Bowl",
+    "Old Ulta Bowl",
+    "Old Thado Bowl",
+    "Old Buddha/Cham Bowl",
+    "Old Kopre Bowl",
+    "Old Stand Bowl",
+    "Old Manipuree Bowl",
+]
+
+
+@register.filter
+def ordered_instruments(subcategory):
+    """Return instruments for a subcategory.
+
+    For the "Old Singing Bowls" subcategory, the order is fixed to match the
+    curated display order. All other subcategories keep their default order.
+    """
+    instruments = list(subcategory.instruments.all())
+    slug = getattr(subcategory, "slug", "") or ""
+    name = getattr(subcategory, "name", "") or ""
+    is_old_singing_bowls = slug == "old-singing-bowls" or name.strip().lower() == "old singing bowls"
+
+    if not is_old_singing_bowls:
+        return instruments
+
+    order_index = {n: i for i, n in enumerate(OLD_SINGING_BOWLS_ORDER)}
+    fallback = len(OLD_SINGING_BOWLS_ORDER)
+    return sorted(
+        instruments,
+        key=lambda inst: (order_index.get(inst.name, fallback), inst.id),
+    )
+
+
 @register.filter
 def instrument_json(instrument):
     """Serialize one instrument for modal rendering with instrument-scoped gallery images."""

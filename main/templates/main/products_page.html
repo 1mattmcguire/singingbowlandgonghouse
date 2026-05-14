@@ -35,7 +35,7 @@
       <div class="instrument-category-block">
         <h3 class="instrument-category-title">{{ subcategory.name }}</h3>
         <div class="instruments-simple-grid">
-          {% for instrument in subcategory.instruments.all %}
+          {% for instrument in subcategory|ordered_instruments %}
           <script type="application/ld+json">
           {
             "@context": "https://schema.org",
