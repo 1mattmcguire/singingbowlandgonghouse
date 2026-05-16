@@ -5,7 +5,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 
-from main.views import test_email
 from main.sitemaps import StaticViewSitemap
 
 sitemaps = {
@@ -29,7 +28,6 @@ urlpatterns = [
         name="robots_txt",
     ),
     path("", include("main.urls")),
-    path("test-email/", test_email),
 ]
 
 if settings.DEBUG:
