@@ -160,6 +160,10 @@ if not DEBUG and (not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD):
 # SECURITY (PRODUCTION)
 # ---------------------------
 if not DEBUG:
+    # The app runs behind a TLS-terminating proxy in production. Trust the
+    # forwarded scheme so HTTPS requests are not mistaken for plain HTTP,
+    # otherwise SECURE_SSL_REDIRECT will bounce every request in a loop.
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True

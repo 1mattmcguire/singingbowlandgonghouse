@@ -1,4 +1,7 @@
-from django.test import TestCase
+from pathlib import Path
+
+from django.conf import settings
+from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 
 
@@ -23,3 +26,38 @@ class BookingViewTests(TestCase):
         response = self.client.post(reverse("main:booking"), data={})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "main/booking.html")
+
+
+class ProductionAvailabilityTests(SimpleTestCase):
+    """Regression tests for production-only routing and proxy behavior."""
+
+    @override_settings(
+        ALLOWED_HOSTS=["testserver"],
+        SECURE_SSL_REDIRECT=True,
+        SECURE_PROXY_SSL_HEADER=("HTTP_X_FORWARDED_PROTO", "https"),
+    )
+    def test_forwarded_https_request_is_not_redirected_again(self):
+        """Trusted proxy HTTPS traffic must reach the view instead of looping."""
+        response = self.client.get(
+            reverse("main:home"),
+            HTTP_X_FORWARDED_PROTO="https",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "main/home.html")
+
+    @override_settings(
+        ALLOWED_HOSTS=["testserver"],
+        DEBUG=False,
+        SECURE_SSL_REDIRECT=False,
+    )
+    def test_media_files_remain_reachable_when_debug_disabled(self):
+        """Catalog images under MEDIA_ROOT must still be downloadable in production."""
+        probe = Path(settings.MEDIA_ROOT) / "test-media-probe.txt"
+        probe.parent.mkdir(parents=True, exist_ok=True)
+        probe.write_text("media-ok", encoding="utf-8")
+        try:
+            response = self.client.get(f"{settings.MEDIA_URL}test-media-probe.txt")
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.content, b"media-ok")
+        finally:
+            probe.unlink(missing_ok=True)

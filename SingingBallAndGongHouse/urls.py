@@ -32,6 +32,10 @@ urlpatterns = [
     path("test-email/", test_email),
 ]
 
+# Product catalog images are stored under MEDIA_ROOT, not STATIC_ROOT. Keep
+# them reachable even when DEBUG=False, because WhiteNoise serves static assets
+# only and there is no separate media server configured in this deployment.
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
