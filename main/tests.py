@@ -58,6 +58,6 @@ class ProductionAvailabilityTests(SimpleTestCase):
         try:
             response = self.client.get(f"{settings.MEDIA_URL}test-media-probe.txt")
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(response.content, b"media-ok")
+            self.assertEqual(b"".join(response.streaming_content), b"media-ok")
         finally:
             probe.unlink(missing_ok=True)
