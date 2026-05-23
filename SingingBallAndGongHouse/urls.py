@@ -1,8 +1,9 @@
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.static import serve
 from django.views.generic import TemplateView
 
 from main.views import test_email
@@ -34,8 +35,10 @@ urlpatterns = [
 
 # Product catalog images are stored under MEDIA_ROOT, not STATIC_ROOT. Keep
 # them reachable even when DEBUG=False, because WhiteNoise serves static assets
-# only and there is no separate media server configured in this deployment.
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# only and Django's static() helper omits media routes outside debug mode.
+urlpatterns += [
+    re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
