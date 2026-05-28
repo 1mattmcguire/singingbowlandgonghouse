@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.conf import settings
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.http import Http404, HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 import json
@@ -142,20 +143,19 @@ def api_booking(request):
         }, status=500)
 
 
-from django.http import HttpResponse
-from django.core.mail import send_mail
-from django.conf import settings
-
-
 def test_email(request):
+    if not settings.DEBUG:
+        raise Http404()
+
     try:
         send_mail(
             "Test Email",
-            "SendGrid is working 🚀",
+            "SendGrid is working",
             settings.DEFAULT_FROM_EMAIL,
             ["healing@singingbowlandgonghouse.com"],
             fail_silently=False,
         )
-        return HttpResponse("✅ Email sent successfully")
-    except Exception as e:
-        return HttpResponse(f"❌ Error: {str(e)}")
+        return HttpResponse("Email sent successfully")
+    except Exception:
+        logger.exception("Test email failed")
+        return HttpResponse("Unable to send test email.", status=500)

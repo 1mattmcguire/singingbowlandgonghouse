@@ -29,9 +29,9 @@ urlpatterns = [
         name="robots_txt",
     ),
     path("", include("main.urls")),
-    path("test-email/", test_email),
 ]
 
 if settings.DEBUG:
+    urlpatterns.append(path("test-email/", test_email))
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
