@@ -7,7 +7,7 @@ import shutil
 from pathlib import Path
 
 from django.conf import settings
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 
 from main.models import InstrumentCategory, InstrumentSubcategory, Instrument
 
@@ -201,6 +201,25 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         skip_images = options["skip_images"]
         clear = options["clear"]
+        placeholder_image_rel = None
+
+        if skip_images:
+            placeholder_source = find_static_image("mainimage.jpg")
+            if not placeholder_source:
+                raise CommandError(
+                    "--skip-images requires mainimage.jpg in static images so "
+                    "the command can attach a placeholder image instead of "
+                    "skipping every instrument."
+                )
+            placeholder_image_rel = copy_to_media(
+                placeholder_source,
+                "placeholder-mainimage.jpg",
+            )
+            if not placeholder_image_rel:
+                raise CommandError(
+                    "Unable to prepare the placeholder image required by "
+                    "--skip-images."
+                )
 
         if clear:
             self.stdout.write("Clearing existing instrument data...")
@@ -245,7 +264,7 @@ class Command(BaseCommand):
                     self.stdout.write(f"  Skipped (exists): {inst_data['name']}")
                     continue
 
-                image_rel = None
+                image_rel = placeholder_image_rel
                 if not skip_images:
                     src = find_static_image(inst_data["image"])
                     if src:
