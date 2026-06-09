@@ -752,6 +752,17 @@ body {
   grid-row: span 2;
 }
 
+/* Portrait/vertical photos: span 2 rows so the cell aspect ratio
+   matches the image and we don't crop the subject off top/bottom. */
+.gallery-item.gallery-item-portrait {
+  grid-row: span 2;
+}
+
+.gallery-item.gallery-item-portrait .gallery-img {
+  object-fit: cover;
+  object-position: center center;
+}
+
 .gallery-item:hover {
   transform: scale(1.05);
   z-index: 10;
