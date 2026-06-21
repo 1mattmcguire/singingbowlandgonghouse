@@ -206,3 +206,4 @@ class InstrumentImageAdmin(admin.ModelAdmin):
             )
         return '-'
     image_preview.short_description = 'Preview'
+ 

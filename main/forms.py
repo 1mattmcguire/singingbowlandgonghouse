@@ -39,3 +39,4 @@ class BookingForm(forms.ModelForm):
         self.fields['booking_date'].required = True
 
 
+   
