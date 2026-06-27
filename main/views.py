@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 
@@ -148,6 +148,11 @@ from django.conf import settings
 
 
 def test_email(request):
+    # Keep the SMTP test hook inaccessible in production; otherwise anyone can
+    # trigger real outbound mail and exhaust the shared mailbox quota.
+    if not settings.DEBUG:
+        raise Http404()
+
     try:
         send_mail(
             "Test Email",

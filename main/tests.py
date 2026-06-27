@@ -1,4 +1,5 @@
-from django.test import TestCase
+from django.core import mail
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 
@@ -23,3 +24,14 @@ class BookingViewTests(TestCase):
         response = self.client.post(reverse("main:booking"), data={})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "main/booking.html")
+
+    @override_settings(
+        DEBUG=False,
+        EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+        DEFAULT_FROM_EMAIL="test@example.com",
+    )
+    def test_test_email_is_hidden_outside_debug(self):
+        """The SMTP test endpoint must not be publicly callable in production."""
+        response = self.client.get("/test-email/")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(len(mail.outbox), 0)
