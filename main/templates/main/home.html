@@ -102,13 +102,12 @@
         <!-- Frequency Section -->
         <div class="landing-stats-section">
           <div class="stat-item">
-            <div class="stat-number">400+</div>
+            <div class="stat-number" data-target="400" data-suffix="+">0</div>
             <div class="stat-label">Sound baths</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">656</div>
-            <div class="stat-label">People Served
-              </div>
+            <div class="stat-number" data-target="656">0</div>
+            <div class="stat-label">People Served</div>
           </div>
           <a href="#" class="landing-book-btn" onclick="openBookingModal(); return false;">Book A Session</a>
         </div>
@@ -184,7 +183,7 @@
         <!-- Right Column: Images -->
         <div class="benefits-images-block">
           <div class="benefit-image-wrapper">
-            <img src="{% static 'main/images/scroll5.jpeg' %}" alt="Private Sessions" class="benefit-image">
+            <img src="{% static 'main/images/private.home.jpeg' %}" alt="Private Sessions" class="benefit-image">
             <div class="benefit-image-overlay">
               <span class="benefit-overlay-text" onclick="openBookingModal(); return false;">Private Sessions</span>
             </div>
@@ -465,13 +464,13 @@
 <script>
   // Hero images
   const heroImages = [
-    "{% static 'main/images/mainimage.jpg' %}",
-    "{% static 'main/images/bgimg.jpg' %}",
+    "{% static 'main/images/scroll6.jpeg' %}",
+    "{% static 'main/images/scroll1.jpeg' %}",
     "{% static 'main/images/scroll2.jpg' %}",
-    "{% static 'main/images/scroll3.jpg' %}",
+    "{% static 'main/images/scroll3.jpeg' %}",
     "{% static 'main/images/scroll4.jpg' %}",
-    "{% static 'main/images/training.jpg' %}",
-    "{% static 'main/images/sound healing session.jpeg' %}",
+    "{% static 'main/images/scroll5.jpeg' %}",
+    "{% static 'main/images/scroll7.jpeg' %}",
     "{% static 'main/images/therapy.jpg' %}",
     "{% static 'main/images/IMG-20251111-WA0011.jpg' %}"
   ];
@@ -786,15 +785,61 @@
       opacity: 0, x: -20, duration: 0.8, ease: "power2.out", delay: 1.5
     });
 
-    gsap.fromTo(".founder-quote-badge",
-      { scale: 0, rotation: 0 },
-      { scrollTrigger: { trigger: ".founder-section-home", start: "top 75%" }, scale: 1, rotation: 360, duration: 1, ease: "back.out(1.7)", delay: 1.8, immediateRender: false }
-    );
-
-    gsap.to(".founder-quote-badge", {
-      y: -10, duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 2.5
-    });
   }
+
+  // Landing stats count-up animation (mobile & desktop)
+  (function animateLandingStats() {
+    const section = document.querySelector('.landing-stats-section');
+    if (!section) return;
+
+    const counters = section.querySelectorAll('.stat-number[data-target]');
+    if (!counters.length) return;
+
+    let hasAnimated = false;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting || hasAnimated) return;
+        hasAnimated = true;
+
+        counters.forEach((counter, index) => {
+          const target = +counter.getAttribute('data-target');
+          const suffix = counter.getAttribute('data-suffix') || '';
+          const duration = 2000;
+
+          const runCount = () => {
+            const startTime = performance.now();
+            const tick = (now) => {
+              const progress = Math.min((now - startTime) / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              const value = Math.floor(eased * target);
+              counter.textContent = value + suffix;
+              if (progress < 1) requestAnimationFrame(tick);
+              else counter.textContent = target + suffix;
+            };
+            requestAnimationFrame(tick);
+          };
+
+          if (typeof gsap !== 'undefined') {
+            gsap.from(counter, {
+              scale: 0.5,
+              opacity: 0,
+              duration: 0.5,
+              delay: index * 0.15,
+              ease: 'back.out(1.7)',
+              onComplete: runCount
+            });
+          } else {
+            setTimeout(runCount, index * 150);
+          }
+        });
+
+        observer.disconnect();
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(section);
+  })();
 
   // FAQ toggle
   document.querySelectorAll('.faq-item').forEach(item => {
