@@ -178,6 +178,9 @@ ADMIN_WHATSAPP_NUMBER = os.getenv("ADMIN_WHATSAPP_NUMBER", "+9779843213802").str
 
 # Security Settings for Production
 if not DEBUG:
+    # Trust the reverse proxy's forwarded scheme so HTTPS traffic stays on the
+    # requested URL instead of redirecting forever once it reaches Django.
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
