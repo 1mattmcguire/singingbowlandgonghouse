@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 
@@ -148,6 +148,9 @@ from django.conf import settings
 
 
 def test_email(request):
+    if not settings.DEBUG:
+        raise Http404()
+
     try:
         send_mail(
             "Test Email",
@@ -157,5 +160,6 @@ def test_email(request):
             fail_silently=False,
         )
         return HttpResponse("✅ Email sent successfully")
-    except Exception as e:
-        return HttpResponse(f"❌ Error: {str(e)}")
+    except Exception:
+        logger.exception("Test email failed")
+        return HttpResponse("❌ Error sending test email", status=500)
