@@ -1,15 +1,13 @@
-from django.urls import path
-from . import views
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path
-from main.views import test_email 
+from . import views
 app_name = 'main'
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test-email/', test_email),
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('services/', views.services, name='services'),
@@ -21,6 +19,9 @@ urlpatterns = [
     # API endpoints
     path('api/bookings/public/', views.api_booking, name='api_booking'),
 ]
+
+if settings.DEBUG:
+    urlpatterns.append(path('test-email/', views.test_email, name='test_email'))
 
 
 
